@@ -64,7 +64,7 @@ public class MotorHelper {
     }
 
     public static void applySparkMaxConfig(SparkMaxConfig config, SparkMax motor, ResetMode mode) {
-        ErrorHandling.handlRevLibError(
+        ErrorHandling.handleRevLibError(
                motor.configure(config, mode, PersistMode.kPersistParameters),
                "configuring motor " + motor.getDeviceId()
         );

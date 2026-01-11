@@ -36,7 +36,7 @@ public class SwerveKinematics {
         };
     }
 
-    public Twist2d getTwistFromDeltra(SwerveModulePosition[] modDelta) {
+    public Twist2d getTwistFromDelta(SwerveModulePosition[] modDelta) {
         SimpleMatrix modStatesMatrix = new SimpleMatrix(8, 1);
 
         for (int i = 0; i < 4; ++i) {

@@ -51,7 +51,7 @@ public class SwerveModuleNeo extends SwerveModule {
 
     @Override
     protected Voltage getDriveVoltage() {
-        // TOOD: Verify correctness
+        // TODO: Verify correctness
         return Units.Volts.of(driveMotor.getBusVoltage());
     }
 

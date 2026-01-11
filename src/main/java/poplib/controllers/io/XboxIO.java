@@ -1,18 +1,18 @@
-package poplib.controllers.oi;
+package poplib.controllers.io;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
-public class XboxOI extends OI {
+public class XboxIO extends IO {
     private CommandXboxController driverController;
     private CommandXboxController operatorController;
 
-    public static XboxOI instance = null;
+    public static XboxIO instance = null;
 
-    public static XboxOI getInstance() {
+    public static XboxIO getInstance() {
         if (instance == null) {
-            instance = new XboxOI();
+            instance = new XboxIO();
         }
 
         return instance;
@@ -28,7 +28,7 @@ public class XboxOI extends OI {
         public static final int OPERATOR_PORT = 1;
     }
 
-    public XboxOI() {
+    public XboxIO() {
         driverController = new CommandXboxController(OIConstants.DRIVE_PORT);
         operatorController = new CommandXboxController(OIConstants.OPERATOR_PORT);
     }

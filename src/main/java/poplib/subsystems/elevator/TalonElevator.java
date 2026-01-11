@@ -1,4 +1,4 @@
-package poplib.subsytems.elevator;
+package poplib.subsystems.elevator;
 
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -50,16 +50,17 @@ public class TalonElevator extends Elevator {
         SmartDashboard.putNumber("Elevator follow motor pos", followMotor.getPosition().getValue().in(Units.Rotations));
     }
 
-
+    @Override
     public double getEncoderPos() {
         return leadMotor.getPosition().getValue().in(Units.Rotations);
     }
 
+    @Override
     public double getError(double setpoint) {
         return MathUtil.getError(leadMotor, setpoint);
     }
 
-
+    @Override
     public Command moveUp(double speed) {
         return runOnce(() -> {
             usePID = false;
@@ -67,7 +68,7 @@ public class TalonElevator extends Elevator {
         });
     }
 
-
+    @Override
     public Command moveDown(double speed) {
         return runOnce(() -> {
             usePID = false;
@@ -75,6 +76,7 @@ public class TalonElevator extends Elevator {
         });
     }
     
+    @Override
     public Command stop() {
         return runOnce(() -> {
             usePID = true;

@@ -25,7 +25,7 @@ public class FollowerConfig {
         SparkMaxConfig config = leadConfig.getSparkMaxConfig();
         config.follow(leadConfig.canId, inverted);
         
-        ErrorHandling.handlRevLibError(
+        ErrorHandling.handleRevLibError(
             motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters),
             "configuring follower motor " + canId
         );

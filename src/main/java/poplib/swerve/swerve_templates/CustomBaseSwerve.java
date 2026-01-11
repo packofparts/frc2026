@@ -19,6 +19,7 @@ public abstract class CustomBaseSwerve extends BaseSwerve {
         setPrevPose(this.odom.getPose());
     }
 
+    @Override
     public void driveRobotOriented(Translation2d vector, double rot) {
         SwerveModuleState[] states = kinematics.getStates(vector, rot);
         driveRobotOriented(states);

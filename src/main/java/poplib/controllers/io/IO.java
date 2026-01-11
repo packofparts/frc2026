@@ -1,4 +1,4 @@
-package poplib.controllers.oi;
+package poplib.controllers.io;
 
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 /** 
  * Abstract class for OI control
 */
-abstract public class OI {
+abstract public class IO {
     public static final double DEADBAND = 0.1;
 
-    public OI() { }
+    public IO() { }
 
     public abstract double getDriveTrainRotation();
 
@@ -36,7 +36,7 @@ abstract public class OI {
         return getOperatorController().button(id);
     }
 
-    public Trigger getOperatorrigger(int id) {
+    public Trigger getOperatorTrigger(int id) {
         return getOperatorController().axisGreaterThan(id, 0.5);
     }
 }

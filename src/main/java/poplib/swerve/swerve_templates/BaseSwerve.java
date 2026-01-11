@@ -79,26 +79,26 @@ abstract public class BaseSwerve extends SubsystemBase {
 
     public abstract void driveRobotOriented(Translation2d vector, double rot);
 
-    public Translation2d accelrationLimit(Translation2d wantedVelcotiy) {
-        Translation2d delta = wantedVelcotiy.minus(lastTranslationVector);
-        double ellapsedTime = Timer.getFPGATimestamp() - lastTranslationVectorTime;
-        lastTranslationVectorTime += ellapsedTime;
+    public Translation2d accelerationLimit(Translation2d wantedVelocity) {
+        Translation2d delta = wantedVelocity.minus(lastTranslationVector);
+        double elapsedTime = Timer.getFPGATimestamp() - lastTranslationVectorTime;
+        lastTranslationVectorTime += elapsedTime;
         
-        if (delta.getNorm() > MAX_SKID_ACCEL * ellapsedTime) {
-            delta = delta.div(delta.getNorm() / (MAX_SKID_ACCEL * ellapsedTime));
+        if (delta.getNorm() > MAX_SKID_ACCEL * elapsedTime) {
+            delta = delta.div(delta.getNorm() / (MAX_SKID_ACCEL * elapsedTime));
         }
 
-        if (delta.getX() > MAX_X_TILT_ACCEL * ellapsedTime) {
-            delta = new Translation2d(MAX_X_TILT_ACCEL * ellapsedTime, delta.getY());
+        if (delta.getX() > MAX_X_TILT_ACCEL * elapsedTime) {
+            delta = new Translation2d(MAX_X_TILT_ACCEL * elapsedTime, delta.getY());
         }
 
-        if (delta.getY() > MAX_Y_TILT_ACCEL * ellapsedTime) {
-            delta = new Translation2d(delta.getX(), MAX_Y_TILT_ACCEL * ellapsedTime);
+        if (delta.getY() > MAX_Y_TILT_ACCEL * elapsedTime) {
+            delta = new Translation2d(delta.getX(), MAX_Y_TILT_ACCEL * elapsedTime);
         }
 
         lastTranslationVector = delta;
 
-        return null;
+        return lastTranslationVector;
     }
 
     public void driveRobotOriented(SwerveModuleState[] states) {
@@ -214,12 +214,12 @@ abstract public class BaseSwerve extends SubsystemBase {
 
     public double getAngleVelo() {
         return 1000 * (getOdomPose().getRotation().getRadians() - prevPose.getRotation().getRadians())
-                / (System.currentTimeMillis() - prevPoseTimeStamp); // in radians per milisecond
+                / (System.currentTimeMillis() - prevPoseTimeStamp); // in radians per millisecond
     }
 
     public double getDriveVelo() {
         return 1000 * (getOdomPose().getTranslation().getNorm() - prevPose.getTranslation().getNorm())
-                / (System.currentTimeMillis() - prevPoseTimeStamp); // in meters per milisecond
+                / (System.currentTimeMillis() - prevPoseTimeStamp); // in meters per millisecond
     }
 
     protected void setPrevPose(Pose2d newPose) {
@@ -227,6 +227,7 @@ abstract public class BaseSwerve extends SubsystemBase {
         prevPoseTimeStamp = System.currentTimeMillis();
     }
 
+    @Override
     public void periodic() {
         SmartDashboard.putNumber("Angle", MathUtil.inputModulus(gyro.getNormalizedAngle().in(Units.Degrees), 0, 360));
 

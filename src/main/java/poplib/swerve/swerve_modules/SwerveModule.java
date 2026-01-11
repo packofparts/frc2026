@@ -135,7 +135,7 @@ public abstract class SwerveModule {
 
     public LinearVelocity accelLimit(LinearVelocity newVelocity) {
         // LinearVelocity velocityChange = newVelocity.minus(lastVelo);
-        Time ellapsedTime = Units.Seconds.of(Timer.getFPGATimestamp()).minus(lastVeloTime);
+        Time elapsedTime = Units.Seconds.of(Timer.getFPGATimestamp()).minus(lastVeloTime);
 
         // TODO: Update
         // newVelocity = lastVelo.plus( 
@@ -149,7 +149,7 @@ public abstract class SwerveModule {
         //         * ellapsedTime.in(Units.Seconds) * (velocityChange.lt(Units.MetersPerSecond.of(0)) ? -1 : 1)));
 
         lastVelo = newVelocity;
-        lastVeloTime.plus(ellapsedTime);
+        lastVeloTime = lastVeloTime.plus(elapsedTime);
 
         return newVelocity;
     }

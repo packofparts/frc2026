@@ -39,7 +39,7 @@ public class PIDTuning {
             config.closedLoop.pid(kP.get(),kI.get(), kD.get());
             config.closedLoop.apply(new FeedForwardConfig().kV(kF.get()));
             
-            ErrorHandling.handlRevLibError(
+            ErrorHandling.handleRevLibError(
                 motor.configure(config,  ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters),
                 "updating PID for motor id " + motor.getDeviceId()
             );

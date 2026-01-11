@@ -1,7 +1,7 @@
 package poplib.swerve.commands;
 
 import poplib.controllers.ControllerMath;
-import poplib.controllers.oi.OI;
+import poplib.controllers.io.IO;
 import poplib.swerve.swerve_templates.BaseSwerve;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -21,7 +21,7 @@ public class TeleopSwerveDrive extends Command {
     private final double stickDeadBand;
 
     /**
-     * Pass in defualt speed multiplier of 1.0
+     * Pass in default speed multiplier of 1.0
      */
     public TeleopSwerveDrive(BaseSwerve swerve,
             Supplier<Double> xAxisSupplier,
@@ -38,30 +38,30 @@ public class TeleopSwerveDrive extends Command {
         );
     }
 
-    public TeleopSwerveDrive(BaseSwerve swerve, OI oi) {
+    public TeleopSwerveDrive(BaseSwerve swerve, IO oi) {
         this(
             swerve,
             oi::getDriveTrainTranslationX,
             oi::getDriveTrainTranslationY,
             oi::getDriveTrainRotation,
             () -> 1.0,
-            OI.DEADBAND
+            IO.DEADBAND
         );
     }
 
-    public TeleopSwerveDrive(BaseSwerve swerve, OI oi, Supplier<Double> rotSupplier) {
+    public TeleopSwerveDrive(BaseSwerve swerve, IO oi, Supplier<Double> rotSupplier) {
         this(
             swerve,
             oi::getDriveTrainTranslationX,
             oi::getDriveTrainTranslationY,
             oi::getDriveTrainRotation,
             rotSupplier,
-            OI.DEADBAND
+            IO.DEADBAND
         );
     }
 
     /**
-     * Set swerve subsytem, controlers, axis's, and other swerve paramaters.
+     * Set swerve subsytem, controllers, axes, and other swerve parameters.
      */
     public TeleopSwerveDrive(BaseSwerve swerve,
             Supplier<Double> xAxisSupplier,

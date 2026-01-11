@@ -1,4 +1,4 @@
-package poplib.subsytems.flywheel;
+package poplib.subsystems.flywheel;
 
 import poplib.control.PIDConfig;
 import poplib.smart_dashboard.PIDTuning;
@@ -10,12 +10,15 @@ public abstract class Flywheel extends SubsystemBase {
     protected final TunableNumber setpoint;
     protected PIDTuning leadPidTuning;
  
-    protected Flywheel(String subsytemName, boolean tuningMode) {
-        super(subsytemName);
-        this.setpoint = new TunableNumber(subsytemName + " flywheel setpoint", 0, tuningMode);
+    protected Flywheel(String subsystemName, boolean tuningMode) {
+        super(subsystemName);
+        this.setpoint = new TunableNumber(subsystemName + " flywheel setpoint", 0, tuningMode);
 
-        this.leadPidTuning = new PIDTuning(subsytemName + " flywheel", PIDConfig.getZeroPid(), tuningMode);
+        this.leadPidTuning = new PIDTuning(subsystemName + " flywheel", PIDConfig.getZeroPid(), tuningMode);
     } 
+
+    @Override
+    public abstract void periodic();
 
     public abstract double getError(double setpoint);
  

@@ -1,4 +1,4 @@
-package poplib.subsytems.pivot;
+package poplib.subsystems.pivot;
 
 import poplib.control.FFConfig;
 import poplib.sensors.absolute_encoder.AbsoluteEncoder;
@@ -14,14 +14,18 @@ public abstract class Pivot extends SubsystemBase {
     protected final ArmFeedforward ff;
     protected final TunableNumber setpoint;
 
-    public Pivot(FFConfig ffConfig, AbsoluteEncoderConfig absoluteConfig, boolean tuningMode, String subsytemName) {
-        super(subsytemName);
+    public Pivot(FFConfig ffConfig, AbsoluteEncoderConfig absoluteConfig, boolean tuningMode, String subsystemName) {
+        super(subsystemName);
 
         absoluteEncoder = absoluteConfig.getDutyCycleEncoder();
         ff = ffConfig.getArmFeedforward();
 
-        setpoint = new TunableNumber("Pivot Setpoint " + subsytemName, 0, tuningMode);
+        setpoint = new TunableNumber("Pivot Setpoint " + subsystemName, 0, tuningMode);
     }
+
+    @Override
+    public abstract void periodic();
+
 
     public Command moveWrist(double position, double error) {
         return run(() -> {
@@ -38,6 +42,6 @@ public abstract class Pivot extends SubsystemBase {
     }
 
     public void log() {
-        SmartDashboard.putNumber("Absoulte Position " + getName(), getAbsolutePosition()); 
+        SmartDashboard.putNumber("Absolute Position " + getName(), getAbsolutePosition()); 
     }
 }

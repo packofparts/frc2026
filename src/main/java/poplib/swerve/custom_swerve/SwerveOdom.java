@@ -28,7 +28,7 @@ public class SwerveOdom {
     }
 
     public void updatePoseWithGyro(SwerveModulePosition[] swerveModulePositions, Rotation2d gyroAngle) {
-        Twist2d twist = kinematics.getTwistFromDeltra(getSwerveModuleDelta(swerveModulePositions));
+        Twist2d twist = kinematics.getTwistFromDelta(getSwerveModuleDelta(swerveModulePositions));
         twist.dtheta = gyroAngle.minus(currPos.getRotation()).getRadians();
 
         currPos = currPos.exp(twist);

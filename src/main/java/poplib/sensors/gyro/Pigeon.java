@@ -39,14 +39,17 @@ public class Pigeon extends Gyro {
         return invertAndNormalizeAngle(getYaw());
     }
 
+    @Override
     public Angle getYaw() {
         return gyro.getYaw().getValue();
     }
 
+    @Override
     public Angle getPitch() {
         return gyro.getPitch().getValue();
     }
 
+    @Override
     public Angle getRoll() {
         return gyro.getRoll().getValue();
     }

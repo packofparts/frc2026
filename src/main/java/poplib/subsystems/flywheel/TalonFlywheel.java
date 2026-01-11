@@ -1,4 +1,4 @@
-package poplib.subsytems.flywheel;
+package poplib.subsystems.flywheel;
 
 import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.Follower;
@@ -16,8 +16,8 @@ public class TalonFlywheel extends Flywheel {
     private VelocityDutyCycle velocity;
     private CoastOut idleControl;
     
-    protected TalonFlywheel(MotorConfig leadConfig, MotorConfig followerConfig, String subsytemName, boolean tuningMode, boolean motorsInverted) {
-        super(subsytemName, tuningMode);
+    protected TalonFlywheel(MotorConfig leadConfig, MotorConfig followerConfig, String subsystemName, boolean tuningMode, boolean motorsInverted) {
+        super(subsystemName, tuningMode);
 
         this.leadMotor = leadConfig.createTalon();
         this.followerMotor = followerConfig.createTalon();
@@ -28,6 +28,7 @@ public class TalonFlywheel extends Flywheel {
         followerMotor.setControl(new Follower(leadConfig.canId, motorsInverted ? MotorAlignmentValue.Opposed : MotorAlignmentValue.Aligned));
     } 
 
+    @Override
     public double getError(double setpoint) {
         return Math.abs(leadMotor.getVelocity().getValueAsDouble() - setpoint);
     }

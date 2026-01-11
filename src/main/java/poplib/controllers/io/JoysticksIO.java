@@ -1,18 +1,18 @@
-package poplib.controllers.oi;
+package poplib.controllers.io;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
-public class Joysticks extends OI {
-    public static Joysticks instance;
+public class JoysticksIO extends IO {
+    public static JoysticksIO instance;
 
     private CommandJoystick driveJoystick;
     private CommandJoystick transJoystick;
     private CommandXboxController operatorController;
     
-    public static Joysticks getInstance() {
+    public static JoysticksIO getInstance() {
         if (instance == null) {
-            instance = new Joysticks();
+            instance = new JoysticksIO();
         }
 
         return instance;
@@ -24,7 +24,7 @@ public class Joysticks extends OI {
         public static final int OPERATOR_PORT = 2;
     }
 
-    public Joysticks() {
+    public JoysticksIO() {
         driveJoystick = new CommandJoystick(OIConstants.DRIVE_PORT);
         transJoystick = new CommandJoystick(OIConstants.TRANS_PORT);
         operatorController = new CommandXboxController(OIConstants.OPERATOR_PORT);

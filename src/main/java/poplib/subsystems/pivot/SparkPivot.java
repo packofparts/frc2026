@@ -1,4 +1,4 @@
-package poplib.subsytems.pivot;
+package poplib.subsystems.pivot;
 
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.ClosedLoopSlot;
@@ -16,8 +16,8 @@ public class SparkPivot extends Pivot {
     private final SparkMax followerMotor;
     private final PIDTuning pid;
 
-    public SparkPivot(MotorConfig leadConfig, FollowerConfig followerConfig, double gearRatio, FFConfig ffConfig, AbsoluteEncoderConfig absoluteConfig, boolean tuningMode, String subsytemName) {
-        super(ffConfig, absoluteConfig, tuningMode, subsytemName);
+    public SparkPivot(MotorConfig leadConfig, FollowerConfig followerConfig, double gearRatio, FFConfig ffConfig, AbsoluteEncoderConfig absoluteConfig, boolean tuningMode, String subsystemName) {
+        super(ffConfig, absoluteConfig, tuningMode, subsystemName);
         leadMotor = leadConfig.createSparkMax();
         if (followerConfig != null) {
             followerMotor = followerConfig.createSparkMax();
@@ -25,11 +25,12 @@ public class SparkPivot extends Pivot {
             followerMotor = null;
         };
 
-        pid = leadConfig.genPIDTuning("Pivot Motor " + subsytemName, tuningMode);
+        pid = leadConfig.genPIDTuning("Pivot Motor " + subsystemName, tuningMode);
 
         resetToAbsolutePosition();
     }
 
+    @Override
     public boolean atSetpoint(double error, double setpoint) {
         return getError(setpoint) < error;
     }

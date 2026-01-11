@@ -1,4 +1,4 @@
-package poplib.subsytems.elevator;
+package poplib.subsystems.elevator;
 
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkMax;
@@ -42,6 +42,7 @@ public class SparkElevator extends Elevator {
         }
     }
 
+    @Override
     public double getEncoderPos() {
         return leadMotor.getEncoder().getPosition();
     }
@@ -53,6 +54,7 @@ public class SparkElevator extends Elevator {
     /**
      * Requires usePID to be false in order to work
      */
+    @Override
     public Command moveUp(double speed) {
         return runOnce(() -> {
             leadMotor.set(Math.abs(speed));
@@ -62,6 +64,7 @@ public class SparkElevator extends Elevator {
     /**
      * Requires usePID to be false in order to work
      */
+    @Override
     public Command moveDown(double speed) {
         return runOnce(() -> {
             leadMotor.set(-Math.abs(speed));
@@ -71,6 +74,7 @@ public class SparkElevator extends Elevator {
     /**
      * Requires usePID to be false in order to work
      */
+    @Override
     public Command stop() {
         return runOnce(() -> {
             leadMotor.set(0.0);

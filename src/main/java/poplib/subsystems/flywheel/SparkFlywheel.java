@@ -1,4 +1,4 @@
-package poplib.subsytems.flywheel;
+package poplib.subsystems.flywheel;
 
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkMax;
@@ -13,13 +13,14 @@ public class SparkFlywheel extends Flywheel {
     SparkMax followerMotor; 
     PIDTuning leadPidTuning;
  
-    protected SparkFlywheel(MotorConfig leadConfig, FollowerConfig followerConfig, String subsytemName, boolean tuningMode) {
-        super(subsytemName, tuningMode);
+    protected SparkFlywheel(MotorConfig leadConfig, FollowerConfig followerConfig, String subsystemName, boolean tuningMode) {
+        super(subsystemName, tuningMode);
 
         this.leadMotor = leadConfig.createSparkMax();
         this.followerMotor = followerConfig.createSparkMax();
     } 
 
+    @Override
     public double getError(double setpoint) {
         return MathUtil.getError(leadMotor, setpoint);
     }

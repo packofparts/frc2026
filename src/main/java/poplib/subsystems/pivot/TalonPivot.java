@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package poplib.subsytems.pivot;
+package poplib.subsystems.pivot;
 
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -20,8 +20,8 @@ public class TalonPivot extends Pivot {
     protected PIDTuning pid;
     protected PositionDutyCycle position;
 
-    public TalonPivot(MotorConfig leadConfig, FollowerConfig followerConfig, double gearRatio, FFConfig ffConfig, AbsoluteEncoderConfig absoluteConfig, boolean tuningMode, String subsytemName) {
-        super(ffConfig, absoluteConfig, tuningMode, subsytemName);
+    public TalonPivot(MotorConfig leadConfig, FollowerConfig followerConfig, double gearRatio, FFConfig ffConfig, AbsoluteEncoderConfig absoluteConfig, boolean tuningMode, String subsystemName) {
+        super(ffConfig, absoluteConfig, tuningMode, subsystemName);
         leadMotor = leadConfig.createTalon();
 
         if (followerConfig != null) {
@@ -30,13 +30,14 @@ public class TalonPivot extends Pivot {
             followerMotor = null;
         };
 
-        pid = leadConfig.genPIDTuning("Pivot Motor " + subsytemName, tuningMode);
+        pid = leadConfig.genPIDTuning("Pivot Motor " + subsystemName, tuningMode);
         position = new PositionDutyCycle(0.0);
         position.withSlot(leadMotor.getClosedLoopSlot().getValue());
 
         resetToAbsolutePosition();
     }
 
+    @Override
     public boolean atSetpoint(double error, double setpoint) {
         return getError(setpoint) < error;
     }

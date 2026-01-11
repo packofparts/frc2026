@@ -1,4 +1,4 @@
-package poplib.subsytems.elevator;
+package poplib.subsystems.elevator;
 
 import poplib.control.FFConfig;
 import poplib.control.PIDConfig;
@@ -15,14 +15,15 @@ public abstract class Elevator extends SubsystemBase{
     protected ElevatorFeedforward feedforward;
     protected DigitalInput limitSwitch;
 
-    public Elevator(FFConfig ffConfig, boolean tuningMode, String subsytemName) {
-        super(subsytemName);
+    public Elevator(FFConfig ffConfig, boolean tuningMode, String subsystemName) {
+        super(subsystemName);
 
         setpoint = new TunableNumber("Elevator Setpoint", 0, tuningMode);
         tuning = new PIDTuning("Elevator", PIDConfig.getZeroPid(), tuningMode);
         feedforward = ffConfig.getElevatorFeedforward();
     }
 
+    @Override
     public abstract void periodic();
 
     public abstract double getError(double setpoint);

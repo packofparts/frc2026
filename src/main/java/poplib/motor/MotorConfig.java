@@ -20,7 +20,7 @@ public class MotorConfig {
      public final Mode mode;
      public ConversionConfig conversion;
 
-     private final static String DEFUALT_CANBUS = "rio";
+     private final static String DEFAULT_CANBUS = "rio";
 
      public MotorConfig(int canId, String canBus, int currentLimit, Boolean inversion, PIDConfig pid, Mode mode, ConversionConfig conversion) {
           this.canId = canId;
@@ -32,19 +32,19 @@ public class MotorConfig {
           this.conversion = conversion;
      }
 
-     public MotorConfig(int canId) { this(canId, MotorConfig.DEFUALT_CANBUS, -1, false, PIDConfig.getZeroPid(), Mode.COAST, new ConversionConfig());}
+     public MotorConfig(int canId) { this(canId, MotorConfig.DEFAULT_CANBUS, -1, false, PIDConfig.getZeroPid(), Mode.COAST, new ConversionConfig());}
 
      public MotorConfig(int canId, String canBus) { this(canId, canBus, -1, false, PIDConfig.getZeroPid(), Mode.COAST, new ConversionConfig());}
 
      public MotorConfig(int canId, String canBus, int currentLimit, Boolean inversion, Mode mode) { this(canId, canBus, currentLimit, inversion, PIDConfig.getZeroPid(), mode, new ConversionConfig());}
 
-     public MotorConfig(int canId, int currentLimit, Boolean inversion, PIDConfig pid, Mode mode) { this(canId, MotorConfig.DEFUALT_CANBUS, currentLimit, inversion, pid, mode, new ConversionConfig()); }
+     public MotorConfig(int canId, int currentLimit, Boolean inversion, PIDConfig pid, Mode mode) { this(canId, MotorConfig.DEFAULT_CANBUS, currentLimit, inversion, pid, mode, new ConversionConfig()); }
 
-     public MotorConfig(int canId, int currentLimit, Boolean inversion, Mode mode) { this(canId, MotorConfig.DEFUALT_CANBUS, currentLimit, inversion, PIDConfig.getZeroPid(), mode, new ConversionConfig());}
+     public MotorConfig(int canId, int currentLimit, Boolean inversion, Mode mode) { this(canId, MotorConfig.DEFAULT_CANBUS, currentLimit, inversion, PIDConfig.getZeroPid(), mode, new ConversionConfig());}
 
      // No CAN Id Motor, used for configs that apply to multiple motors 
      public MotorConfig(String canBus, int currentLimit, Boolean inversion, PIDConfig pid, Mode mode) { this(-1, canBus, currentLimit, inversion, pid, mode, new ConversionConfig()); }
-     public MotorConfig(int currentLimit, Boolean inversion, PIDConfig pid, Mode mode) { this(-1, MotorConfig.DEFUALT_CANBUS, currentLimit, inversion, pid, mode, new ConversionConfig()); }
+     public MotorConfig(int currentLimit, Boolean inversion, PIDConfig pid, Mode mode) { this(-1, MotorConfig.DEFAULT_CANBUS, currentLimit, inversion, pid, mode, new ConversionConfig()); }
 
      public PIDTuning genPIDTuning(String motorName, boolean tuningMode) {
           return new PIDTuning(motorName, pid, tuningMode);
