@@ -141,12 +141,12 @@ public abstract class SwerveModule {
         // newVelocity = lastVelo.plus( 
         //     (
         //         Math.max(
-        //             velocityChange.div(ellapsedTime).abs(Units.MetersPerSecondPerSecond), 
+        //             velocityChange.div(elapsedTime).abs(Units.MetersPerSecondPerSecond), 
         //             swerveModuleConstants.moduleInfo.maxAcceleration.times(
         //                 1 - lastVelo.div(swerveModuleConstants.moduleInfo.maxSpeed).magnitude()
         //             ).in(Units.MetersPerSecondPerSecond)
         //         ) 
-        //         * ellapsedTime.in(Units.Seconds) * (velocityChange.lt(Units.MetersPerSecond.of(0)) ? -1 : 1)));
+        //         * elapsedTime.in(Units.Seconds) * (velocityChange.lt(Units.MetersPerSecond.of(0)) ? -1 : 1)));
 
         lastVelo = newVelocity;
         lastVeloTime = lastVeloTime.plus(elapsedTime);
