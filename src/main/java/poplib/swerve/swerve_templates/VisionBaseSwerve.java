@@ -110,7 +110,7 @@ public abstract class VisionBaseSwerve extends BaseSwerve {
     @Override
     public void driveChassis(ChassisSpeeds chassisSpeeds) {
         SwerveModuleState[] states = this.kinematics.toSwerveModuleStates(chassisSpeeds);
-        this.driveRobotOriented(states);
+        this.driveRobotOriented(states); 
     }
 
     public void setOdomPose(Pose2d pose) {
