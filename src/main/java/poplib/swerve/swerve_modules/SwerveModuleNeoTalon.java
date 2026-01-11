@@ -85,5 +85,5 @@ public class SwerveModuleNeoTalon extends SwerveModule {
     @Override
     protected AngularVelocity getDriveAngularVelocity() {
         return driveMotor.getVelocity().getValue();
-    }
+    } 
 }
