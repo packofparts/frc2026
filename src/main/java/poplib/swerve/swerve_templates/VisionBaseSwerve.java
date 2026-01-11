@@ -84,7 +84,7 @@ public abstract class VisionBaseSwerve extends BaseSwerve {
         double bestArea = -1.0;
 
         for (Limelight limelight : this.limelights) {
-            Optional<DetectedObject> detection = limelight.getLastestDetection();
+            Optional<DetectedObject> detection = limelight.getLatestDetection();
             if (detection.isPresent() && ((DetectedObject) detection.get()).area > bestArea) {
                 bestDetection = (DetectedObject) detection.get();
                 bestArea = bestDetection.area;

@@ -1,6 +1,6 @@
 package poplib.sensors.camera;
 
-public enum StdDevStategy {
+public enum StdDevStrategy {
     DISTANCE,    // recommended strategy
     AMBIGUITY
 }

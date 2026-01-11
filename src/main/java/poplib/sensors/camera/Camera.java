@@ -115,14 +115,14 @@ public class Camera {
             int numTags = 0;
             double avg = 0;
             for (PhotonTrackedTarget target : targets) {
-                if (config.stdDevStategy == StdDevStategy.DISTANCE) {
+                if (config.stdDevStrategy == StdDevStrategy.DISTANCE) {
                     Optional<Pose3d> tagPose = poseEstimator.getFieldTags().getTagPose(target.getFiducialId());
                     if (tagPose.isPresent()) {
                         numTags++;
                         avg += tagPose.get().toPose2d().getTranslation().getDistance(
                         visionEst.get().estimatedPose.toPose2d().getTranslation());
                     }
-                } else if (config.stdDevStategy == StdDevStategy.AMBIGUITY) {
+                } else if (config.stdDevStrategy == StdDevStrategy.AMBIGUITY) {
                     avg += target.getPoseAmbiguity();
                     numTags++;
                 }
@@ -134,13 +134,13 @@ public class Camera {
                 if (numTags > 1) {
                     stdDevs = VecBuilder.fill(0.5, 0.5, 1);
                 }
-                if (config.stdDevStategy == StdDevStategy.DISTANCE) {
+                if (config.stdDevStrategy == StdDevStrategy.DISTANCE) {
                     if (numTags == 1 && avg > 4) {
                         stdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);  // tag too unreliable
                     } else {
                         stdDevs = stdDevs.times(1 + (avg * avg / 30));
                     }
-                } else if (config.stdDevStategy == StdDevStategy.AMBIGUITY) {
+                } else if (config.stdDevStrategy == StdDevStrategy.AMBIGUITY) {
                     if (avg > 0.4) {    // ur cooked lil bro
                         stdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
                     } else {

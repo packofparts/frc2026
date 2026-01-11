@@ -17,7 +17,7 @@ public class Limelight {
 
     }
 
-    public Optional<DetectedObject> getLastestDetection() {
+    public Optional<DetectedObject> getLatestDetection() {
         double area = networkTable.getEntry("ta").getDouble(0.0);
         if (networkTable.getEntry("tv").getInteger(0) == 1 && area > config.minValidArea) {
             return Optional.of(new DetectedObject(

@@ -10,7 +10,7 @@ import poplib.error_handling.ErrorHandling;
 import edu.wpi.first.math.controller.PIDController;
 
 /**
- * Create Motor Functions deprecated as of Novemeber 2023, use MotorConfig instead
+ * Create Motor Functions deprecated as of November 2023, use MotorConfig instead
  */
 public class MotorHelper {
     @Deprecated

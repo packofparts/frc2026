@@ -61,7 +61,7 @@ public class TeleopSwerveDrive extends Command {
     }
 
     /**
-     * Set swerve subsytem, controllers, axes, and other swerve parameters.
+     * Set swerve subsystem, controllers, axes, and other swerve parameters.
      */
     public TeleopSwerveDrive(BaseSwerve swerve,
             Supplier<Double> xAxisSupplier,

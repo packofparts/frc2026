@@ -47,6 +47,7 @@ public class SparkElevator extends Elevator {
         return leadMotor.getEncoder().getPosition();
     }
 
+    @Override
     public double getError(double setpoint) {
         return MathUtil.getError(leadMotor, setpoint);
     }
