@@ -33,6 +33,10 @@ public abstract class Pivot extends SubsystemBase {
         }).until(() -> atSetpoint(error, position));
     }
 
+    public Command moveWristBy(double value, double error) {
+        return moveWrist(setpoint.get() + value, error);
+    }
+    
     public abstract boolean atSetpoint(double error, double setpoint);
 
     public abstract void resetToAbsolutePosition();
