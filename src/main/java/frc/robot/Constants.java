@@ -51,4 +51,37 @@ public final class Constants {
             new Translation2d(-WHEEL_BASE / 2.0, TRACK_WIDTH / 2.0)
         );
     }
+
+    public static class Pivot {
+        /** 
+         * TODO: Define MotorConfig for the SparkMax (Neo) Motor
+         * Motor Information: Can Id = 20
+         * Canbus = Constants.CANBUS
+         * Current Limit = 40
+         * Brake Mode
+         * PIDConfig of 0.1, 0, 0
+         * No inversion 
+         */ 
+    }
+
+    public static class Flywheel {
+        /** 
+         * TODO: Define MotorConfigs for the SparkMax (Neo) Motors
+         * Motor Information: 
+         * Can Id = 21
+         * Canbus = Constants.CANBUS
+         * Current Limit = 40
+         * Brake Mode
+         * PIDConfig of 0.1, 0, 0
+         * No inversion 
+         * 
+         * Follower Information:
+         * Can Id = 22
+         * No inversion
+         */ 
+    }
+
+    public static class Turret {
+        // ignore for now
+    }
 }
