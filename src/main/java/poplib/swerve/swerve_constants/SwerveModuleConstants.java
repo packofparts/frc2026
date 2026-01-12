@@ -70,18 +70,20 @@ public class SwerveModuleConstants {
         angleConfig.conversion = new ConversionConfig(moduleInfo.angleGearRatio, Units.Rotations);
     }
 
-    public SwerveModuleConstants(int moduleNumber, Rotation2d angleOffset, SDSModules moduleInfo,
-        boolean swerveTuningMode, MotorConfig driveConfig, MotorConfig angleConfig) {
-            this(moduleNumber,  (moduleNumber * 3) + 1, (moduleNumber * 3) + 2, (moduleNumber * 3) + 3, angleOffset, moduleInfo, swerveTuningMode, driveConfig, angleConfig);
+    public SwerveModuleConstants(int moduleNumber, int canIDOffset, Rotation2d angleOffset, SDSModules moduleInfo,
+                                boolean swerveTuningMode, MotorConfig driveConfig, MotorConfig angleConfig) {
+        this(moduleNumber,  (moduleNumber * 3) + canIDOffset, (moduleNumber * 3) + 1 + canIDOffset, (moduleNumber * 3) + 2 + canIDOffset, angleOffset, moduleInfo, swerveTuningMode, driveConfig, angleConfig);
     }
 
+    // The canIDOffset is equal to the CAN ID of the first swerve motor
     public static SwerveModuleConstants[] generateConstants(Rotation2d[] angleOffsets, SDSModules moduleInfo,
-            boolean swerveTuningMode, MotorConfig driveConfig, MotorConfig angleConfig) {
+            boolean swerveTuningMode, MotorConfig driveConfig, MotorConfig angleConfig, int canIDOffset) {
         SwerveModuleConstants[] ret = new SwerveModuleConstants[4];
 
         for (int i = 0; i < 4; ++i) {
             ret[i] = new SwerveModuleConstants(
                 i,
+                canIDOffset,
                 angleOffsets[i],
                 moduleInfo,
                 swerveTuningMode,

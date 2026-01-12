@@ -5,27 +5,32 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
-
+import frc.robot.subsystems.Swerve;
+import poplib.controllers.io.XboxIO;
+import poplib.swerve.commands.TeleopSwerveDrive;
 
 public class RobotContainer {
 
-  public RobotContainer() {
-    // Configure the trigger bindings
-    configureBindings();
-  }
+    Swerve swerve = Swerve.getInstance();
+    XboxIO controller = XboxIO.getInstance();
 
+    public RobotContainer() {
+        // Configure the trigger bindings
+        swerve.setDefaultCommand(new TeleopSwerveDrive(swerve, controller));
+        configureBindings();
+    }
 
-  private void configureBindings() {
+    private void configureBindings() {
 
-  }
+    }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return null;
-  }
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        // An example command will be run in autonomous
+        return null;
+    }
 }

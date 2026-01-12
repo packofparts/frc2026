@@ -4,16 +4,51 @@
 
 package frc.robot;
 
-/**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
- * globally (i.e. public static). Do not put anything functional in this class.
- *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
- * constants are needed, to reduce verbosity.
- */
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import poplib.control.PIDConfig;
+import poplib.motor.Mode;
+import poplib.motor.MotorConfig;
+import poplib.swerve.swerve_constants.SDSModules;
+import poplib.swerve.swerve_constants.SwerveModuleConstants;
+
 public final class Constants {
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
-  }
+
+    public static final String CANIVORE_NAME = "cantBUS";
+
+    public static class Swerve {
+        static final SDSModules MODULE_TYPE = SDSModules.MK4iL3;
+        static final boolean TUNING_MODE = false;
+        static final int SWERVE_CAN_ID_OFFSET = 5;      
+
+        static final MotorConfig DRIVE_CONFIG = new MotorConfig(CANIVORE_NAME, 80, false, PIDConfig.getPid(0.01, 0.2), Mode.BRAKE);
+        static final MotorConfig ANGLE_CONFIG = new MotorConfig(CANIVORE_NAME, 25, false, PIDConfig.getPid(5.0), Mode.BRAKE);
+        
+        public static final SwerveModuleConstants[] SWERVE_MODULE_CONSTANTS = SwerveModuleConstants.generateConstants(
+            new Rotation2d[] {
+                Rotation2d.fromDegrees(134.2),              // set offsets
+                Rotation2d.fromDegrees(32.4),           // set offsets
+                Rotation2d.fromDegrees(226.4),             // set offsets
+                Rotation2d.fromDegrees(348.8)              //  set offsets
+            },
+            MODULE_TYPE, 
+            TUNING_MODE, 
+            DRIVE_CONFIG, 
+            ANGLE_CONFIG,
+            SWERVE_CAN_ID_OFFSET
+        );
+
+        public static final int PIGEON_ID = 20;
+        public static final boolean GYRO_INVERSION = false;      // change if needed - gyro should be ccw+ and cw-
+
+        public static final double WHEEL_BASE =  edu.wpi.first.math.util.Units.inchesToMeters(23);
+        public static final double TRACK_WIDTH = edu.wpi.first.math.util.Units.inchesToMeters(23); 
+        public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
+            new Translation2d(WHEEL_BASE / 2.0, TRACK_WIDTH / 2.0),
+            new Translation2d(WHEEL_BASE / 2.0, -TRACK_WIDTH / 2.0),
+            new Translation2d(-WHEEL_BASE / 2.0, -TRACK_WIDTH / 2.0),
+            new Translation2d(-WHEEL_BASE / 2.0, TRACK_WIDTH / 2.0)
+        );
+    }
 }
