@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import poplib.subsystems.pivot.SparkPivot;
+import frc.robot.Constants;
 
 public class Pivot extends SparkPivot {
     
@@ -14,7 +15,14 @@ public class Pivot extends SparkPivot {
     }
     
     public Pivot() {
-        super( /* TODO: Implement super constructor */ );
+        super(
+            Constants.Pivot.LEAD_CONFIG,
+            Constants.Pivot.GEAR_RATIO,
+            Constants.Pivot.FF_CONFIG,
+            Constants.Pivot.ABSOLUTE_ENCODER_CONFIG,
+            Constants.Pivot.TUNING_MODE,
+            Constants.Pivot.SUBSYSTEM_NAME
+        );
     }
 
     @Override

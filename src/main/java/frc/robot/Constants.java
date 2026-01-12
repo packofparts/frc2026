@@ -8,8 +8,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import poplib.control.PIDConfig;
+import com.ctre.phoenix6.CANBus;
+import poplib.control.FFConfig;
+import poplib.motor.ConversionConfig;
+import poplib.motor.FollowerConfig;
 import poplib.motor.Mode;
 import poplib.motor.MotorConfig;
+import poplib.sensors.absolute_encoder.AbsoluteEncoderConfig;
 import poplib.swerve.swerve_constants.SDSModules;
 import poplib.swerve.swerve_constants.SwerveModuleConstants;
 
@@ -62,6 +67,23 @@ public final class Constants {
          * PIDConfig of 0.1, 0, 0
          * No inversion 
          */ 
+        public static final MotorConfig LEAD_CONFIG = new MotorConfig(
+            20,
+            CANIVORE_NAME,
+            40,
+            false,
+            PIDConfig.getPid(0.1, 0, 0),
+            Mode.BRAKE,
+            new ConversionConfig()
+        );
+
+        public static final double GEAR_RATIO = 1.0;
+        public static final FFConfig FF_CONFIG = new FFConfig(0.0);
+        public static final AbsoluteEncoderConfig ABSOLUTE_ENCODER_CONFIG =
+            new AbsoluteEncoderConfig(0, new CANBus(CANIVORE_NAME), Rotation2d.fromDegrees(0), false);
+
+        public static final boolean TUNING_MODE = false;
+        public static final String SUBSYSTEM_NAME = "Pivot";
     }
 
     public static class Flywheel {
@@ -79,6 +101,20 @@ public final class Constants {
          * Can Id = 22
          * No inversion
          */ 
+        public static final MotorConfig LEAD_CONFIG = new MotorConfig(
+            21,
+            CANIVORE_NAME,
+            40,
+            false,
+            PIDConfig.getPid(0.1, 0, 0),
+            Mode.BRAKE,
+            new ConversionConfig()
+        );
+
+        public static final FollowerConfig FOLLOWER_CONFIG = new FollowerConfig(LEAD_CONFIG, false, 22);
+
+        public static final boolean TUNING_MODE = false;
+        public static final String SUBSYSTEM_NAME = "Flywheel";
     }
 
     public static class Turret {
