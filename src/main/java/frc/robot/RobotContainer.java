@@ -10,6 +10,7 @@ import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Swerve;
 import poplib.controllers.io.XboxIO;
 import poplib.swerve.commands.TeleopSwerveDrive;
+import frc.robot.subsystems.Indexer;
 
 
 public class RobotContainer {
@@ -18,7 +19,7 @@ public class RobotContainer {
     private final Flywheel flywheel = new Flywheel();
     Swerve swerve = Swerve.getInstance();
     XboxIO controller = XboxIO.getInstance();
-
+    Indexer indexer = Indexer.getInstance();
     // TODO: create the Pivot object
 
     public RobotContainer() {
@@ -47,6 +48,10 @@ public class RobotContainer {
          * Move down by 1: Bind to A Button on Driver Controller
          * Hint #2: start with controller.getDriverButton(XboxController.Button.kY)
          */
+
+        controller.getOperatorButton(XboxController.Button.kA.value).onTrue(indexer.runIndexer()).onFalse(indexer.stopIndexer());
+        controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseIndexer()).onFalse(indexer.stopIndexer());
+
     }
 
     /**
