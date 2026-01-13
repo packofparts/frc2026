@@ -79,6 +79,10 @@ public final class Constants {
          * Can Id = 22
          * No inversion
          */ 
+        public static final boolean TUNING_MODE = false;
+        public static final MotorConfig leadConfig = new MotorConfig(21, Constants.CANIVORE_NAME, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, false);
+        public static final MotorConfig followerConfig = new MotorConfig(22, 40, false, new PIDConfig(0.1, 0, 0, 0), Mode.COAST);
+
     }
 
     public static class Turret {

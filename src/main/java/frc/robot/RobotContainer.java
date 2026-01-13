@@ -6,15 +6,19 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Swerve;
 import poplib.controllers.io.XboxIO;
 import poplib.swerve.commands.TeleopSwerveDrive;
 
+
 public class RobotContainer {
 
     // TODO: create the Flywheel object
+    private final Flywheel flywheel = new Flywheel();
     Swerve swerve = Swerve.getInstance();
     XboxIO controller = XboxIO.getInstance();
+
     // TODO: create the Pivot object
 
     public RobotContainer() {
@@ -31,6 +35,11 @@ public class RobotContainer {
          * Releasing the Trigger should stop the flywheel (0 RPM) Hint: use .onFalse(Command)
          * Hint #2: start with controller.getDriverTrigger(XboxController.Axis.kRightTrigger)
          */
+        controller.getDriverButton(XboxController.Axis.kRightTrigger.value).onTrue(flywheel.updateSetpointCommand(1000)).onFalse(flywheel.updateSetpointCommand(0));
+        controller.getDriverButton(XboxController.Axis.kLeftTrigger.value).onTrue(flywheel.updateSetpointCommand(-1000)).onFalse(flywheel.updateSetpointCommand(0));
+    
+
+
 
         /**
          * TODO: button bind the Pivot like so:
