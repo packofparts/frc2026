@@ -16,12 +16,11 @@ public class Flywheel extends SparkFlywheel {
     }
     
     public Flywheel() {
-        super( /* TODO: Implement super constructor */ 
+        super( 
             Constants.Flywheel.leadConfig, 
             Constants.Flywheel.followerConfig, 
             "Flywheel", 
-            Constants.Flywheel.TUNING_MODE, 
-            false);
+            Constants.Flywheel.TUNING_MODE);
     }
 
     @Override

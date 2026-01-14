@@ -22,7 +22,7 @@ public class MotorConfig {
 
      private final static String DEFAULT_CANBUS = "rio";
 
-     public MotorConfig(int canId, String canBus, int currentLimit, Boolean inversion, PIDConfig pid, Mode mode, boolean conversion) {
+     public MotorConfig(int canId, String canBus, int currentLimit, Boolean inversion, PIDConfig pid, Mode mode, ConversionConfig conversion) {
           this.canId = canId;
           this.canBus = canBus;
           this.currentLimit = currentLimit;

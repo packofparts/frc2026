@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import poplib.control.PIDConfig;
+import poplib.motor.FollowerConfig;
 import poplib.motor.Mode;
 import poplib.motor.MotorConfig;
 import poplib.swerve.swerve_constants.SDSModules;
@@ -80,8 +81,8 @@ public final class Constants {
          * No inversion
          */ 
         public static final boolean TUNING_MODE = false;
-        public static final MotorConfig leadConfig = new MotorConfig(21, Constants.CANIVORE_NAME, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, false);
-        public static final MotorConfig followerConfig = new MotorConfig(22, 40, false, new PIDConfig(0.1, 0, 0, 0), Mode.COAST);
+        public static final MotorConfig leadConfig = new MotorConfig(21, Constants.CANIVORE_NAME, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
+        public static final FollowerConfig followerConfig = new FollowerConfig(leadConfig, false, 22);
 
     }
 

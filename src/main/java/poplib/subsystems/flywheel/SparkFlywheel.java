@@ -18,11 +18,6 @@ public class SparkFlywheel extends Flywheel {
 
         this.leadMotor = leadConfig.createSparkMax();
         this.followerMotor = followerConfig.createSparkMax();
-    } 
-
-    public SparkFlywheel(MotorConfig leadconfig, MotorConfig followerconfig, String string, boolean tuningMode,
-            boolean b) {
-        //TODO Auto-generated constructor stub
     }
 
     @Override
