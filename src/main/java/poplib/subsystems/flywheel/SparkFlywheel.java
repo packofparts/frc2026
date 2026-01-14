@@ -18,7 +18,7 @@ public class SparkFlywheel extends Flywheel {
 
         this.leadMotor = leadConfig.createSparkMax();
         this.followerMotor = followerConfig.createSparkMax();
-    } 
+    }
 
     @Override
     public double getError(double setpoint) {
