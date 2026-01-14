@@ -16,7 +16,7 @@ import frc.robot.subsystems.Indexer;
 public class RobotContainer {
 
     // TODO: create the Flywheel object
-    private final Flywheel flywheel = new Flywheel();
+    private final Flywheel flywheel = Flywheel.getInstance();
     Swerve swerve = Swerve.getInstance();
     XboxIO controller = XboxIO.getInstance();
     Indexer indexer = Indexer.getInstance();
