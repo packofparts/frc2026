@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Turret;
 import poplib.controllers.io.XboxIO;
 import poplib.swerve.commands.TeleopSwerveDrive;
 import frc.robot.subsystems.Indexer;
@@ -19,6 +20,7 @@ public class RobotContainer {
     Swerve swerve = Swerve.getInstance();
     XboxIO controller = XboxIO.getInstance();
     Indexer indexer = Indexer.getInstance();
+    Turret turret = Turret.getInstance();
     // TODO: create the Pivot object
 
     public RobotContainer() {
@@ -37,20 +39,17 @@ public class RobotContainer {
          */
         controller.getDriverButton(XboxController.Axis.kRightTrigger.value).onTrue(flywheel.updateSetpointCommand(1000)).onFalse(flywheel.updateSetpointCommand(0));
         controller.getDriverButton(XboxController.Axis.kLeftTrigger.value).onTrue(flywheel.updateSetpointCommand(-1000)).onFalse(flywheel.updateSetpointCommand(0));
-    
-
-
-
         /**
          * TODO: button bind the Pivot like so:
          * Move up by 1: Bind to Y Button on Driver Controller
          * Move down by 1: Bind to A Button on Driver Controller
          * Hint #2: start with controller.getDriverButton(XboxController.Button.kY)
          */
-
         controller.getOperatorButton(XboxController.Button.kA.value).onTrue(indexer.runIndexer()).onFalse(indexer.stopIndexer());
         controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseIndexer()).onFalse(indexer.stopIndexer());
 
+        controller.getDriverButton(XboxController.Button.kLeftBumper.value).onTrue(turret.moveWristBy(-100,5)).onFalse(turret.moveWristBy(0, 5));
+        controller.getDriverButton(XboxController.Button.kRightBumper.value).onTrue(turret.moveWristBy(100,5)).onFalse(turret.moveWristBy(0, 5));
     }
 
     /**
