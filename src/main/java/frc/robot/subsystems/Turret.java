@@ -23,6 +23,10 @@ public class Turret extends SparkPivot{
     }
 
     public Command turnTurret(double position, double error) {
-        return moveWrist(position % 360, error);
+        return moveWrist((position % 360) < 0 ? 360+(position % 360) : (position % 360), error);
+    }
+
+    public Command turnTurretBy(double offset, double error) {
+        return turnTurret(setpoint.get() + offset, error);
     }
 }

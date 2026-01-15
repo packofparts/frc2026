@@ -22,11 +22,11 @@ import poplib.swerve.swerve_constants.SwerveModuleConstants;
 public final class Constants {
 
     public static final String CANIVORE_NAME = "cantBUS";
-    CANBus canbus = new CANBus(CANIVORE_NAME);
+    public static final CANBus canbus = new CANBus(CANIVORE_NAME);
 
     public static class Indexer {
         public static final MotorConfig MOTOR_CONFIG = 
-        new MotorConfig(23, 25, false, Mode.COAST); // Need to change the values;
+        new MotorConfig(30, 25, false, Mode.COAST); // Need to change the values;
 
         public static final double SPEED = 0.65; // adjust as necessary
     }
@@ -86,12 +86,11 @@ public final class Constants {
     }
 
     public static class Turret {
-
-        public static final MotorConfig ROT_CONFIG = new MotorConfig(13, 
+        public static final MotorConfig ROT_CONFIG = new MotorConfig(40, 
         25, false, PIDConfig.getPid(0, 0, 0, 0), Mode.COAST);
         public static final int GEAR_RATIO = 1; //Check with mech
         public static final FFConfig FF_CONFIG = new FFConfig(0, 0, 0);
         public static final AbsoluteEncoderConfig ABSOLUTE_CONFIG = 
-        new AbsoluteEncoderConfig(14, null, null, false);
+        new AbsoluteEncoderConfig(41, Constants.canbus, null, false); //check offset
     }
 }
