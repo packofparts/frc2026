@@ -4,18 +4,23 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.CANBus;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import poplib.control.FFConfig;
 import poplib.control.PIDConfig;
 import poplib.motor.Mode;
 import poplib.motor.MotorConfig;
+import poplib.sensors.absolute_encoder.AbsoluteEncoderConfig;
 import poplib.swerve.swerve_constants.SDSModules;
 import poplib.swerve.swerve_constants.SwerveModuleConstants;
 
 public final class Constants {
 
     public static final String CANIVORE_NAME = "cantBUS";
+    CANBus canbus = new CANBus(CANIVORE_NAME);
 
     public static class Swerve {
         static final SDSModules MODULE_TYPE = SDSModules.MK4iL3;
@@ -82,6 +87,12 @@ public final class Constants {
     }
 
     public static class Turret {
-        // ignore for now
+
+        public static final MotorConfig ROT_CONFIG = new MotorConfig(13, 
+        25, false, PIDConfig.getPid(0, 0, 0, 0), Mode.COAST);
+        public static final int GEAR_RATIO = 1; //Check with mech
+        public static final FFConfig FF_CONFIG = new FFConfig(0, 0, 0);
+        public static final AbsoluteEncoderConfig ABSOLUTE_CONFIG = 
+        new AbsoluteEncoderConfig(14, null, null, false);
     }
 }
