@@ -11,6 +11,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import poplib.control.FFConfig;
 import poplib.control.PIDConfig;
+import poplib.motor.ConversionConfig;
+import poplib.motor.FollowerConfig;
 import poplib.motor.Mode;
 import poplib.motor.MotorConfig;
 import poplib.sensors.absolute_encoder.AbsoluteEncoderConfig;
@@ -21,6 +23,13 @@ public final class Constants {
 
     public static final String CANIVORE_NAME = "cantBUS";
     CANBus canbus = new CANBus(CANIVORE_NAME);
+
+    public static class Indexer {
+        public static final MotorConfig MOTOR_CONFIG = 
+        new MotorConfig(23, 25, false, Mode.COAST); // Need to change the values;
+
+        public static final double SPEED = 0.65; // adjust as necessary
+    }
 
     public static class Swerve {
         static final SDSModules MODULE_TYPE = SDSModules.MK4iL3;
@@ -70,20 +79,10 @@ public final class Constants {
     }
 
     public static class Flywheel {
-        /** 
-         * TODO: Define MotorConfigs for the SparkMax (Neo) Motors
-         * Motor Information: 
-         * Can Id = 21
-         * Canbus = Constants.CANBUS
-         * Current Limit = 40
-         * Brake Mode
-         * PIDConfig of 0.1, 0, 0
-         * No inversion 
-         * 
-         * Follower Information:
-         * Can Id = 22
-         * No inversion
-         */ 
+        public static final boolean TUNING_MODE = false;
+        public static final MotorConfig leadConfig = new MotorConfig(21, Constants.CANIVORE_NAME, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
+        public static final FollowerConfig followerConfig = new FollowerConfig(leadConfig, false, 22);
+
     }
 
     public static class Turret {
