@@ -4,10 +4,14 @@
 
 package frc.robot;
 
+import com.revrobotics.spark.config.AbsoluteEncoderConfig;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import poplib.control.FFConfig;
 import poplib.control.PIDConfig;
+import poplib.motor.ConversionConfig;
 import poplib.motor.FollowerConfig;
 import poplib.motor.Mode;
 import poplib.motor.MotorConfig;
@@ -16,7 +20,7 @@ import poplib.swerve.swerve_constants.SwerveModuleConstants;
 
 public final class Constants {
 
-    public static final String CANIVORE_NAME = "cantBUS";
+    public static final String CANIVORE_NAME = "canBUS";
 
     public static class Indexer {
         public static final MotorConfig MOTOR_CONFIG = 
@@ -61,6 +65,13 @@ public final class Constants {
     }
 
     public static class Pivot {
+        public static final boolean TUNING_MODE = false;
+        public static final MotorConfig PIVOT_MOTOR = new MotorConfig(20, Constants.CANIVORE_NAME, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
+        public static final double GEAR_RATIO = 1.0; // TODO: update with real gear ratio
+        public static final FFConfig FF = new FFConfig(0);  // TODO: tune feedforward values
+        public static final AbsoluteEncoderConfig absoluteConfig = new AbsoluteEncoderConfig();
+
+
         /** 
          * TODO: Define MotorConfig for the SparkMax (Neo) Motor
          * Motor Information: Can Id = 20
