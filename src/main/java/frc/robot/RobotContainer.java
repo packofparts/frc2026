@@ -22,8 +22,8 @@ public class RobotContainer {
     XboxIO controller = XboxIO.getInstance();
     Indexer indexer = Indexer.getInstance();
     Turret turret = Turret.getInstance();
-    // TODO: create the Pivot object
     Pivot pivot = Pivot.getInstance();
+
     public RobotContainer() {
         // Configure the trigger bindings
         swerve.setDefaultCommand(new TeleopSwerveDrive(swerve, controller));
@@ -31,33 +31,17 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        /**
-         * TODO: button bind the Flywheel like so:
-         * Run at 1000 RPM: Bind to Right Trigger on Driver Controller
-         * Run at -1000 RPM: Bind to Left Trigger on Driver Controller
-         * Releasing the Trigger should stop the flywheel (0 RPM) Hint: use .onFalse(Command)
-         * Hint #2: start with controller.getDriverTrigger(XboxController.Axis.kRightTrigger)
-         */
         controller.getDriverTrigger(XboxController.Axis.kRightTrigger.value).onTrue(flywheel.updateSetpointCommand(1000)).onFalse(flywheel.updateSetpointCommand(0));
         controller.getDriverTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(flywheel.updateSetpointCommand(-1000)).onFalse(flywheel.updateSetpointCommand(0));
-    
 
-
-
-        /**
-         * TODO: button bind the Pivot like so:
-         * Move up by 1: Bind to Y Button on Driver Controller
-         * Move down by 1: Bind to A Button on Driver Controller
-         * Hint #2: start with controller.getDriverButton(XboxController.Button.kY)
-         */
-        controller.getDriverButton(XboxController.Button.kY.value).onTrue(Pivot.getInstance().moveWristBy(1, 0.5));
-        controller.getDriverButton(XboxController.Button.kA.value).onTrue(Pivot.getInstance().moveWristBy(-1, 0.5));
+        controller.getDriverButton(XboxController.Button.kY.value).onTrue(pivot.moveWristBy(1, 0.5));
+        controller.getDriverButton(XboxController.Button.kA.value).onTrue(pivot.moveWristBy(-1, 0.5));
 
         controller.getOperatorButton(XboxController.Button.kA.value).onTrue(indexer.runIndexer()).onFalse(indexer.stopIndexer());
         controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseIndexer()).onFalse(indexer.stopIndexer());
 
-        controller.getDriverButton(XboxController.Button.kLeftBumper.value).onTrue(turret.moveWristBy(-100,5)).onFalse(turret.moveWristBy(0, 5));
-        controller.getDriverButton(XboxController.Button.kRightBumper.value).onTrue(turret.moveWristBy(100,5)).onFalse(turret.moveWristBy(0, 5));
+        controller.getDriverButton(XboxController.Button.kLeftBumper.value).onTrue(turret.moveWristBy(-5,.1));
+        controller.getDriverButton(XboxController.Button.kRightBumper.value).onTrue(turret.moveWristBy(5,.1));
     }
 
     /**

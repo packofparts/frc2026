@@ -5,7 +5,6 @@ import poplib.subsystems.flywheel.SparkFlywheel;
 
 public class Flywheel extends SparkFlywheel {
     
-    // Ignore this
     private static Flywheel instance;
     public static Flywheel getInstance() {
         if (instance == null) {
