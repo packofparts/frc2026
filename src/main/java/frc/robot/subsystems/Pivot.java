@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+// package frc.robot.subsystems;
 
 import frc.robot.Constants;
 import poplib.subsystems.pivot.SparkPivot;
@@ -6,7 +6,7 @@ import poplib.subsystems.pivot.SparkPivot;
 
 public class Pivot extends SparkPivot {
     
-    // Ignore this
+     // Ignore this
     private static Pivot instance;
     public static Pivot getInstance() {
         if (instance == null) {

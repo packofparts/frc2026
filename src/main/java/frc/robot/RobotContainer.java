@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Turret;
 import poplib.controllers.io.XboxIO;
 import poplib.swerve.commands.TeleopSwerveDrive;
 import frc.robot.subsystems.Indexer;
@@ -16,11 +17,11 @@ import frc.robot.subsystems.Pivot;
 
 public class RobotContainer {
 
-    // TODO: create the Flywheel object
     Flywheel flywheel = Flywheel.getInstance();
     Swerve swerve = Swerve.getInstance();
     XboxIO controller = XboxIO.getInstance();
     Indexer indexer = Indexer.getInstance();
+    Turret turret = Turret.getInstance();
     // TODO: create the Pivot object
     Pivot pivot = Pivot.getInstance();
     public RobotContainer() {
@@ -55,6 +56,8 @@ public class RobotContainer {
         controller.getOperatorButton(XboxController.Button.kA.value).onTrue(indexer.runIndexer()).onFalse(indexer.stopIndexer());
         controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseIndexer()).onFalse(indexer.stopIndexer());
 
+        controller.getDriverButton(XboxController.Button.kLeftBumper.value).onTrue(turret.moveWristBy(-100,5)).onFalse(turret.moveWristBy(0, 5));
+        controller.getDriverButton(XboxController.Button.kRightBumper.value).onTrue(turret.moveWristBy(100,5)).onFalse(turret.moveWristBy(0, 5));
     }
 
     /**
