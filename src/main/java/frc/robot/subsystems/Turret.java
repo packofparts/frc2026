@@ -22,10 +22,22 @@ public class Turret extends SparkPivot{
         "Turret"); //Check gear ratio
     }
 
+    /**
+     * Rotates the turret into a certain position
+     * @param position
+     * @param error
+     * @return the Command that rotates the turret into a certain position
+     */
     public Command turnTurret(double position, double error) {
         return moveWrist((position % 360) < 0 ? 360+(position % 360) : (position % 360), error);
     }
 
+    /**
+     * Rotates turret by certain degree
+     * @param offset
+     * @param error
+     * @return the Command that rotates turret by certain degree
+     */
     public Command turnTurretBy(double offset, double error) {
         return turnTurret(setpoint.get() + offset, error);
     }
