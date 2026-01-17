@@ -1,12 +1,7 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.spark.SparkMax;
-
 import frc.robot.Constants;
 import poplib.subsystems.pivot.SparkPivot;
-import poplib.control.FFConfig;
-import poplib.motor.MotorConfig;
-import poplib.sensors.absolute_encoder.AbsoluteEncoderConfig;
 
 
 public class Pivot extends SparkPivot {

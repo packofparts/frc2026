@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import com.revrobotics.spark.config.AbsoluteEncoderConfig;
+import com.ctre.phoenix6.CANBus;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -17,6 +17,7 @@ import poplib.motor.Mode;
 import poplib.motor.MotorConfig;
 import poplib.swerve.swerve_constants.SDSModules;
 import poplib.swerve.swerve_constants.SwerveModuleConstants;
+import poplib.sensors.absolute_encoder.AbsoluteEncoderConfig;
 
 public final class Constants {
 
@@ -69,7 +70,7 @@ public final class Constants {
         public static final MotorConfig PIVOT_MOTOR = new MotorConfig(20, Constants.CANIVORE_NAME, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
         public static final double GEAR_RATIO = 1.0; // TODO: update with real gear ratio
         public static final FFConfig FF = new FFConfig(0);  // TODO: tune feedforward values
-        public static final AbsoluteEncoderConfig absoluteConfig = new AbsoluteEncoderConfig();
+        public static final AbsoluteEncoderConfig absoluteConfig = new AbsoluteEncoderConfig(25, new CANBus(Constants.CANIVORE_NAME), new Rotation2d(0), false);
 
 
         /** 
