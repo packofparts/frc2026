@@ -48,4 +48,9 @@ public abstract class Pivot extends SubsystemBase {
     public void log() {
         SmartDashboard.putNumber("Absolute Position " + getName(), getAbsolutePosition()); 
     }
+
+    public static Pivot getInstance() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getInstance'");
+    }
 }
