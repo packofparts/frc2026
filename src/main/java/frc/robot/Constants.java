@@ -18,19 +18,13 @@ import poplib.motor.MotorConfig;
 import poplib.sensors.absolute_encoder.AbsoluteEncoderConfig;
 import poplib.swerve.swerve_constants.SDSModules;
 import poplib.swerve.swerve_constants.SwerveModuleConstants;
-import poplib.sensors.absolute_encoder.AbsoluteEncoderConfig;
 
 public final class Constants {
 
     public static final String CANIVORE_NAME = "cantBUS";
     public static final CANBus canbus = new CANBus(CANIVORE_NAME);
 
-    public static class Indexer {
-        public static final MotorConfig MOTOR_CONFIG = 
-        new MotorConfig(30, 25, false, Mode.COAST); // Need to change the values;
 
-        public static final double SPEED = 0.65; // adjust as necessary
-    }
 
     public static class Swerve {
         static final SDSModules MODULE_TYPE = SDSModules.MK4iL3;
@@ -54,7 +48,7 @@ public final class Constants {
             SWERVE_CAN_ID_OFFSET
         );
 
-        public static final int PIGEON_ID = 20;
+        public static final int PIGEON_ID = 18;
         public static final boolean GYRO_INVERSION = false;      // change if needed - gyro should be ccw+ and cw-
 
         public static final double WHEEL_BASE =  edu.wpi.first.math.util.Units.inchesToMeters(23);
@@ -67,38 +61,34 @@ public final class Constants {
         );
     }
 
+    public static class Turret {
+        public static final MotorConfig ROT_CONFIG = new MotorConfig(20, 
+        25, false, PIDConfig.getPid(0, 0, 0, 0), Mode.COAST);
+        public static final int GEAR_RATIO = 1; //check
+        public static final FFConfig FF_CONFIG = new FFConfig(0, 0, 0);
+        public static final AbsoluteEncoderConfig ABSOLUTE_CONFIG = 
+        new AbsoluteEncoderConfig(21, Constants.canbus, Rotation2d.fromDegrees(0), false); //check offset
+    }
+
+    public static class Indexer {
+        public static final MotorConfig MOTOR_CONFIG = 
+        new MotorConfig(30, 25, false, Mode.COAST); // Need to change the values;
+
+        public static final double SPEED = 0.65; // adjust as necessary
+    }
+
     public static class Pivot {
         public static final boolean TUNING_MODE = false;
-        public static final MotorConfig PIVOT_MOTOR = new MotorConfig(20, Constants.CANIVORE_NAME, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
+        public static final MotorConfig PIVOT_MOTOR = new MotorConfig(40, Constants.CANIVORE_NAME, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
         public static final double GEAR_RATIO = 1.0; // TODO: update with real gear ratio
         public static final FFConfig FF = new FFConfig(0);  // TODO: tune feedforward values
-        public static final AbsoluteEncoderConfig absoluteConfig = new AbsoluteEncoderConfig(25, new CANBus(Constants.CANIVORE_NAME), new Rotation2d(0), false);
-
-
-        /** 
-         * TODO: Define MotorConfig for the SparkMax (Neo) Motor
-         * Motor Information: Can Id = 20
-         * Canbus = Constants.CANBUS
-         * Current Limit = 40
-         * Brake Mode
-         * PIDConfig of 0.1, 0, 0
-         * No inversion 
-         */ 
+        public static final AbsoluteEncoderConfig absoluteConfig = new AbsoluteEncoderConfig(41, Constants.canbus, Rotation2d.fromDegrees(0), false); 
     }
 
     public static class Flywheel {
         public static final boolean TUNING_MODE = false;
-        public static final MotorConfig leadConfig = new MotorConfig(21, Constants.CANIVORE_NAME, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
-        public static final FollowerConfig followerConfig = new FollowerConfig(leadConfig, false, 22);
+        public static final MotorConfig leadConfig = new MotorConfig(50, Constants.CANIVORE_NAME, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
+        public static final FollowerConfig followerConfig = new FollowerConfig(leadConfig, false, 51);
 
-    }
-
-    public static class Turret {
-        public static final MotorConfig ROT_CONFIG = new MotorConfig(40, 
-        25, false, PIDConfig.getPid(0, 0, 0, 0), Mode.COAST);
-        public static final int GEAR_RATIO = 1; //Check with mech
-        public static final FFConfig FF_CONFIG = new FFConfig(0, 0, 0);
-        public static final AbsoluteEncoderConfig ABSOLUTE_CONFIG = 
-        new AbsoluteEncoderConfig(41, Constants.canbus, null, false); //check offset
     }
 }
