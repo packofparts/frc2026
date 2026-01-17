@@ -20,7 +20,7 @@ abstract public class IO {
     public abstract CommandGenericHID getDriverController();
     public abstract CommandGenericHID getOperatorController();
 
-    protected double getRawAxis(int id, CommandGenericHID controller) {
+    public double getRawAxis(int id, CommandGenericHID controller) {
         return controller.getHID().getRawAxis(id) * -1;
     }
 
@@ -37,6 +37,6 @@ abstract public class IO {
     }
 
     public Trigger getOperatorTrigger(int id) {
-        return getOperatorController().axisGreaterThan(id, 0.5);
+        return getOperatorController().axisMagnitudeGreaterThan(id, 0.5);
     }
 }

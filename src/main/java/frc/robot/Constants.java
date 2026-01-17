@@ -63,7 +63,7 @@ public final class Constants {
 
     public static class Turret {
         public static final MotorConfig ROT_CONFIG = new MotorConfig(20, 
-        25, false, PIDConfig.getPid(0, 0, 0, 0), Mode.COAST);
+        25, false, PIDConfig.getPid(0.1, 0, 0, 0), Mode.COAST);
         public static final int GEAR_RATIO = 1; //check
         public static final FFConfig FF_CONFIG = new FFConfig(0, 0, 0);
         public static final AbsoluteEncoderConfig ABSOLUTE_CONFIG = 

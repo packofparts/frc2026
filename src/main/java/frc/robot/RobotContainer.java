@@ -31,18 +31,14 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        controller.getDriverTrigger(XboxController.Axis.kRightTrigger.value).onTrue(flywheel.updateSetpointCommand(1000)).onFalse(flywheel.updateSetpointCommand(0));
-        controller.getDriverTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(flywheel.updateSetpointCommand(-1000)).onFalse(flywheel.updateSetpointCommand(0));
+        controller.getOperatorTrigger(XboxController.Axis.kRightTrigger.value).onTrue(flywheel.updateSetpointCommand(1000)).onFalse(flywheel.updateSetpointCommand(0));
+        controller.getOperatorTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(flywheel.updateSetpointCommand(-1000)).onFalse(flywheel.updateSetpointCommand(0));
 
-        controller.getDriverButton(XboxController.Button.kY.value).onTrue(pivot.moveWristBy(1, 0.5));
-        controller.getDriverButton(XboxController.Button.kA.value).onTrue(pivot.moveWristBy(-1, 0.5));
+        controller.getOperatorTrigger(XboxController.Axis.kLeftX.value).onTrue(pivot.moveWristBy(controller.getRawAxis(XboxController.Axis.kLeftX.value, controller.getOperatorController()), 0.1));
+        controller.getOperatorTrigger(XboxController.Axis.kRightY.value).onTrue(turret.turnTurretBy(controller.getRawAxis(XboxController.Axis.kRightY.value, controller.getOperatorController()), 0.1));
 
-        controller.getOperatorButton(XboxController.Button.kA.value).onTrue(indexer.runIndexer()).onFalse(indexer.stopIndexer());
-        controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseIndexer()).onFalse(indexer.stopIndexer());
-
-        controller.getDriverButton(XboxController.Button.kLeftBumper.value).onTrue(turret.moveWristBy(-5,.1));
-        controller.getDriverButton(XboxController.Button.kRightBumper.value).onTrue(turret.moveWristBy(5,.1));
-    }
+        controller.getOperatorButton(XboxController.Button.kX.value).onTrue(indexer.runIndexer()).onFalse(indexer.stopIndexer());
+        controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseIndexer()).onFalse(indexer.stopIndexer());    }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
