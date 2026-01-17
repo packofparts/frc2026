@@ -26,18 +26,32 @@ public class Indexer extends SubsystemBase {
         motor = Constants.Indexer.MOTOR_CONFIG.createSparkMax();
     }
 
+    /**
+     * Runs the indexer :shock:
+     * @return the Command that runs the indexer
+     */
     public Command runIndexer() {
         return run(() -> motor.set(Constants.Indexer.SPEED));
     }
 
+    /**
+     * Stops the indexer
+     * @return the Command that stops the indexer
+     */
     public Command stopIndexer() {
         return run(() -> motor.set(0.0));
     }
 
+    /**
+     * Runs the indexer on reverse
+     * @return the Command that runs the indexer on reverse
+     */
     public Command reverseIndexer() {
         return run(() -> motor.set(-Constants.Indexer.SPEED));
     }
 
     @Override
-    public void periodic() {}
+    public void periodic() {
+        
+    }
 }
