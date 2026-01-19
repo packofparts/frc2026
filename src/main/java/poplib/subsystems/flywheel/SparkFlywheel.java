@@ -13,8 +13,8 @@ public class SparkFlywheel extends Flywheel {
     SparkMax followerMotor; 
     PIDTuning leadPidTuning;
  
-    protected SparkFlywheel(MotorConfig leadConfig, FollowerConfig followerConfig, String subsystemName, boolean tuningMode) {
-        super(subsystemName, tuningMode);
+    protected SparkFlywheel(MotorConfig leadConfig, FollowerConfig followerConfig, String subsystemName, boolean tuningMode, double gearRatio) {
+        super(subsystemName, tuningMode, gearRatio);
 
         this.leadMotor = leadConfig.createSparkMax();
         this.followerMotor = followerConfig.createSparkMax();
