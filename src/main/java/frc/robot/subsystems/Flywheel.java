@@ -18,7 +18,8 @@ public class Flywheel extends SparkFlywheel {
             Constants.Flywheel.leadConfig, 
             Constants.Flywheel.followerConfig, 
             "Flywheel", 
-            Constants.Flywheel.TUNING_MODE);
+            Constants.Flywheel.TUNING_MODE,
+            1.0);
     }
 
     @Override
