@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -13,6 +15,7 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
     private static Intake instance;
     private final SparkMax motor;
+    private final DigitalInput beamBreak;
 
     public static Intake getInstance() {
         if (instance == null) {
@@ -24,6 +27,7 @@ public class Intake extends SubsystemBase {
 
     private Intake() {
         motor = Constants.Intake.MOTOR_CONFIG.createSparkMax();
+        beamBreak = new DigitalInput(Constants.Intake.BEAMBRAKE_ID);
     }
 
     /**
@@ -50,8 +54,14 @@ public class Intake extends SubsystemBase {
         return run(() -> motor.set(-Constants.Intake.SPEED));
     }
 
+    public boolean beamBreakTriggered() {
+        return !beamBreak.get();
+    }
+
     @Override
     public void periodic() {
-        
+        super.periodic();
+        SmartDashboard.putNumber("Motor Speed", motor.get());
+        SmartDashboard.putBoolean("Intake Beam Break Triggered", beamBreakTriggered());
     }
 }
