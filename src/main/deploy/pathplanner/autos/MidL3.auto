@@ -1,0 +1,31 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MidLeave"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MidL3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L3 climb"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Middle",
+  "choreoAuto": false
+}
