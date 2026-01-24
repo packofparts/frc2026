@@ -76,6 +76,13 @@ public final class Constants {
 
         public static final double SPEED = 0.65; // adjust as necessary
     }
+    
+    public static class Intake {
+        public static final MotorConfig MOTOR_CONFIG = 
+        new MotorConfig(30, 25, false, Mode.COAST); // Need to change the values;
+        public static final double SPEED = 0.65; // adjust as necessary
+        public static final int BEAMBRAKE_ID = 2; // change to the correct DIO port
+    }
 
     public static class Pivot {
         public static final boolean TUNING_MODE = false;

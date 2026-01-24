@@ -13,6 +13,8 @@ import poplib.controllers.io.XboxIO;
 import poplib.swerve.commands.TeleopSwerveDrive;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Pivot;
+import frc.robot.subsystems.Intake;
+
 
 
 public class RobotContainer {
@@ -23,6 +25,8 @@ public class RobotContainer {
     Indexer indexer = Indexer.getInstance();
     Turret turret = Turret.getInstance();
     Pivot pivot = Pivot.getInstance();
+    Intake intake = Intake.getInstance();
+
 
     public RobotContainer() {
         // Configure the trigger bindings
@@ -38,7 +42,11 @@ public class RobotContainer {
         controller.getOperatorTrigger(XboxController.Axis.kRightY.value).onTrue(turret.turnTurretBy(controller.getRawAxis(XboxController.Axis.kRightY.value, controller.getOperatorController()), 0.1));
 
         controller.getOperatorButton(XboxController.Button.kX.value).onTrue(indexer.runIndexer()).onFalse(indexer.stopIndexer());
-        controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseIndexer()).onFalse(indexer.stopIndexer());    }
+        controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseIndexer()).onFalse(indexer.stopIndexer());    
+
+        //controller.getOperatorButton(XboxController.Button.k.value).onTrue(intake.runIntake()).onFalse(intake.stopIntake());
+        //controller.getOperatorButton(XboxController.Button.k.value).onTrue(intake.reverseIntake()).onFalse(intake.stopIntake());    
+    }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
