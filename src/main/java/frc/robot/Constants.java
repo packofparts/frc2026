@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.ctre.phoenix6.CANBus;
+import com.pathplanner.lib.config.RobotConfig;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -97,5 +98,17 @@ public final class Constants {
         public static final MotorConfig leadConfig = new MotorConfig(50, Constants.CANIVORE_NAME, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
         public static final FollowerConfig followerConfig = new FollowerConfig(leadConfig, false, 51);
 
+    }
+
+    public static class Autos {
+        public static RobotConfig getConfig() {
+            RobotConfig config = null;
+            try {
+                config = RobotConfig.fromGUISettings();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return config;
+        }
     }
 }
