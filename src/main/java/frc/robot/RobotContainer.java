@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Flywheel;
@@ -31,6 +33,11 @@ public class RobotContainer {
     public RobotContainer() {
         // Configure the trigger bindings
         swerve.setDefaultCommand(new TeleopSwerveDrive(swerve, controller));
+        NamedCommands.registerCommand("Climb L1", ClimbL1());
+        NamedCommands.registerCommand("Climb L2", ClimbL2());
+        NamedCommands.registerCommand("Climb L3", ClimbL3());
+        NamedCommands.registerCommand("Shoot Fuel", ShootFuel());
+        NamedCommands.registerCommand("Collect Fuel", CollectFuel());
         configureBindings();
     }
 
@@ -57,4 +64,26 @@ public class RobotContainer {
         // An example command will be run in autonomous
         return null;
     }
+    public Command ClimbL1() {
+        // An example command will be run in autonomous
+        return null;
+    }
+    public Command ClimbL2() {
+        // An example command will be run in autonomous
+        return null;
+    }
+    public Command ClimbL3() {
+        // An example command will be run in autonomous
+        return null;
+    }
+    public Command ShootFuel() {
+        // An example command will be run in autonomous
+        return null;
+    }
+    public Command CollectFuel() {
+        // An example command will be run in autonomous
+        return null;
+    }
+
+
 }
