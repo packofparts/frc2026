@@ -20,10 +20,31 @@ import poplib.sensors.absolute_encoder.AbsoluteEncoderConfig;
 import poplib.swerve.swerve_constants.SDSModules;
 import poplib.swerve.swerve_constants.SwerveModuleConstants;
 
+
+
 public final class Constants {
 
     public static final String CANIVORE_NAME = "cantBUS";
     public static final CANBus canbus = new CANBus(CANIVORE_NAME);
+
+
+    public static final class CLIMBING_SETPOINTS {
+        private CLIMBING_SETPOINTS() {}
+        public static final Translation2d IDLE = new Translation2d(0.0, -86.0);
+        public static final Translation2d L1 = new Translation2d(0.0, -86.0);
+        public static final Translation2d L2 = new Translation2d(0.0, -86.0);
+        public static final Translation2d L3 = new Translation2d(0.0, -86.0);
+        private double elevator;
+
+
+        private CLIMBING_SETPOINTS(double elevator) {
+            this.elevator = elevator;
+        }
+
+        public double getElevator() {
+            return this.elevator;
+        }
+    }
 
 
 
@@ -99,6 +120,7 @@ public final class Constants {
         public static final FollowerConfig followerConfig = new FollowerConfig(leadConfig, false, 51);
 
     }
+
 
     public static class Autos {
         public static RobotConfig getConfig() {

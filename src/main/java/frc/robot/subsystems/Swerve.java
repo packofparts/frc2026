@@ -9,7 +9,6 @@ import poplib.sensors.gyro.Pigeon;
 import poplib.swerve.swerve_modules.SwerveModuleTalon;
 import poplib.swerve.swerve_templates.VisionBaseSwerve;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPLTVController;
 
 import edu.wpi.first.wpilibj.DriverStation;
