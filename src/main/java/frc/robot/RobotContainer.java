@@ -5,8 +5,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.Climb.CLIMB_SETPOINT;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Turret;
@@ -24,6 +26,7 @@ public class RobotContainer {
     Indexer indexer = Indexer.getInstance();
     Turret turret = Turret.getInstance();
     Pivot pivot = Pivot.getInstance();
+    Climb climb = Climb.getInstance();
 
     public RobotContainer() {
         // Configure the trigger bindings
