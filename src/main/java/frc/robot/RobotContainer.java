@@ -6,14 +6,11 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.CLIMBING_SETPOINTS;
 import frc.robot.Constants.Climb.CLIMB_SETPOINT;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Flywheel;
@@ -38,52 +35,20 @@ public class RobotContainer {
     Climb climb = Climb.getInstance();
     Intake intake = Intake.getInstance();
     private final SendableChooser<Command> autoChooser;
-    private final SendableChooser<edu.wpi.first.math.geometry.Translation2d> climbing;
 
 
 
     public RobotContainer() {
         // Configure the trigger bindings
         autoChooser = AutoBuilder.buildAutoChooser();    
-        climbing = new SendableChooser<>();
-
-        climbing.setDefaultOption("Idle", CLIMBING_SETPOINTS.IDLE);
-        climbing.addOption("L1", CLIMBING_SETPOINTS.L1);
-        climbing.addOption("L2", CLIMBING_SETPOINTS.L2);
-        climbing.addOption("L3", CLIMBING_SETPOINTS.L3);
 
         swerve.setDefaultCommand(new TeleopSwerveDrive(swerve, controller));
-        NamedCommands.registerCommand("Climb L1", ClimbL1());
-        NamedCommands.registerCommand("Climb L2", ClimbL2());
-        NamedCommands.registerCommand("Climb L3", ClimbL3());
-        NamedCommands.registerCommand("Shoot Fuel", ShootFuel());
-        NamedCommands.registerCommand("Collect Fuel", CollectFuel());
+        NamedCommands.registerCommand("Climb L1", climbL1());
+        NamedCommands.registerCommand("Shoot Fuel", shootFuel());
+        NamedCommands.registerCommand("Collect Fuel", collectFuel());
+        NamedCommands.registerCommand("Zero Pivot", pivot.reZero());
+        NamedCommands.registerCommand("Zero Turret", turret.reZero());
 
-        autoChooser.addOption("none", new InstantCommand(() -> {}));
-        autoChooser.setDefaultOption("LeftL1", new PathPlannerAuto("LeftL1"));
-        autoChooser.addOption("LeftL1Shoot", new PathPlannerAuto("LeftL1Shoot"));
-        autoChooser.addOption("LeftL2", new PathPlannerAuto("LeftL2"));
-        autoChooser.addOption("LeftL2Shoot", new PathPlannerAuto("LeftL2Shoot"));
-        autoChooser.addOption("LeftL3", new PathPlannerAuto("LeftL3"));
-        autoChooser.addOption("LeftL3Shoot", new PathPlannerAuto("LeftL3Shoot"));
-        autoChooser.addOption("LeftNeutralShoot", new PathPlannerAuto("LeftNeutralShoot"));
-
-        autoChooser.addOption("RightL1", new PathPlannerAuto("RightL1"));
-        autoChooser.addOption("RightL1Shoot", new PathPlannerAuto("RightL1Shoot"));
-        autoChooser.addOption("RightL2", new PathPlannerAuto("RightL2"));
-        autoChooser.addOption("RightL2Shoot", new PathPlannerAuto("RightL2Shoot"));
-        autoChooser.addOption("RightL3", new PathPlannerAuto("RightL3"));
-        autoChooser.addOption("RightL3Shoot", new PathPlannerAuto("RightL3Shoot"));
-        autoChooser.addOption("RightNeutralShoot", new PathPlannerAuto("RightNeutralShoot"));
-
-        autoChooser.addOption("MidL1", new PathPlannerAuto("MidL1"));
-        autoChooser.addOption("MidL2", new PathPlannerAuto("MidL2"));
-        autoChooser.addOption("MidL3", new PathPlannerAuto("MidL3"));
-        autoChooser.addOption("MidL1Shoot", new PathPlannerAuto("MidL1Shoot"));
-        autoChooser.addOption("MidL2Shoot", new PathPlannerAuto("MidL2Shoot"));
-        autoChooser.addOption("MidL3Shoot", new PathPlannerAuto("MidL3Shoot"));
-
-        SmartDashboard.putData("Climbing level", climbing);
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
         configureBindings();
@@ -96,8 +61,8 @@ public class RobotContainer {
         controller.getOperatorTrigger(XboxController.Axis.kLeftX.value).onTrue(pivot.moveWristBy(-controller.getRawAxis(XboxController.Axis.kLeftX.value, controller.getOperatorController()), 0.1));
         controller.getOperatorTrigger(XboxController.Axis.kRightY.value).onTrue(turret.turnTurretBy(controller.getRawAxis(XboxController.Axis.kRightY.value, controller.getOperatorController()), 0.1));
 
-        controller.getOperatorButton(XboxController.Button.kX.value).onTrue(indexer.runIndexer()).onFalse(indexer.stopIndexer());
-        controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseIndexer()).onFalse(indexer.stopIndexer());    
+        controller.getOperatorButton(XboxController.Button.kX.value).onTrue(indexer.runSpindexer()).onFalse(indexer.stopSpindexer());
+        controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseSpindexer()).onFalse(indexer.stopSpindexer());    
 
         //controller.getOperatorButton(XboxController.Button.k.value).onTrue(intake.runIntake()).onFalse(intake.stopIntake());
         //controller.getOperatorButton(XboxController.Button.k.value).onTrue(intake.reverseIntake()).onFalse(intake.stopIntake());    
@@ -111,25 +76,13 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // An example command will be run in autonomous
         return autoChooser.getSelected();
+    }
 
-    }
-    public Command ClimbL1() {
+    public Command shootFuel() {
         // An example command will be run in autonomous
         return null;
     }
-    public Command ClimbL2() {
-        // An example command will be run in autonomous
-        return null;
-    }
-    public Command ClimbL3() {
-        // An example command will be run in autonomous
-        return null;
-    }
-    public Command ShootFuel() {
-        // An example command will be run in autonomous
-        return null;
-    }
-    public Command CollectFuel() {
+    public Command collectFuel() {
         // An example command will be run in autonomous
         return null;
     }

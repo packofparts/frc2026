@@ -18,7 +18,6 @@ import poplib.motor.ConversionConfig;
 import poplib.motor.FollowerConfig;
 import poplib.motor.Mode;
 import poplib.motor.MotorConfig;
-import poplib.sensors.absolute_encoder.AbsoluteEncoderConfig;
 import poplib.swerve.swerve_constants.SDSModules;
 import poplib.swerve.swerve_constants.SwerveModuleConstants;
 
@@ -28,27 +27,6 @@ public final class Constants {
 
     public static final String CANIVORE_NAME = "cantBUS";
     public static final CANBus canbus = new CANBus(CANIVORE_NAME);
-
-
-    public static final class CLIMBING_SETPOINTS {
-        private CLIMBING_SETPOINTS() {}
-        public static final Translation2d IDLE = new Translation2d(0.0, -86.0);
-        public static final Translation2d L1 = new Translation2d(0.0, -86.0);
-        public static final Translation2d L2 = new Translation2d(0.0, -86.0);
-        public static final Translation2d L3 = new Translation2d(0.0, -86.0);
-        private double elevator;
-
-
-        private CLIMBING_SETPOINTS(double elevator) {
-            this.elevator = elevator;
-        }
-
-        public double getElevator() {
-            return this.elevator;
-        }
-    }
-
-
 
     public static class Swerve {
         static final SDSModules MODULE_TYPE = SDSModules.MK4iL3;
@@ -72,7 +50,7 @@ public final class Constants {
             SWERVE_CAN_ID_OFFSET
         );
 
-        public static final int PIGEON_ID = 18;
+        public static final int PIGEON_ID = 19;
         public static final boolean GYRO_INVERSION = false;      // change if needed - gyro should be ccw+ and cw-
 
         public static final double WHEEL_BASE =  edu.wpi.first.math.util.Units.inchesToMeters(23);
@@ -85,60 +63,41 @@ public final class Constants {
         );
     }
 
-    public static class Turret {
-        public static final MotorConfig ROT_CONFIG = new MotorConfig(20, 
-        25, false, PIDConfig.getPid(0.1, 0, 0, 0), Mode.COAST);
-        public static final int GEAR_RATIO = 1; //check
-        public static final FFConfig FF_CONFIG = new FFConfig(0, 0, 0);
-        public static final AbsoluteEncoderConfig ABSOLUTE_CONFIG = 
-        new AbsoluteEncoderConfig(21, Constants.canbus, Rotation2d.fromDegrees(0), false); //check offset
+    public static class Intake {
+        public static final MotorConfig MOTOR_CONFIG = new MotorConfig(20, 25, false, Mode.COAST);
+        public static final FollowerConfig FOLLOWER_CONFIG = new FollowerConfig(MOTOR_CONFIG, false, 21);
+        public static final double SPEED = 0.65; 
     }
 
     public static class Indexer {
-        public static final MotorConfig MOTOR_CONFIG = 
-        new MotorConfig(30, 25, false, Mode.COAST); // Need to change the values;
-
+        public static final MotorConfig MOTOR_CONFIG = new MotorConfig(30, 25, false, Mode.COAST);
+        public static final FollowerConfig FOLLOWER_CONFIG = new FollowerConfig(MOTOR_CONFIG, false, 31);
+        public static final int BEAMBREAK_ID = 3;
         public static final double SPEED = 0.65; // adjust as necessary
     }
-    
-    public static class Intake {
-        public static final MotorConfig MOTOR_CONFIG = 
-        new MotorConfig(30, 25, false, Mode.COAST); // Need to change the values;
-        public static final FollowerConfig FOLLOWER_CONFIG = 
-        new FollowerConfig(MOTOR_CONFIG, false, 31);
-        public static final double SPEED = 0.65; // adjust as necessary
+
+    public static class Turret {
+        public static final MotorConfig ROT_CONFIG = new MotorConfig(40, 25, false, PIDConfig.getPid(0.1, 0, 0, 0), Mode.BRAKE);
+        public static final int LIMIT_SWITCH_ID = 4;
+        public static final int GEAR_RATIO = 1; //check
+        public static final FFConfig FF_CONFIG = new FFConfig(0, 0, 0);
     }
 
     public static class Pivot {
         public static final boolean TUNING_MODE = false;
-        public static final MotorConfig PIVOT_MOTOR = new MotorConfig(40, Constants.CANIVORE_NAME, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
+        public static final MotorConfig PIVOT_MOTOR = new MotorConfig(41, Constants.CANIVORE_NAME, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
+        public static final int LIMIT_SWITCH_ID = 5;
         public static final double GEAR_RATIO = 1.0; // TODO: update with real gear ratio
         public static final FFConfig FF = new FFConfig(0);  // TODO: tune feedforward values
-        public static final AbsoluteEncoderConfig absoluteConfig = new AbsoluteEncoderConfig(41, Constants.canbus, Rotation2d.fromDegrees(0), false); 
     }
 
     public static class Flywheel {
         public static final boolean TUNING_MODE = false;
-        public static final MotorConfig leadConfig = new MotorConfig(50, Constants.CANIVORE_NAME, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
-        public static final FollowerConfig followerConfig = new FollowerConfig(leadConfig, false, 51);
+        public static final MotorConfig leadConfig = new MotorConfig(42, Constants.CANIVORE_NAME, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
+        public static final FollowerConfig followerConfig = new FollowerConfig(leadConfig, false, 71);
 
     }
 
-
-    public static class Autos {
-        public static PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
-            new PIDConstants(5, 0, 0), 
-            new PIDConstants(5, 0, 0)
-        );
-        public static RobotConfig getConfig() {
-            RobotConfig config = null;
-            try {
-                config = RobotConfig.fromGUISettings();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return config;
-        }
     public static class Climb {
         public static final boolean TUNING_MODE = false;
         public enum CLIMB_SETPOINT {
@@ -155,9 +114,26 @@ public final class Constants {
                 return climb;
             }
         }
-        public static final MotorConfig leadCenterConfig = new MotorConfig(70, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE);
-        public static final FollowerConfig followerCenterConfig = new FollowerConfig(leadCenterConfig, false, 71);
-        public static final MotorConfig leadOuterConfig = new MotorConfig(72, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE);
-        public static final FollowerConfig followerOuterConfig = new FollowerConfig(leadOuterConfig, false, 73);
+        public static final MotorConfig leadCenterConfig = new MotorConfig(50, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE);
+        public static final FollowerConfig followerCenterConfig = new FollowerConfig(leadCenterConfig, false, 51);
+        public static final MotorConfig leadOuterConfig = new MotorConfig(52, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE);
+        public static final FollowerConfig followerOuterConfig = new FollowerConfig(leadOuterConfig, false, 53);
+    }
+
+
+    public static class Autos {
+        public static PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
+            new PIDConstants(5, 0, 0), 
+            new PIDConstants(5, 0, 0)
+        );
+        public static RobotConfig getConfig() {
+            RobotConfig config = null;
+            try {
+                config = RobotConfig.fromGUISettings();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return config;
+        } 
     }
 }

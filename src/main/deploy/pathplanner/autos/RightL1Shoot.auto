@@ -5,6 +5,25 @@
     "data": {
       "commands": [
         {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ZeroPivot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ZeroTurret"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "RightLeaveShoot"

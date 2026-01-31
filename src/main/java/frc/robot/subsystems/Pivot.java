@@ -17,9 +17,9 @@ public class Pivot extends TalonPivot {
     public Pivot(){
         super(
             Constants.Pivot.PIVOT_MOTOR, 
+            Constants.Pivot.LIMIT_SWITCH_ID,
             Constants.Pivot.GEAR_RATIO, 
             Constants.Pivot.FF, 
-            Constants.Pivot.absoluteConfig, 
             Constants.Pivot.TUNING_MODE,
             "Pivot"
         );

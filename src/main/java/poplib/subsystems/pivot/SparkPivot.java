@@ -5,7 +5,6 @@ import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkMax;
 import poplib.control.FFConfig;
 import poplib.motor.MotorConfig;
-import poplib.sensors.absolute_encoder.AbsoluteEncoderConfig;
 import poplib.smart_dashboard.PIDTuning;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -13,13 +12,11 @@ public class SparkPivot extends Pivot {
     public final SparkMax leadMotor;
     private final PIDTuning pid;
 
-    public SparkPivot(MotorConfig leadConfig, double gearRatio, FFConfig ffConfig, AbsoluteEncoderConfig absoluteConfig, boolean tuningMode, String subsystemName) {
-        super(ffConfig, absoluteConfig, gearRatio, tuningMode, subsystemName);
+    public SparkPivot(MotorConfig leadConfig, double gearRatio, FFConfig ffConfig, boolean tuningMode, String subsystemName) {
+        super(ffConfig, gearRatio, tuningMode, subsystemName);
         leadMotor = leadConfig.createSparkMax();
 
         pid = leadConfig.genPIDTuning("Pivot Motor " + subsystemName, tuningMode);
-
-        resetToAbsolutePosition();
     }
 
     @Override
@@ -49,9 +46,4 @@ public class SparkPivot extends Pivot {
             ff.calculate(leadMotor.getEncoder().getPosition(), 0)
         );
     }
-
-    @Override
-    public void resetToAbsolutePosition() {
-        leadMotor.getEncoder().setPosition(getAbsolutePosition());
-    } 
 }
