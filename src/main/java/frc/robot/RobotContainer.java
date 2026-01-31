@@ -6,6 +6,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.Climb.CLIMB_SETPOINT;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Turret;
@@ -25,6 +27,7 @@ public class RobotContainer {
     Indexer indexer = Indexer.getInstance();
     Turret turret = Turret.getInstance();
     Pivot pivot = Pivot.getInstance();
+    Climb climb = Climb.getInstance();
     Intake intake = Intake.getInstance();
 
 
@@ -57,4 +60,30 @@ public class RobotContainer {
         // An example command will be run in autonomous
         return null;
     }
+
+    public Command climbL1() {
+        return climb.moveCenter(CLIMB_SETPOINT.L1)
+        .alongWith(climb.moveOuter(CLIMB_SETPOINT.L1))
+        .andThen(climb.moveCenter(CLIMB_SETPOINT.IDLE))
+        .alongWith(climb.moveOuter(CLIMB_SETPOINT.IDLE));
+    }
+
+    public Command unclimbL1() {
+        return (climb.moveCenter(CLIMB_SETPOINT.L1))
+        .alongWith(climb.moveOuter(CLIMB_SETPOINT.L1))
+        .andThen(climb.moveCenter(CLIMB_SETPOINT.IDLE))
+        .alongWith(climb.moveOuter(CLIMB_SETPOINT.IDLE));
+    }
+
+    public Command L3() {
+        return climb.moveCenter(CLIMB_SETPOINT.L1)
+        .alongWith(climb.moveOuter(CLIMB_SETPOINT.L1))
+        .andThen(climb.moveCenter(CLIMB_SETPOINT.IDLE))
+        .alongWith(climb.moveOuter(CLIMB_SETPOINT.IDLE))
+        .andThen(climb.moveCenter(CLIMB_SETPOINT.L2))
+        .andThen(climb.moveCenter(CLIMB_SETPOINT.IDLE))
+        .andThen(climb.moveOuter(CLIMB_SETPOINT.L3))
+        .andThen(climb.moveOuter(CLIMB_SETPOINT.IDLE));
+    }
+    
 }

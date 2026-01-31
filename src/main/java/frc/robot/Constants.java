@@ -99,4 +99,26 @@ public final class Constants {
         public static final FollowerConfig followerConfig = new FollowerConfig(leadConfig, false, 51);
 
     }
+
+    public static class Climb {
+        public static final boolean TUNING_MODE = false;
+        public enum CLIMB_SETPOINT {
+            IDLE(0),
+            L1(20),
+            L2(35),
+            L3(50);
+            private double climb;
+
+            private CLIMB_SETPOINT(double climb) {
+            this.climb = climb;
+            }
+            public double getHi() {
+                return climb;
+            }
+        }
+        public static final MotorConfig leadCenterConfig = new MotorConfig(70, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE);
+        public static final FollowerConfig followerCenterConfig = new FollowerConfig(leadCenterConfig, false, 71);
+        public static final MotorConfig leadOuterConfig = new MotorConfig(72, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE);
+        public static final FollowerConfig followerOuterConfig = new FollowerConfig(leadOuterConfig, false, 73);
+    }
 }
