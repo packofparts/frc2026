@@ -1,10 +1,10 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
-import poplib.subsystems.pivot.SparkPivot;
+import poplib.subsystems.pivot.TalonPivot;
 
 
-public class Pivot extends SparkPivot {
+public class Pivot extends TalonPivot {
     
     private static Pivot instance;
     public static Pivot getInstance() {
