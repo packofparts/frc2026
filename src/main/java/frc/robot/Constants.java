@@ -5,6 +5,9 @@
 package frc.robot;
 
 import com.ctre.phoenix6.CANBus;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -19,10 +22,31 @@ import poplib.sensors.absolute_encoder.AbsoluteEncoderConfig;
 import poplib.swerve.swerve_constants.SDSModules;
 import poplib.swerve.swerve_constants.SwerveModuleConstants;
 
+
+
 public final class Constants {
 
     public static final String CANIVORE_NAME = "cantBUS";
     public static final CANBus canbus = new CANBus(CANIVORE_NAME);
+
+
+    public static final class CLIMBING_SETPOINTS {
+        private CLIMBING_SETPOINTS() {}
+        public static final Translation2d IDLE = new Translation2d(0.0, -86.0);
+        public static final Translation2d L1 = new Translation2d(0.0, -86.0);
+        public static final Translation2d L2 = new Translation2d(0.0, -86.0);
+        public static final Translation2d L3 = new Translation2d(0.0, -86.0);
+        private double elevator;
+
+
+        private CLIMBING_SETPOINTS(double elevator) {
+            this.elevator = elevator;
+        }
+
+        public double getElevator() {
+            return this.elevator;
+        }
+    }
 
 
 
@@ -100,6 +124,21 @@ public final class Constants {
 
     }
 
+
+    public static class Autos {
+        public static PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
+            new PIDConstants(5, 0, 0), 
+            new PIDConstants(5, 0, 0)
+        );
+        public static RobotConfig getConfig() {
+            RobotConfig config = null;
+            try {
+                config = RobotConfig.fromGUISettings();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return config;
+        }
     public static class Climb {
         public static final boolean TUNING_MODE = false;
         public enum CLIMB_SETPOINT {
