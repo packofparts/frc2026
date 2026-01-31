@@ -13,28 +13,36 @@ public abstract class Pivot extends SubsystemBase {
     protected final AbsoluteEncoder absoluteEncoder;
     protected final ArmFeedforward ff;
     protected final TunableNumber setpoint;
+    protected final double gearRatio;
 
-    public Pivot(FFConfig ffConfig, AbsoluteEncoderConfig absoluteConfig, boolean tuningMode, String subsystemName) {
+    public Pivot(FFConfig ffConfig, AbsoluteEncoderConfig absoluteConfig, double gearRatio, boolean tuningMode, String subsystemName) {
         super(subsystemName);
 
         absoluteEncoder = absoluteConfig.getDutyCycleEncoder();
         ff = ffConfig.getArmFeedforward();
-
+        this.gearRatio = gearRatio;
         setpoint = new TunableNumber("Pivot Setpoint " + subsystemName, 0, tuningMode);
     }
 
     @Override
     public abstract void periodic();
 
+    public double convertWithRatio(double input) {
+        return (input / 360) * gearRatio;
+    }
+
+    public double backToDegrees(double input) {
+        return input * 360 * (1/gearRatio);
+    }
 
     public Command moveWrist(double position, double error) {
         return run(() -> {
-            setpoint.setDefault(position);
-        }).until(() -> atSetpoint(error, position));
+            setpoint.setDefault(convertWithRatio(position));
+        }).until(() -> atSetpoint(error, convertWithRatio(position)));
     }
 
     public Command moveWristBy(double value, double error) {
-        return moveWrist(setpoint.get() + value, error);
+        return moveWrist(setpoint.get() + convertWithRatio(value), error);
     }
     
     public abstract boolean atSetpoint(double error, double setpoint);
@@ -47,10 +55,5 @@ public abstract class Pivot extends SubsystemBase {
 
     public void log() {
         SmartDashboard.putNumber("Absolute Position " + getName(), getAbsolutePosition()); 
-    }
-
-    public static Pivot getInstance() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getInstance'");
     }
 }

@@ -21,14 +21,25 @@ public class TalonPivot extends Pivot {
     protected PositionDutyCycle position;
 
     public TalonPivot(MotorConfig leadConfig, FollowerConfig followerConfig, double gearRatio, FFConfig ffConfig, AbsoluteEncoderConfig absoluteConfig, boolean tuningMode, String subsystemName) {
-        super(ffConfig, absoluteConfig, tuningMode, subsystemName);
+        super(ffConfig, absoluteConfig, gearRatio, tuningMode, subsystemName);
         leadMotor = leadConfig.createTalon();
-
         if (followerConfig != null) {
             followerMotor = followerConfig.createTalon();
         } else {
             followerMotor = null;
         };
+
+        pid = leadConfig.genPIDTuning("Pivot Motor " + subsystemName, tuningMode);
+        position = new PositionDutyCycle(0.0);
+        position.withSlot(leadMotor.getClosedLoopSlot().getValue());
+
+        resetToAbsolutePosition();
+    }
+
+    public TalonPivot(MotorConfig leadConfig, double gearRatio, FFConfig ffConfig, AbsoluteEncoderConfig absoluteConfig, boolean tuningMode, String subsystemName) {
+        super(ffConfig, absoluteConfig, gearRatio, tuningMode, subsystemName);
+        leadMotor = leadConfig.createTalon();
+        followerMotor = null;
 
         pid = leadConfig.genPIDTuning("Pivot Motor " + subsystemName, tuningMode);
         position = new PositionDutyCycle(0.0);

@@ -16,8 +16,8 @@ public class TalonFlywheel extends Flywheel {
     private VelocityDutyCycle velocity;
     private CoastOut idleControl;
     
-    protected TalonFlywheel(MotorConfig leadConfig, MotorConfig followerConfig, String subsystemName, boolean tuningMode, boolean motorsInverted) {
-        super(subsystemName, tuningMode);
+    protected TalonFlywheel(MotorConfig leadConfig, MotorConfig followerConfig, String subsystemName, boolean tuningMode, boolean motorsInverted, double gearRatio) {
+        super(subsystemName, tuningMode, gearRatio);
 
         this.leadMotor = leadConfig.createTalon();
         this.followerMotor = followerConfig.createTalon();
@@ -26,6 +26,16 @@ public class TalonFlywheel extends Flywheel {
         this.idleControl = new CoastOut();
 
         followerMotor.setControl(new Follower(leadConfig.canId, motorsInverted ? MotorAlignmentValue.Opposed : MotorAlignmentValue.Aligned));
+    } 
+
+    protected TalonFlywheel(MotorConfig leadConfig, String subsystemName, boolean tuningMode, double gearRatio) {
+        super(subsystemName, tuningMode, gearRatio);
+
+        this.leadMotor = leadConfig.createTalon();
+        this.followerMotor = null;
+
+        this.velocity = new VelocityDutyCycle(0.0);
+        this.idleControl = new CoastOut();
     } 
 
     @Override

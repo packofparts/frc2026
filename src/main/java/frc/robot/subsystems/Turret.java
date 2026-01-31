@@ -39,6 +39,6 @@ public class Turret extends SparkPivot{
      * @return the Command that rotates turret by certain degree
      */
     public Command turnTurretBy(double offset, double error) {
-        return turnTurret(setpoint.get() + offset, error);
+        return turnTurret(backToDegrees(setpoint.get()) + offset, error);
     }
 }

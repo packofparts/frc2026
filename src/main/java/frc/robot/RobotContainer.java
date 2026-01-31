@@ -15,6 +15,8 @@ import poplib.controllers.io.XboxIO;
 import poplib.swerve.commands.TeleopSwerveDrive;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Pivot;
+import frc.robot.subsystems.Intake;
+
 
 
 public class RobotContainer {
@@ -26,6 +28,8 @@ public class RobotContainer {
     Turret turret = Turret.getInstance();
     Pivot pivot = Pivot.getInstance();
     Climb climb = Climb.getInstance();
+    Intake intake = Intake.getInstance();
+
 
     public RobotContainer() {
         // Configure the trigger bindings
@@ -37,11 +41,15 @@ public class RobotContainer {
         controller.getOperatorTrigger(XboxController.Axis.kRightTrigger.value).onTrue(flywheel.updateSetpointCommand(1000)).onFalse(flywheel.updateSetpointCommand(0));
         controller.getOperatorTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(flywheel.updateSetpointCommand(-1000)).onFalse(flywheel.updateSetpointCommand(0));
 
-        controller.getOperatorTrigger(XboxController.Axis.kLeftX.value).onTrue(pivot.moveWristBy(controller.getRawAxis(XboxController.Axis.kLeftX.value, controller.getOperatorController()), 0.1));
+        controller.getOperatorTrigger(XboxController.Axis.kLeftX.value).onTrue(pivot.moveWristBy(-controller.getRawAxis(XboxController.Axis.kLeftX.value, controller.getOperatorController()), 0.1));
         controller.getOperatorTrigger(XboxController.Axis.kRightY.value).onTrue(turret.turnTurretBy(controller.getRawAxis(XboxController.Axis.kRightY.value, controller.getOperatorController()), 0.1));
 
         controller.getOperatorButton(XboxController.Button.kX.value).onTrue(indexer.runIndexer()).onFalse(indexer.stopIndexer());
-        controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseIndexer()).onFalse(indexer.stopIndexer());    }
+        controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseIndexer()).onFalse(indexer.stopIndexer());    
+
+        //controller.getOperatorButton(XboxController.Button.k.value).onTrue(intake.runIntake()).onFalse(intake.stopIntake());
+        //controller.getOperatorButton(XboxController.Button.k.value).onTrue(intake.reverseIntake()).onFalse(intake.stopIntake());    
+    }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
