@@ -7,7 +7,6 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -23,9 +22,6 @@ import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Turret;
 import poplib.controllers.io.XboxIO;
 import poplib.swerve.commands.TeleopSwerveDrive;
-import frc.robot.subsystems.Indexer;
-import frc.robot.subsystems.Pivot;
-import frc.robot.subsystems.Intake;
 
 
 
