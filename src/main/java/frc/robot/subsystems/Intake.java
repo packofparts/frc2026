@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -13,8 +14,8 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
     private static Intake instance;
-    private final SparkMax leadMotor;
-    private final SparkMax followerMotor;
+    private final TalonFX leadMotor;
+    private final TalonFX followerMotor;
     public static Intake getInstance() {
         if (instance == null) {
             instance = new Intake();
@@ -24,8 +25,8 @@ public class Intake extends SubsystemBase {
     }
 
     private Intake() {
-        leadMotor = Constants.Intake.MOTOR_CONFIG.createSparkMax();
-        followerMotor = Constants.Intake.FOLLOWER_CONFIG.createSparkMax();
+        leadMotor = Constants.Intake.MOTOR_CONFIG.createTalon();
+        followerMotor = Constants.Intake.FOLLOWER_CONFIG.createTalon();
     }
 
     /**
