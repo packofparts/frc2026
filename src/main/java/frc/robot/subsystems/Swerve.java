@@ -9,6 +9,7 @@ import poplib.sensors.gyro.Pigeon;
 import poplib.swerve.swerve_modules.SwerveModuleTalon;
 import poplib.swerve.swerve_templates.VisionBaseSwerve;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.controllers.PPLTVController;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -41,7 +42,7 @@ public class Swerve extends VisionBaseSwerve{
             super::setOdomPose, // Method to reset odometry (will be called if your auto has a starting pose)
             super::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
             (speeds, feedforwards) -> driveChassis(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
-            new PPLTVController(0.02), // PPLTVController is the built in path following controller for differential drive trains
+            Constants.Autos.pathFollower, // PPLTVController is the built in path following controller for differential drive trains
             Constants.Autos.getConfig(), // The robot configuration
             () ->  {
               // Boolean supplier that controls when the path will be mirrored for the red alliance

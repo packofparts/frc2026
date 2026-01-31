@@ -5,7 +5,9 @@
 package frc.robot;
 
 import com.ctre.phoenix6.CANBus;
+import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -123,6 +125,10 @@ public final class Constants {
 
 
     public static class Autos {
+        public static PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
+            new PIDConstants(5, 0, 0), 
+            new PIDConstants(5, 0, 0)
+        );
         public static RobotConfig getConfig() {
             RobotConfig config = null;
             try {
