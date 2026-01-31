@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.CLIMBING_SETPOINTS;
+import frc.robot.Constants.Climb.CLIMB_SETPOINT;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
@@ -33,6 +35,7 @@ public class RobotContainer {
     Indexer indexer = Indexer.getInstance();
     Turret turret = Turret.getInstance();
     Pivot pivot = Pivot.getInstance();
+    Climb climb = Climb.getInstance();
     Intake intake = Intake.getInstance();
     private final SendableChooser<Command> autoChooser;
     private final SendableChooser<edu.wpi.first.math.geometry.Translation2d> climbing;
@@ -132,4 +135,30 @@ public class RobotContainer {
     }
 
 
+
+    public Command climbL1() {
+        return climb.moveCenter(CLIMB_SETPOINT.L1)
+        .alongWith(climb.moveOuter(CLIMB_SETPOINT.L1))
+        .andThen(climb.moveCenter(CLIMB_SETPOINT.IDLE))
+        .alongWith(climb.moveOuter(CLIMB_SETPOINT.IDLE));
+    }
+
+    public Command unclimbL1() {
+        return (climb.moveCenter(CLIMB_SETPOINT.L1))
+        .alongWith(climb.moveOuter(CLIMB_SETPOINT.L1))
+        .andThen(climb.moveCenter(CLIMB_SETPOINT.IDLE))
+        .alongWith(climb.moveOuter(CLIMB_SETPOINT.IDLE));
+    }
+
+    public Command L3() {
+        return climb.moveCenter(CLIMB_SETPOINT.L1)
+        .alongWith(climb.moveOuter(CLIMB_SETPOINT.L1))
+        .andThen(climb.moveCenter(CLIMB_SETPOINT.IDLE))
+        .alongWith(climb.moveOuter(CLIMB_SETPOINT.IDLE))
+        .andThen(climb.moveCenter(CLIMB_SETPOINT.L2))
+        .andThen(climb.moveCenter(CLIMB_SETPOINT.IDLE))
+        .andThen(climb.moveOuter(CLIMB_SETPOINT.L3))
+        .andThen(climb.moveOuter(CLIMB_SETPOINT.IDLE));
+    }
+    
 }

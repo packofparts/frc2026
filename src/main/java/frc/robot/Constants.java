@@ -104,8 +104,9 @@ public final class Constants {
     public static class Intake {
         public static final MotorConfig MOTOR_CONFIG = 
         new MotorConfig(30, 25, false, Mode.COAST); // Need to change the values;
+        public static final FollowerConfig FOLLOWER_CONFIG = 
+        new FollowerConfig(MOTOR_CONFIG, false, 31);
         public static final double SPEED = 0.65; // adjust as necessary
-        public static final int BEAMBRAKE_ID = 2; // change to the correct DIO port
     }
 
     public static class Pivot {
@@ -138,5 +139,25 @@ public final class Constants {
             }
             return config;
         }
+    public static class Climb {
+        public static final boolean TUNING_MODE = false;
+        public enum CLIMB_SETPOINT {
+            IDLE(0),
+            L1(20),
+            L2(35),
+            L3(50);
+            private double climb;
+
+            private CLIMB_SETPOINT(double climb) {
+            this.climb = climb;
+            }
+            public double getHi() {
+                return climb;
+            }
+        }
+        public static final MotorConfig leadCenterConfig = new MotorConfig(70, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE);
+        public static final FollowerConfig followerCenterConfig = new FollowerConfig(leadCenterConfig, false, 71);
+        public static final MotorConfig leadOuterConfig = new MotorConfig(72, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE);
+        public static final FollowerConfig followerOuterConfig = new FollowerConfig(leadOuterConfig, false, 73);
     }
 }
