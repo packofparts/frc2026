@@ -14,8 +14,10 @@ import poplib.smart_dashboard.TunableNumber;
 
 public class Climb extends SubsystemBase {
   private TalonFX leadCenterMotor;
+  @SuppressWarnings("unused")
   private TalonFX followerCenterMotor;
   private TalonFX leadOuterMotor;
+  @SuppressWarnings("unused")
   private TalonFX followerOuterMotor;
   private static Climb instance;
   private TunableNumber centerSetpoint;
@@ -52,11 +54,11 @@ public class Climb extends SubsystemBase {
   }
 
   public Command getCenterError(double setpoint) {
-    return runOnce(() -> {centerError = setpoint - leadCenterMotor.getPosition().getValueAsDouble();});
+    return runOnce(() -> {centerError = Math.abs(setpoint - leadCenterMotor.getPosition().getValueAsDouble());});
   }
 
   public Command getOuterError(double setpoint) {
-    return runOnce(() -> {outerError = setpoint - leadOuterMotor.getPosition().getValueAsDouble();});
+    return runOnce(() -> {outerError = Math.abs(setpoint - leadOuterMotor.getPosition().getValueAsDouble());});
 
   }
 

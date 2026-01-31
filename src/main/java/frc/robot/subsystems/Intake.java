@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -15,6 +14,7 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
     private static Intake instance;
     private final TalonFX leadMotor;
+    @SuppressWarnings("unused")
     private final TalonFX followerMotor;
     public static Intake getInstance() {
         if (instance == null) {
