@@ -99,7 +99,6 @@ public final class Constants {
             L1(20),
             L2(35),
             L3(50);
-            //should the setpoints be distance from prev setpoint?
             private double climb;
 
             private CLIMB_SETPOINT(double climb) {

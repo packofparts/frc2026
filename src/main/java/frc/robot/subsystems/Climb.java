@@ -13,15 +13,15 @@ import frc.robot.Constants.Climb.CLIMB_SETPOINT;
 import poplib.smart_dashboard.TunableNumber;
 
 public class Climb extends SubsystemBase {
-  TalonFX leadCenterMotor;
-  TalonFX followerCenterMotor;
-  TalonFX leadOuterMotor;
-  TalonFX followerOuterMotor;
+  private TalonFX leadCenterMotor;
+  private TalonFX followerCenterMotor;
+  private TalonFX leadOuterMotor;
+  private TalonFX followerOuterMotor;
   private static Climb instance;
   private TunableNumber centerSetpoint;
   private TunableNumber outerSetpoint;
-  double centerError;
-  double outerError;
+  private double centerError;
+  private double outerError;
   private final PositionDutyCycle position;
 
    public static Climb getInstance() {
@@ -40,26 +40,24 @@ public class Climb extends SubsystemBase {
     position = new PositionDutyCycle(0.0).
     withSlot(leadCenterMotor.getClosedLoopSlot().getValue());
     centerSetpoint = new TunableNumber("centerSPClimb", 0, false);
+    outerSetpoint = new TunableNumber("outerSPClimb", 0, false);
   }
 
   public Command setCenterSetpoint(CLIMB_SETPOINT setpoint) {
-    this.centerSetpoint.setDefault(setpoint.getHi());
-    return null;
+    return runOnce(() -> {this.centerSetpoint.setDefault(setpoint.getHi());});
   }
 
   public Command setOuterSetpoint(CLIMB_SETPOINT setpoint) {
-    this.outerSetpoint.setDefault(setpoint.getHi());;
-    return null;
+    return runOnce(() -> {this.outerSetpoint.setDefault(setpoint.getHi());});
   }
 
   public Command getCenterError(double setpoint) {
-    centerError = setpoint - leadCenterMotor.getPosition().getValueAsDouble();
-    return null;
+    return runOnce(() -> {centerError = setpoint - leadCenterMotor.getPosition().getValueAsDouble();});
   }
 
   public Command getOuterError(double setpoint) {
-    outerError = setpoint - leadOuterMotor.getPosition().getValueAsDouble();
-    return null;
+    return runOnce(() -> {outerError = setpoint - leadOuterMotor.getPosition().getValueAsDouble();});
+
   }
 
   public boolean centerAtSetpoint() {
@@ -105,4 +103,5 @@ public class Climb extends SubsystemBase {
     leadCenterMotor.setControl(position.withPosition(centerSetpoint.get()));
     leadOuterMotor.setControl(position.withPosition(outerSetpoint.get()));
   }
+  
 }

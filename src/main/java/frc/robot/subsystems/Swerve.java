@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.ArrayList;
 
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import poplib.sensors.camera.CameraConfig;
 import poplib.sensors.camera.LimelightConfig;
@@ -31,6 +32,8 @@ public class Swerve extends VisionBaseSwerve{
             new Pigeon(Constants.Swerve.PIGEON_ID, Constants.Swerve.GYRO_INVERSION, Constants.CANIVORE_NAME),
             Constants.Swerve.SWERVE_KINEMATICS, new ArrayList<CameraConfig>(), new ArrayList<LimelightConfig>()
         );
+
+        SysIdRoutine routine = new SysIdRoutine(this::voltageDrive, this::logMotors, this)
     }
 
     @Override

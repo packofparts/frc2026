@@ -4,11 +4,8 @@
 
 package frc.robot;
 
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.Climb.CLIMB_SETPOINT;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Flywheel;
@@ -56,13 +53,15 @@ public class RobotContainer {
         return null;
     }
 
-    public Command L1() {
+    public Command climbL1() {
         return climb.moveCenter(CLIMB_SETPOINT.L1)
         .alongWith(climb.moveOuter(CLIMB_SETPOINT.L1))
         .andThen(climb.moveCenter(CLIMB_SETPOINT.IDLE))
-        .alongWith(climb.moveOuter(CLIMB_SETPOINT.IDLE))
-        .andThen(new WaitCommand(0.5))
-        .andThen(climb.moveCenter(CLIMB_SETPOINT.L1))
+        .alongWith(climb.moveOuter(CLIMB_SETPOINT.IDLE));
+    }
+
+    public Command unclimbL1() {
+        return (climb.moveCenter(CLIMB_SETPOINT.L1))
         .alongWith(climb.moveOuter(CLIMB_SETPOINT.L1))
         .andThen(climb.moveCenter(CLIMB_SETPOINT.IDLE))
         .alongWith(climb.moveOuter(CLIMB_SETPOINT.IDLE));
@@ -78,4 +77,5 @@ public class RobotContainer {
         .andThen(climb.moveOuter(CLIMB_SETPOINT.L3))
         .andThen(climb.moveOuter(CLIMB_SETPOINT.IDLE));
     }
+    
 }
