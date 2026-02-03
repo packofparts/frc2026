@@ -3,42 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.088,
-        "y": 5.536
-      },
-      "prevControl": null,
-      "nextControl": {
-        "x": 2.2849902854484263,
-        "y": 5.704476568596496
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
         "x": 1.8007951807228912,
         "y": 4.1333493975903615
       },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.0072508360042,
+        "y": 4.27433188729162
+      },
+      "isLocked": false,
+      "linkedName": "BeforeClimbingLeft"
+    },
+    {
+      "anchor": {
+        "x": 1.45110843373494,
+        "y": 4.1333493975903615
+      },
       "prevControl": {
-        "x": 1.9657191060056463,
-        "y": 4.321232602984905
+        "x": 1.640392318049073,
+        "y": 3.9700349428138355
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "BeforeClimbingLeft"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "L1 Climb",
-      "waypointRelativePos": 1.0,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -52,10 +45,10 @@
     "rotation": -90.0
   },
   "reversed": false,
-  "folder": "Left",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }

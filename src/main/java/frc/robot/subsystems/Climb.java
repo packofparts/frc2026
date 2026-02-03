@@ -13,17 +13,10 @@ import frc.robot.Constants.Climb.CLIMB_SETPOINT;
 import poplib.smart_dashboard.TunableNumber;
 
 public class Climb extends SubsystemBase {
-  private TalonFX leadCenterMotor;
-  @SuppressWarnings("unused")
-  private TalonFX followerCenterMotor;
-  private TalonFX leadOuterMotor;
-  @SuppressWarnings("unused")
-  private TalonFX followerOuterMotor;
+  private TalonFX climbMotor;
   private static Climb instance;
-  private TunableNumber centerSetpoint;
-  private TunableNumber outerSetpoint;
-  private double centerError;
-  private double outerError;
+  private TunableNumber setpoint;
+  private double error;
   private final PositionDutyCycle position;
 
    public static Climb getInstance() {
@@ -35,75 +28,41 @@ public class Climb extends SubsystemBase {
     }
 
   public Climb() {
-    leadCenterMotor = Constants.Climb.leadCenterConfig.createTalon();
-    followerCenterMotor = Constants.Climb.followerCenterConfig.createTalon();
-    leadOuterMotor = Constants.Climb.leadOuterConfig.createTalon();
-    followerOuterMotor = Constants.Climb.followerOuterConfig.createTalon();
+    climbMotor = Constants.Climb.MOTOR_CONFIG.createTalon();
     position = new PositionDutyCycle(0.0).
-    withSlot(leadCenterMotor.getClosedLoopSlot().getValue());
-    centerSetpoint = new TunableNumber("centerSPClimb", 0, false);
-    outerSetpoint = new TunableNumber("outerSPClimb", 0, false);
+    withSlot(climbMotor.getClosedLoopSlot().getValue());
+    setpoint = new TunableNumber("climbSP", 0, false);
   }
 
-  public Command setCenterSetpoint(CLIMB_SETPOINT setpoint) {
-    return runOnce(() -> {this.centerSetpoint.setDefault(setpoint.getHi());});
+  public Command setSetpoint(CLIMB_SETPOINT setpoint) {
+    return runOnce(() -> {this.setpoint.setDefault(setpoint.getHi());});
   }
 
-  public Command setOuterSetpoint(CLIMB_SETPOINT setpoint) {
-    return runOnce(() -> {this.outerSetpoint.setDefault(setpoint.getHi());});
-  }
-
-  public Command getCenterError(double setpoint) {
-    return runOnce(() -> {centerError = Math.abs(setpoint - leadCenterMotor.getPosition().getValueAsDouble());});
-  }
-
-  public Command getOuterError(double setpoint) {
-    return runOnce(() -> {outerError = Math.abs(setpoint - leadOuterMotor.getPosition().getValueAsDouble());});
-
+  public Command getError(double setpoint) {
+    return runOnce(() -> {error = Math.abs(setpoint - climbMotor.getPosition().getValueAsDouble());});
   }
 
   public boolean centerAtSetpoint() {
-    getCenterError(centerSetpoint.get());
-    return (centerError < 0.1) ? true : false;
+    getError(setpoint.get());
+    return (error < 0.1) ? true : false;
   }
 
-  public boolean outerAtSetpoint() {
-    getOuterError(outerSetpoint.get());
-    return (outerError < 0.1) ? true : false;
+  public Command extendClimb() {
+    return runOnce(() -> setpoint.setDefault(setpoint.get() + 1));
   }
 
-  public Command extendCenter() {
-    return runOnce(() -> centerSetpoint.setDefault(centerSetpoint.get() + 1));
+  public Command unextendClimb() {
+    return runOnce(() -> setpoint.setDefault(setpoint.get() - 1));
   }
 
-  public Command unextendCenter() {
-    return runOnce(() -> centerSetpoint.setDefault(centerSetpoint.get() - 1));
-  }
-
-  public Command extendOuter() {
-    return runOnce(() -> outerSetpoint.setDefault(outerSetpoint.get() + 1));
-  }
-
-  public Command unextendOuter() {
-    return runOnce(() -> outerSetpoint.setDefault(outerSetpoint.get() - 1));
-  }
-
-  public Command moveCenter(CLIMB_SETPOINT setpoint) {
+  public Command climbTo(CLIMB_SETPOINT setpoint) {
     return runOnce(() -> 
-      setCenterSetpoint(setpoint))
+      setSetpoint(setpoint))
       .until(instance::centerAtSetpoint);
-  }
-
-  public Command moveOuter(CLIMB_SETPOINT setpoint) {
-    return runOnce(() -> 
-      setOuterSetpoint(setpoint))
-      .until(instance::outerAtSetpoint);
   }
 
   @Override
   public void periodic() {
-    leadCenterMotor.setControl(position.withPosition(centerSetpoint.get()));
-    leadOuterMotor.setControl(position.withPosition(outerSetpoint.get()));
+    climbMotor.setControl(position.withPosition(setpoint.get()));
   }
-  
 }

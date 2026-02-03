@@ -114,10 +114,7 @@ public final class Constants {
                 return climb;
             }
         }
-        public static final MotorConfig leadCenterConfig = new MotorConfig(50, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE);
-        public static final FollowerConfig followerCenterConfig = new FollowerConfig(leadCenterConfig, false, 51);
-        public static final MotorConfig leadOuterConfig = new MotorConfig(52, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE);
-        public static final FollowerConfig followerOuterConfig = new FollowerConfig(leadOuterConfig, false, 53);
+        public static final MotorConfig MOTOR_CONFIG = new MotorConfig(50, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE);
     }
 
 

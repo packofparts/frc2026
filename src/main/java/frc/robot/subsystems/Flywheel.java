@@ -1,9 +1,9 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
-import poplib.subsystems.flywheel.SparkFlywheel;
+import poplib.subsystems.flywheel.TalonFlywheel;
 
-public class Flywheel extends SparkFlywheel {
+public class Flywheel extends TalonFlywheel {
     
     private static Flywheel instance;
     public static Flywheel getInstance() {
@@ -16,7 +16,6 @@ public class Flywheel extends SparkFlywheel {
     public Flywheel() {
         super( 
             Constants.Flywheel.leadConfig, 
-            Constants.Flywheel.followerConfig, 
             "Flywheel", 
             Constants.Flywheel.TUNING_MODE,
             1.0);
