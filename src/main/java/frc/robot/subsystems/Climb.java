@@ -34,17 +34,12 @@ public class Climb extends SubsystemBase {
     setpoint = new TunableNumber("climbSP", 0, false);
   }
 
-  public Command setSetpoint(CLIMB_SETPOINT setpoint) {
-    return runOnce(() -> {this.setpoint.setDefault(setpoint.getHi());});
-  }
-
-  public Command getError(double setpoint) {
-    return runOnce(() -> {error = Math.abs(setpoint - climbMotor.getPosition().getValueAsDouble());});
+  public Command setSetpoint(CLIMB_SETPOINT climbSetpointGiven) {
+    return runOnce(() -> {this.setpoint.setDefault(climbSetpointGiven.getHi());});
   }
 
   public boolean centerAtSetpoint() {
-    getError(setpoint.get());
-    return (error < 0.1) ? true : false;
+    return (Math.abs(setpoint.get() - climbMotor.getPosition().getValueAsDouble()) < 0.1);
   }
 
   public Command extendClimb() {
@@ -58,7 +53,7 @@ public class Climb extends SubsystemBase {
   public Command climbTo(CLIMB_SETPOINT setpoint) {
     return runOnce(() -> 
       setSetpoint(setpoint))
-      .until(instance::centerAtSetpoint);
+      .until(this::centerAtSetpoint);
   }
 
   @Override
