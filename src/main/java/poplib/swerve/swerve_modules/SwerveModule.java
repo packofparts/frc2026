@@ -32,7 +32,6 @@ public abstract class SwerveModule {
         angleEncoder = moduleConstants.getCanCoder();
         this.swerveModuleConstants = moduleConstants;
         lastAngle = Rotation2d.fromDegrees(0);
-        angleEncoder.getPosition();
         lastVelo = Units.MetersPerSecond.of(0.0);
         lastVeloTime = Units.Seconds.of(Timer.getFPGATimestamp());
     }
@@ -97,7 +96,7 @@ public abstract class SwerveModule {
     abstract public void updatePID(PIDTuning angle, PIDTuning drive);
 
     public Rotation2d getCanCoder() {
-        return Rotation2d.fromRotations(angleEncoder.getPosition().getValue().in(Units.Rotations));
+        return Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().getValue().in(Units.Rotations));
     }
 
     public double getAbsoluteAngleDegrees() {
