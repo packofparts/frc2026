@@ -44,7 +44,19 @@
         {
           "type": "named",
           "data": {
-            "name": "L1 Climb"
+            "name": "Extend To L1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftClimbingL1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Retract To Idle"
           }
         }
       ]

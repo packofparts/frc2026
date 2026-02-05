@@ -19,16 +19,18 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Turret;
+import frc.robot.utils.ClimbState;
+import frc.robot.utils.StateMachine;
 import poplib.controllers.io.XboxIO;
 import poplib.swerve.commands.TeleopSwerveDrive;
 
 
 
 public class RobotContainer {
+    XboxIO controller = XboxIO.getInstance();
 
     Flywheel flywheel = Flywheel.getInstance();
     Swerve swerve = Swerve.getInstance();
-    XboxIO controller = XboxIO.getInstance();
     Indexer indexer = Indexer.getInstance();
     Turret turret = Turret.getInstance();
     Pivot pivot = Pivot.getInstance();
@@ -39,11 +41,11 @@ public class RobotContainer {
 
 
     public RobotContainer() {
-        // Configure the trigger bindings
         autoChooser = AutoBuilder.buildAutoChooser();    
 
         swerve.setDefaultCommand(new TeleopSwerveDrive(swerve, controller));
-        NamedCommands.registerCommand("Climb L1", climbL1());
+        NamedCommands.registerCommand("Extend To L1", extendToL1());
+        NamedCommands.registerCommand("Retract To Idle", extendToIdle());
         NamedCommands.registerCommand("Shoot Fuel", shootFuel());
         NamedCommands.registerCommand("Collect Fuel", collectFuel());
         NamedCommands.registerCommand("Zero Pivot", pivot.reZero());
@@ -64,8 +66,8 @@ public class RobotContainer {
         controller.getOperatorButton(XboxController.Button.kX.value).onTrue(indexer.runSpindexer()).onFalse(indexer.stopSpindexer());
         controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseSpindexer()).onFalse(indexer.stopSpindexer());    
 
-        //controller.getOperatorButton(XboxController.Button.k.value).onTrue(intake.runIntake()).onFalse(intake.stopIntake());
-        //controller.getOperatorButton(XboxController.Button.k.value).onTrue(intake.reverseIntake()).onFalse(intake.stopIntake());    
+        controller.getOperatorButton(XboxController.Button.kRightBumper.value).onTrue(intake.runIntake()).onFalse(intake.stopIntake());
+        controller.getOperatorButton(XboxController.Button.kLeftBumper.value).onTrue(intake.reverseIntake()).onFalse(intake.stopIntake());    
     }
 
     /**
@@ -87,31 +89,17 @@ public class RobotContainer {
         return null;
     }
 
-
-
-    public Command climbL1() {
-        return climb.moveCenter(CLIMB_SETPOINT.L1)
-        .alongWith(climb.moveOuter(CLIMB_SETPOINT.L1))
-        .andThen(climb.moveCenter(CLIMB_SETPOINT.IDLE))
-        .alongWith(climb.moveOuter(CLIMB_SETPOINT.IDLE));
+    public Command toggleToL1() {
+        return StateMachine.getInstance().climb == ClimbState.IDLE ? extendToL1() : extendToIdle();
     }
 
-    public Command unclimbL1() {
-        return (climb.moveCenter(CLIMB_SETPOINT.L1))
-        .alongWith(climb.moveOuter(CLIMB_SETPOINT.L1))
-        .andThen(climb.moveCenter(CLIMB_SETPOINT.IDLE))
-        .alongWith(climb.moveOuter(CLIMB_SETPOINT.IDLE));
+    public Command extendToL1() {
+        return climb.climbTo(CLIMB_SETPOINT.L1)
+        .andThen(() -> {StateMachine.getInstance().climb = ClimbState.EXTENDED_TO_L1;});
     }
 
-    public Command L3() {
-        return climb.moveCenter(CLIMB_SETPOINT.L1)
-        .alongWith(climb.moveOuter(CLIMB_SETPOINT.L1))
-        .andThen(climb.moveCenter(CLIMB_SETPOINT.IDLE))
-        .alongWith(climb.moveOuter(CLIMB_SETPOINT.IDLE))
-        .andThen(climb.moveCenter(CLIMB_SETPOINT.L2))
-        .andThen(climb.moveCenter(CLIMB_SETPOINT.IDLE))
-        .andThen(climb.moveOuter(CLIMB_SETPOINT.L3))
-        .andThen(climb.moveOuter(CLIMB_SETPOINT.IDLE));
-    }
-    
+    public Command extendToIdle() {
+        return climb.climbTo(CLIMB_SETPOINT.L1)
+        .andThen(() -> {StateMachine.getInstance().climb = ClimbState.EXTENDED_TO_L1;});
+    }    
 }

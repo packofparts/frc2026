@@ -32,7 +32,6 @@ public abstract class SwerveModule {
         angleEncoder = moduleConstants.getCanCoder();
         this.swerveModuleConstants = moduleConstants;
         lastAngle = Rotation2d.fromDegrees(0);
-
         lastVelo = Units.MetersPerSecond.of(0.0);
         lastVeloTime = Units.Seconds.of(Timer.getFPGATimestamp());
     }
