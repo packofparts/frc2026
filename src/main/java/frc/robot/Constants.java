@@ -9,7 +9,9 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import poplib.control.FFConfig;
@@ -18,6 +20,8 @@ import poplib.motor.ConversionConfig;
 import poplib.motor.FollowerConfig;
 import poplib.motor.Mode;
 import poplib.motor.MotorConfig;
+import poplib.sensors.camera.CameraConfig;
+import poplib.sensors.camera.StdDevStrategy;
 import poplib.swerve.swerve_constants.SDSModules;
 import poplib.swerve.swerve_constants.SwerveModuleConstants;
 
@@ -132,5 +136,9 @@ public final class Constants {
             }
             return config;
         } 
+    }
+
+    public static class AutoAim {
+        public static final CameraConfig turretConfig = new CameraConfig("turretCam", new Transform3d(), 0, 0, StdDevStrategy.AMBIGUITY, AprilTagFields.k2026RebuiltWelded);
     }
 }

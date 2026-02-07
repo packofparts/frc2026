@@ -3,6 +3,9 @@ package frc.robot.subsystems;
 import java.util.ArrayList;
 
 import frc.robot.Constants;
+import frc.robot.utils.StateMachine;
+import frc.robot.utils.TurretState;
+import poplib.sensors.camera.Camera;
 import poplib.sensors.camera.CameraConfig;
 import poplib.sensors.camera.LimelightConfig;
 import poplib.sensors.gyro.Pigeon;
@@ -10,11 +13,16 @@ import poplib.swerve.swerve_modules.SwerveModuleTalon;
 import poplib.swerve.swerve_templates.VisionBaseSwerve;
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Swerve extends VisionBaseSwerve{
     
     private static Swerve instance;
+    private Camera turretCam;
 
     public static Swerve getInstance() {
         if (instance == null) {
@@ -56,11 +64,37 @@ public class Swerve extends VisionBaseSwerve{
             this
         );
 
+        turretCam = new Camera(Constants.AutoAim.turretConfig);
+
     }
 
+    @Override
+    public void driveRobotOriented(Translation2d vector, double rot) {
+        if (StateMachine.getInstance().turret == TurretState.HUB) {
+            return;
+        }
+        SwerveModuleState[] states = super.kinematics.toSwerveModuleStates(new ChassisSpeeds(vector.getX(), vector.getY(), rot));
+        this.driveRobotOriented(states);
+    }
 
     @Override
     public void periodic() {
         super.periodic();
+        // var thingy = turretCam.getCameraDiffs();
+        // if (thingy.isPresent()) {
+        //     SmartDashboard.putNumber("cam x", thingy.get().getX());
+        //     SmartDashboard.putNumber("cam x", thingy.get().getY());
+        // }
+
+        // var thingy = turretCam.getMultiTagCamPos();
+        // if (thingy.isPresent()) {
+        //     SmartDashboard.putNumber("cam x", thingy.get().getX());
+        //     SmartDashboard.putNumber("cam x", thingy.get().getY());
+        // }
+
+        var thingy = turretCam.getCameraRotOffset();
+        if (thingy.isPresent()) {
+            SmartDashboard.putNumber("cam yaw", thingy.get().doubleValue());
+        }
     }
 }
