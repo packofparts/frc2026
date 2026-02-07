@@ -1,6 +1,5 @@
 package poplib.sensors.camera;
 
-import java.lang.StackWalker.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

@@ -16,7 +16,6 @@ public class Climb extends SubsystemBase {
   private TalonFX climbMotor;
   private static Climb instance;
   private TunableNumber setpoint;
-  private double error;
   private final PositionDutyCycle position;
 
    public static Climb getInstance() {
