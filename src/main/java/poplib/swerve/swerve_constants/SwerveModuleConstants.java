@@ -1,5 +1,6 @@
 package poplib.swerve.swerve_constants;
 
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -144,7 +145,7 @@ public class SwerveModuleConstants {
     }
 
     public TalonFX getDriveFalcon() {
-        return driveConfig.setConfig(new TalonFX(driveMotorId, driveConfig.canBus));
+        return driveConfig.setConfig(new TalonFX(driveMotorId, new CANBus(driveConfig.canBus)));
     }
 
     public SparkMax getAngleNeo() {
@@ -160,11 +161,11 @@ public class SwerveModuleConstants {
     }
 
     public TalonFX getAngleFalcon() {
-        return angleConfig.setConfig(new TalonFX(angleMotorId, angleConfig.canBus));
+        return angleConfig.setConfig(new TalonFX(angleMotorId, new CANBus(angleConfig.canBus)));
     }
 
     public CANcoder getCanCoder() {
-        CANcoder angleEncoder = new CANcoder(cancoderId, angleConfig.canBus);
+        CANcoder angleEncoder = new CANcoder(cancoderId, new CANBus(angleConfig.canBus));
 
         CANcoderConfiguration config = new CANcoderConfiguration();
         config.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
