@@ -39,7 +39,7 @@ public class Swerve extends VisionBaseSwerve{
                 new SwerveModuleTalon(Constants.Swerve.SWERVE_MODULE_CONSTANTS[2]),
                 new SwerveModuleTalon(Constants.Swerve.SWERVE_MODULE_CONSTANTS[3]),
             },
-            new Pigeon(Constants.Swerve.PIGEON_ID, Constants.Swerve.GYRO_INVERSION, Constants.CANIVORE_NAME),
+            new Pigeon(Constants.Swerve.PIGEON_ID, Constants.Swerve.GYRO_INVERSION, Constants.swerveLoop),
             Constants.Swerve.SWERVE_KINEMATICS, new ArrayList<CameraConfig>(), new ArrayList<LimelightConfig>()
         );
 
