@@ -37,6 +37,8 @@ public class MotorConfig {
      public MotorConfig(int canId, String canBus) { this(canId, canBus, -1, false, PIDConfig.getZeroPid(), Mode.COAST, new ConversionConfig());}
 
      public MotorConfig(int canId, String canBus, int currentLimit, Boolean inversion, Mode mode) { this(canId, canBus, currentLimit, inversion, PIDConfig.getZeroPid(), mode, new ConversionConfig());}
+     public MotorConfig(int canId, String canBus, int currentLimit, Boolean inversion, PIDConfig pid, Mode mode) { this(canId, canBus, currentLimit, inversion, PIDConfig.getZeroPid(), mode, new ConversionConfig());}
+
 
      public MotorConfig(int canId, int currentLimit, Boolean inversion, PIDConfig pid, Mode mode) { this(canId, MotorConfig.DEFAULT_CANBUS, currentLimit, inversion, pid, mode, new ConversionConfig()); }
 
