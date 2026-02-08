@@ -138,6 +138,6 @@ public final class Constants {
     }
 
     public static class AutoAim {
-        public static final CameraConfig turretConfig = new CameraConfig("turretCam", new Transform3d(), 0, 0, StdDevStrategy.AMBIGUITY, AprilTagFields.k2026RebuiltWelded);
+        public static final CameraConfig turretConfig = new CameraConfig("turretCamera", new Transform3d(), 0, 0, StdDevStrategy.AMBIGUITY, AprilTagFields.k2026RebuiltWelded);
     }
 }

@@ -70,7 +70,11 @@ public class RobotContainer {
 
         // controller.getOperatorButton(XboxController.Button.kRightBumper.value).onTrue(intake.runIntake()).onFalse(intake.stopIntake());
         // controller.getOperatorButton(XboxController.Button.kLeftBumper.value).onTrue(intake.reverseIntake()).onFalse(intake.stopIntake());    
-        controller.getDriverButton(XboxController.Button.kY.value).onTrue(toggleToL1());
+        // controller.getDriverButton(XboxController.Button.kY.value).onTrue(toggleToL1());
+
+        controller.getDriverButton(XboxController.Button.kX.value).onTrue(enableHubAutoAim());
+        controller.getDriverButton(XboxController.Button.kY.value).onTrue(disableAutoAim());
+        controller.getDriverButton(XboxController.Button.kStart.value).onTrue(swerve.resetGyroCommand());
     }
 
     /**
