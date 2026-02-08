@@ -31,11 +31,11 @@ import poplib.swerve.commands.TeleopSwerveDrive;
 public class RobotContainer {
     XboxIO controller = XboxIO.getInstance();
 
-    //Flywheel flywheel = Flywheel.getInstance();
+    Flywheel flywheel = Flywheel.getInstance();
     Swerve swerve = Swerve.getInstance();
     //Indexer indexer = Indexer.getInstance();
     //Turret turret = Turret.getInstance();
-    //Pivot pivot = Pivot.getInstance();
+    Pivot pivot = Pivot.getInstance();
     //Climb climb = Climb.getInstance();
     //Intake intake = Intake.getInstance();
     //private final SendableChooser<Command> autoChooser;
