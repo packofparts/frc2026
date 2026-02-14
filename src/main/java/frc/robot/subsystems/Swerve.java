@@ -110,6 +110,8 @@ public class Swerve extends VisionBaseSwerve{
         
 
         SmartDashboard.putData("test field", tester);
+        var hi = turretCam.getMultiTagCamPos();
+        this.odom.addVisionMeasurement(prevPose, MAX_SKID_ACCEL);
 
         // var thingy = turretCam.getCameraRotOffset();
         // if (thingy.isPresent()) {
