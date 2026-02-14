@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -12,7 +13,7 @@ import frc.robot.utils.HubTracker;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
-
+    private Command testCommand;
     private final RobotContainer m_robotContainer;
 
     public Robot() {
@@ -60,10 +61,20 @@ public class Robot extends TimedRobot {
     @Override
     public void testInit() {
         CommandScheduler.getInstance().cancelAll();
+        testCommand = m_robotContainer.testCommand();
+        DriverStation.reportWarning("running test", false);
+        if (testCommand != null) {
+            System.out.println("Test running: " + testCommand.getName());
+            testCommand.schedule();
+        }
+        else{
+            System.out.println("test is null"); 
+        }
     }
 
     @Override
     public void testPeriodic() {
+        CommandScheduler.getInstance().cancelAll();
     }
 
     @Override

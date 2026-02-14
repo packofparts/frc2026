@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.Climb.CLIMB_SETPOINT;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Flywheel;
@@ -101,5 +102,28 @@ public class RobotContainer {
     public Command extendToIdle() {
         return climb.climbTo(CLIMB_SETPOINT.L1)
         .andThen(() -> {StateMachine.getInstance().climb = ClimbState.EXTENDED_TO_L1;});
-    }    
+    }   
+    
+    public Command testCommand() {
+        return swerve.runSwerve(1, 0, 0)
+        .andThen(swerve.runSwerve(0, 1, 0))
+        .andThen(swerve.runSwerve(0, 0, 1))
+        .andThen(intake.runIntake())
+        .andThen(new WaitCommand(2))
+        .andThen(intake.stopIntake())
+        .andThen(indexer.runSpindexer())
+        .andThen(new WaitCommand(2))
+        .andThen(indexer.stopSpindexer())
+        .andThen(indexer.runHandoff())
+        .andThen(new WaitCommand(2))
+        .andThen(indexer.stopHandoff())
+        .andThen(turret.reZero())
+        .andThen(turret.turnTurretBy(90, 0.1))
+        .andThen(turret.reZero())
+        .andThen(pivot.reZero())
+        .andThen(pivot.moveWristBy(20, 0.1))
+        .andThen(new WaitCommand(2))
+        .andThen(pivot.reZero())
+        .andThen(flywheel.updateSetpointCommand(1));
+    }
 }

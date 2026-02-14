@@ -10,7 +10,11 @@ import poplib.swerve.swerve_modules.SwerveModuleTalon;
 import poplib.swerve.swerve_templates.VisionBaseSwerve;
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class Swerve extends VisionBaseSwerve{
     
@@ -56,6 +60,11 @@ public class Swerve extends VisionBaseSwerve{
             this
         );
 
+    }
+
+    public Command runSwerve(double x, double y, double rot) {
+        //return new ParallelRaceGroup(run(() -> super.driveRobotOriented(new Translation2d(x,y), rot)), new WaitCommand(5));
+        return run(() -> super.driveRobotOriented(new Translation2d(x,y), rot)).raceWith(new WaitCommand(5));
     }
 
 
