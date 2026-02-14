@@ -109,21 +109,20 @@ public class RobotContainer {
         .andThen(swerve.runSwerve(0, 1, 0))
         .andThen(swerve.runSwerve(0, 0, 1))
         .andThen(intake.runIntake())
-        .andThen(new WaitCommand(2))
+        .raceWith(new WaitCommand(2))
         .andThen(intake.stopIntake())
         .andThen(indexer.runSpindexer())
-        .andThen(new WaitCommand(2))
+        .raceWith(new WaitCommand(2))
         .andThen(indexer.stopSpindexer())
-        .andThen(indexer.runHandoff())
-        .andThen(new WaitCommand(2))
-        .andThen(indexer.stopHandoff())
         .andThen(turret.reZero())
         .andThen(turret.turnTurretBy(90, 0.1))
         .andThen(turret.reZero())
         .andThen(pivot.reZero())
         .andThen(pivot.moveWristBy(20, 0.1))
-        .andThen(new WaitCommand(2))
         .andThen(pivot.reZero())
-        .andThen(flywheel.updateSetpointCommand(1));
+        .andThen(flywheel.updateSetpointCommand(30))
+        .andThen(indexer.runHandoff())
+        .raceWith(new WaitCommand(2))
+        .andThen(indexer.stopHandoff());
     }
 }
