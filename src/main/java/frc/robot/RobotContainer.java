@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.Climb.CLIMB_SETPOINT;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Flywheel;
@@ -24,6 +25,7 @@ import frc.robot.utils.ClimbState;
 import frc.robot.utils.StateMachine;
 import frc.robot.utils.TurretState;
 import poplib.controllers.io.XboxIO;
+import poplib.subsystems.flywheel.SysIdFlywheel;
 import poplib.swerve.commands.TeleopSwerveDrive;
 
 
@@ -33,9 +35,10 @@ public class RobotContainer {
 
     Flywheel flywheel = Flywheel.getInstance();
     Swerve swerve = Swerve.getInstance();
+    SysIdFlywheel sys = new SysIdFlywheel(flywheel);
     //Indexer indexer = Indexer.getInstance();
     //Turret turret = Turret.getInstance();
-    Pivot pivot = Pivot.getInstance();
+    // Pivot pivot = Pivot.getInstance();
     //Climb climb = Climb.getInstance();
     //Intake intake = Intake.getInstance();
     //private final SendableChooser<Command> autoChooser;
@@ -59,22 +62,28 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        // controller.getOperatorTrigger(XboxController.Axis.kRightTrigger.value).onTrue(flywheel.updateSetpointCommand(1000)).onFalse(flywheel.updateSetpointCommand(0));
-        // controller.getOperatorTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(flywheel.updateSetpointCommand(-1000)).onFalse(flywheel.updateSetpointCommand(0));
+        controller.getOperatorTrigger(XboxController.Axis.kRightTrigger.value).onTrue(flywheel.updateSetpointCommand(1000)).onFalse(flywheel.updateSetpointCommand(0));
+        controller.getOperatorTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(flywheel.updateSetpointCommand(-1000)).onFalse(flywheel.updateSetpointCommand(0));
 
         // controller.getOperatorTrigger(XboxController.Axis.kLeftX.value).onTrue(pivot.moveWristBy(-controller.getRawAxis(XboxController.Axis.kLeftX.value, controller.getOperatorController()), 0.1));
         // controller.getOperatorTrigger(XboxController.Axis.kRightY.value).onTrue(turret.turnTurretBy(controller.getRawAxis(XboxController.Axis.kRightY.value, controller.getOperatorController()), 0.1));
 
         // controller.getOperatorButton(XboxController.Button.kX.value).onTrue(indexer.runSpindexer()).onFalse(indexer.stopSpindexer());
-        // controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseSpindexer()).onFalse(indexer.stopSpindexer());    
+        // controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseSpindexer()).onFalse  (indexer.stopSpindexer());    
 
         // controller.getOperatorButton(XboxController.Button.kRightBumper.value).onTrue(intake.runIntake()).onFalse(intake.stopIntake());
         // controller.getOperatorButton(XboxController.Button.kLeftBumper.value).onTrue(intake.reverseIntake()).onFalse(intake.stopIntake());    
         // controller.getDriverButton(XboxController.Button.kY.value).onTrue(toggleToL1());
 
-        controller.getDriverButton(XboxController.Button.kX.value).onTrue(enableHubAutoAim());
-        controller.getDriverButton(XboxController.Button.kY.value).onTrue(disableAutoAim());
-        controller.getDriverButton(XboxController.Button.kStart.value).onTrue(swerve.resetGyroCommand());
+        // controller.getDriverButton(XboxController.Button.kX.value).onTrue(enableHubAutoAim());
+        // controller.getDriverButton(XboxController.Button.kY.value).onTrue(disableAutoAim());
+        // controller.getDriverButton(XboxController.Button.kStart.value).onTrue(swerve.resetGyroCommand());
+        controller.getDriverButton(XboxController.Button.kX.value).onTrue(sys.sysIdQuasistatic(Direction.kForward));
+        controller.getDriverButton(XboxController.Button.kY.value).onTrue(sys.sysIdDynamic(Direction.kForward));
+        controller.getDriverButton(XboxController.Button.kB.value).onTrue(sys.sysIdQuasistatic(Direction.kReverse));
+        controller.getDriverButton(XboxController.Button.kA.value).onTrue(sys.sysIdDynamic(Direction.kReverse));
+
+
     }
 
     /**

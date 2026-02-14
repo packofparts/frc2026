@@ -95,10 +95,8 @@ public final class Constants {
     }
 
     public static class Flywheel {
-        public static final boolean TUNING_MODE = false;
-        public static final MotorConfig leadConfig = new MotorConfig(42, manipulatorLoop, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
-        public static final FollowerConfig followerConfig = new FollowerConfig(leadConfig, false, 71);
-
+        public static final boolean TUNING_MODE = true;
+        public static final MotorConfig leadConfig = new MotorConfig(42, "rio", 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
     }
 
     public static class Climb {
