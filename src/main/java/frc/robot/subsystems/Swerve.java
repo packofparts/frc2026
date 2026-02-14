@@ -3,8 +3,10 @@ package frc.robot.subsystems;
 import java.util.ArrayList;
 
 import frc.robot.Constants;
+import frc.robot.Constants.AutoAlign.CLIMB_MOVEMENT_SP;
 import frc.robot.utils.StateMachine;
 import frc.robot.utils.TurretState;
+import poplib.control.PIDConfig;
 import poplib.sensors.camera.Camera;
 import poplib.sensors.camera.CameraConfig;
 import poplib.sensors.camera.LimelightConfig;
@@ -21,11 +23,15 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 
 public class Swerve extends VisionBaseSwerve{
     
     private double hub_x = 4.02 + 0.5969;
     private double hub_Y = 4.03;
+    private PIDController y_pid; 
+    private PIDController alignRot_pid;
+    private Camera climbCam;
 
     private static Swerve instance;
     private Camera turretCam;
@@ -73,9 +79,55 @@ public class Swerve extends VisionBaseSwerve{
         );
 
         turretCam = new Camera(Constants.AutoAim.turretConfig);
+        climbCam = new Camera(Constants.AutoAlign.climbConfig);
         tester = new Field2d();
         rot_pid = new PIDController(0.15, 0, 0);
+        y_pid = new PIDController(0.15, 0, 0);
+        alignRot_pid = new PIDController(0.15, 0, 0);
+    }
 
+    public Command autoAlign(CLIMB_MOVEMENT_SP sp) {
+        return 
+        run(() -> driveRobotOriented(new Translation2d(0,0), getRotAlignPID(sp))).
+        until(() -> boolCheckForRot(sp)).
+        andThen(run(() -> driveRobotOriented(new Translation2d(0, getYAlignPID(sp)), 0)).
+        until(() -> boolCheckForY(sp)));
+    }
+    
+    public double getRotAlignPID(CLIMB_MOVEMENT_SP SP) {
+        double rotation = field.getRobotPose().getRotation().getDegrees();
+        return rot_pid.calculate(rotation, SP.getRot());
+    }
+
+    public Boolean boolCheckForRot(CLIMB_MOVEMENT_SP SP) {
+        double rotation = field.getRobotPose().getRotation().getDegrees();
+        if (Math.abs(rotation - SP.getRot()) < 3) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public double getYAlignPID(CLIMB_MOVEMENT_SP SP) {
+        var multiTagPose = climbCam.getMultiTagCamPos();
+        if (multiTagPose.isPresent()) {
+            double y = multiTagPose.get().getY();
+            return y_pid.calculate(y, SP.getY());
+        }
+        return 0.0;
+    }
+
+    public Boolean boolCheckForY(CLIMB_MOVEMENT_SP SP) {
+        var multiTagPose = climbCam.getMultiTagCamPos();
+        if (multiTagPose.isPresent()) {
+            double y = multiTagPose.get().getY();
+        if (Math.abs(y - SP.getY()) < 0.03) {
+            return true;
+        } else {
+            return false;
+        }
+        }
+        return false;
     }
 
     @Override

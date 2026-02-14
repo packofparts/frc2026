@@ -138,4 +138,29 @@ public final class Constants {
     public static class AutoAim {
         public static final CameraConfig turretConfig = new CameraConfig("turretCamera", new Transform3d(), 0, 0, StdDevStrategy.AMBIGUITY, AprilTagFields.k2026RebuiltWelded);
     }
+
+    public static class AutoAlign {
+        public static final CameraConfig climbConfig = new CameraConfig("climbCamera", new Transform3d(), 0, 0, StdDevStrategy.AMBIGUITY, AprilTagFields.k2026RebuiltWelded);
+        public enum CLIMB_MOVEMENT_SP {
+            RED_RIGHT(0,0),
+            RED_LEFT(0,0),
+            BLUE_RIGHT(0,0),
+            BLUE_LEFT(0,0);
+            private double y;
+            private double rot;
+
+            private CLIMB_MOVEMENT_SP(double rot, double y) {
+            this.rot = rot;
+            this.y = y;
+            }
+
+            public double getY() {
+                return y;
+            }
+
+            public double getRot() {
+                return rot;
+            }
+        }
+    }
 }
