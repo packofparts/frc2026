@@ -103,15 +103,14 @@ public final class Constants {
         public static final boolean TUNING_MODE = false;
         public enum CLIMB_SETPOINT {
             IDLE(0),
-            L1(20),
-            L2(35),
-            L3(50);
+            L1(20);
+
             private double climb;
 
             private CLIMB_SETPOINT(double climb) {
             this.climb = climb;
             }
-            public double getHi() {
+            public double getSetpoint() {
                 return climb;
             }
         }
@@ -137,5 +136,29 @@ public final class Constants {
 
     public static class AutoAim {
         public static final CameraConfig turretConfig = new CameraConfig("turretCamera", new Transform3d(), 0, 0, StdDevStrategy.AMBIGUITY, AprilTagFields.k2026RebuiltWelded);
+    }
+
+    public static class AutoAlign {
+        public static final CameraConfig alignConfig = new CameraConfig("climbCamera", new Transform3d(), 0, 0, StdDevStrategy.AMBIGUITY, AprilTagFields.k2026RebuiltWelded);
+        
+        public enum CLIMB_MOVEMENT_SP {
+            BLUE_LEFT(0,0),
+            BLUE_RIGHT(0,0),
+            RED_LEFT(0.321,-90),
+            RED_RIGHT(0,0);
+            private double y;
+            private double rot;
+
+            private CLIMB_MOVEMENT_SP(double y, double rot) {
+            this.y = y;
+            this.rot = rot;
+            }
+            public double getY() {
+                return y;
+            }
+            public double getRot() {
+                return rot;
+            }
+        }
     }
 }

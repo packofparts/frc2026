@@ -34,7 +34,7 @@ public class Climb extends SubsystemBase {
   }
 
   public Command setSetpoint(CLIMB_SETPOINT climbSetpointGiven) {
-    return runOnce(() -> {this.setpoint.setDefault(climbSetpointGiven.getHi());});
+    return runOnce(() -> {this.setpoint.setDefault(climbSetpointGiven.getSetpoint());});
   }
 
   public boolean centerAtSetpoint() {

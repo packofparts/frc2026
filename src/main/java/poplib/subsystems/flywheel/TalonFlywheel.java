@@ -64,7 +64,7 @@ public class TalonFlywheel extends Flywheel {
         leadPidTuning.updatePID(leadMotor);
         log();
         if (setpoint.hasChanged()) {
-            leadMotor.setControl(setpoint.get() != 0 ? velocity.withVelocity(setpoint.get()).withFeedForward() : idleControl);
+            leadMotor.setControl(setpoint.get() != 0 ? velocity.withVelocity(setpoint.get()) : idleControl);
         }
      } 
 

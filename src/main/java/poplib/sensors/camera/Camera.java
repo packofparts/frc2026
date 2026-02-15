@@ -63,7 +63,7 @@ public class Camera {
         }
     }
 
-    public Optional<Transform3d> getCameraDiffs() {
+    public Optional<Transform3d> getCameraDiffs(int targetID) {
         if (!camera.isConnected()) {
             DriverStation.reportError("Camera named: " + config.cameraName + " is not connected!!!!!!!!", false);
             // the above code should save to the log file that you can view in the DS Log Viewer
@@ -71,14 +71,16 @@ public class Camera {
         }
         Optional<PhotonTrackedTarget> target = Optional.empty();
         for (PhotonPipelineResult result : camera.getAllUnreadResults()) {
-            PhotonTrackedTarget curr_target = result.getBestTarget();
-            if (target.isEmpty()) {
-                target = Optional.of(curr_target);
-            } else if (curr_target.getPoseAmbiguity() < target.get().getPoseAmbiguity()) {
-                target = Optional.of(curr_target); //yes ik this is repeated code idc tho
+            if (result.hasTargets()) {
+                PhotonTrackedTarget curr_target = result.getBestTarget();
+                if (target.isEmpty()) {
+                    target = Optional.of(curr_target);
+                } else if (curr_target.getPoseAmbiguity() < target.get().getPoseAmbiguity()) {
+                    target = Optional.of(curr_target); //yes ik this is repeated code idc tho
+                }
             }
         }
-        if (target.isPresent()) {
+        if (target.isPresent() && target.get().fiducialId == targetID) {
             return Optional.of(target.get().getBestCameraToTarget());
         } else {
             return Optional.empty();

@@ -4,15 +4,22 @@
 
 package frc.robot;
 
+import java.util.Optional;
+
+import com.fasterxml.jackson.databind.introspect.AnnotationCollector.OneAnnotation;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.Constants.AutoAlign.CLIMB_MOVEMENT_SP;
 import frc.robot.Constants.Climb.CLIMB_SETPOINT;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Flywheel;
@@ -77,13 +84,10 @@ public class RobotContainer {
 
         // controller.getDriverButton(XboxController.Button.kX.value).onTrue(enableHubAutoAim());
         // controller.getDriverButton(XboxController.Button.kY.value).onTrue(disableAutoAim());
-        // controller.getDriverButton(XboxController.Button.kStart.value).onTrue(swerve.resetGyroCommand());
-        controller.getDriverButton(XboxController.Button.kX.value).onTrue(sys.sysIdQuasistatic(Direction.kForward));
-        controller.getDriverButton(XboxController.Button.kY.value).onTrue(sys.sysIdDynamic(Direction.kForward));
-        controller.getDriverButton(XboxController.Button.kB.value).onTrue(sys.sysIdQuasistatic(Direction.kReverse));
-        controller.getDriverButton(XboxController.Button.kA.value).onTrue(sys.sysIdDynamic(Direction.kReverse));
+        controller.getDriverButton(XboxController.Button.kStart.value).onTrue(swerve.resetGyroCommand());
 
-
+        controller.getDriverController().povLeft().onTrue(alignClimbLeft());
+        controller.getDriverController().povRight().onTrue(alignClimbRight());
     }
 
     /**
@@ -128,5 +132,29 @@ public class RobotContainer {
 
     public Command disableAutoAim() {
         return new InstantCommand(() -> {StateMachine.getInstance().turret = TurretState.NONE;}, swerve);
+    }
+
+    public Command alignClimbLeft() {
+        if (DriverStation.getAlliance().isPresent()) {
+            if (DriverStation.getAlliance().get() == Alliance.Blue) {
+                return swerve.autoAlign(CLIMB_MOVEMENT_SP.BLUE_LEFT);
+            } else {
+                return swerve.autoAlign(CLIMB_MOVEMENT_SP.RED_LEFT);
+            }
+        } else {
+            return swerve.autoAlign(CLIMB_MOVEMENT_SP.RED_LEFT);
+        }
+    }
+
+    public Command alignClimbRight() {
+        if (DriverStation.getAlliance().isPresent()) {
+            if (DriverStation.getAlliance().get() == Alliance.Blue) {
+                return swerve.autoAlign(CLIMB_MOVEMENT_SP.BLUE_LEFT);
+            } else {
+                return swerve.autoAlign(CLIMB_MOVEMENT_SP.RED_LEFT);
+            }
+        } else {
+            return new WaitCommand(1);
+        }
     }
 }
