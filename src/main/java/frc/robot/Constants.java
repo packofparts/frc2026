@@ -4,12 +4,13 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.CANBus;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import poplib.control.FFConfig;
@@ -18,6 +19,8 @@ import poplib.motor.ConversionConfig;
 import poplib.motor.FollowerConfig;
 import poplib.motor.Mode;
 import poplib.motor.MotorConfig;
+import poplib.sensors.camera.CameraConfig;
+import poplib.sensors.camera.StdDevStrategy;
 import poplib.swerve.swerve_constants.SDSModules;
 import poplib.swerve.swerve_constants.SwerveModuleConstants;
 
@@ -92,25 +95,22 @@ public final class Constants {
     }
 
     public static class Flywheel {
-        public static final boolean TUNING_MODE = false;
+        public static final boolean TUNING_MODE = true;
         public static final MotorConfig leadConfig = new MotorConfig(42, manipulatorLoop, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
-        public static final FollowerConfig followerConfig = new FollowerConfig(leadConfig, false, 71);
-
     }
 
     public static class Climb {
         public static final boolean TUNING_MODE = false;
         public enum CLIMB_SETPOINT {
             IDLE(0),
-            L1(20),
-            L2(35),
-            L3(50);
+            L1(20);
+
             private double climb;
 
             private CLIMB_SETPOINT(double climb) {
             this.climb = climb;
             }
-            public double getHi() {
+            public double getSetpoint() {
                 return climb;
             }
         }
@@ -132,5 +132,32 @@ public final class Constants {
             }
             return config;
         } 
+    }
+
+    public static class AutoAlign {
+        public static final CameraConfig alignConfig = new CameraConfig("climbCamera", new Transform3d(), 0, 0, StdDevStrategy.AMBIGUITY, AprilTagFields.k2026RebuiltWelded);
+        
+        public enum CLIMB_MOVEMENT_SP {
+            BLUE_LEFT(0.321, 31),
+            BLUE_RIGHT(-.321, 31),
+            RED_LEFT(0.321, 15),
+            RED_RIGHT(-0.321, 15);
+            private double y;
+            private int tag;
+
+            private CLIMB_MOVEMENT_SP(double y, int tag) {
+            this.y = y;
+            this.tag = tag;
+            }
+            public double getY() {
+                return y;
+            }
+            public double getRot() {
+                return -90;
+            }
+            public int getTag() {
+                return tag;
+            }
+        }
     }
 }

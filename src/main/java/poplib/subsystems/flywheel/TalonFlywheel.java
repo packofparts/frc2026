@@ -3,6 +3,7 @@ package poplib.subsystems.flywheel;
 import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 
@@ -54,9 +55,9 @@ public class TalonFlywheel extends Flywheel {
     @Override
     public void periodic() {
         leadPidTuning.updatePID(leadMotor);
-
+        log();
         if (setpoint.hasChanged()) {
             leadMotor.setControl(setpoint.get() != 0 ? velocity.withVelocity(setpoint.get()) : idleControl);
         }
-     } 
+     }
 }

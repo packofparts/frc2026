@@ -27,7 +27,7 @@ import poplib.swerve.swerve_modules.SwerveModule;
 
 public abstract class VisionBaseSwerve extends BaseSwerve {
     protected final SwerveDrivePoseEstimator odom;
-    private final SwerveDriveKinematics kinematics;
+    protected final SwerveDriveKinematics kinematics;
     public ArrayList<Camera> cameras;
     private ArrayList<Limelight> limelights;
 
@@ -102,15 +102,15 @@ public abstract class VisionBaseSwerve extends BaseSwerve {
     }
 
     @Override
-    public void driveRobotOriented(Translation2d vector, double rot) {
-        SwerveModuleState[] states = this.kinematics.toSwerveModuleStates(new ChassisSpeeds(vector.getX(), vector.getY(), rot));
-        this.driveRobotOriented(states);
-    }
-
-    @Override
     public void driveChassis(ChassisSpeeds chassisSpeeds) {
         SwerveModuleState[] states = this.kinematics.toSwerveModuleStates(chassisSpeeds);
         this.driveRobotOriented(states); 
+    }
+
+    @Override
+    public void driveRobotOriented(Translation2d vector, double rot) {
+        SwerveModuleState[] states = this.kinematics.toSwerveModuleStates(new ChassisSpeeds(vector.getX(), vector.getY(), rot));
+        this.driveRobotOriented(states);
     }
 
     public void setOdomPose(Pose2d pose) {

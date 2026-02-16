@@ -1,8 +1,11 @@
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import frc.robot.Constants;
+import frc.robot.Constants.AutoAlign.CLIMB_MOVEMENT_SP;
+import poplib.sensors.camera.Camera;
 import poplib.sensors.camera.CameraConfig;
 import poplib.sensors.camera.LimelightConfig;
 import poplib.sensors.gyro.Pigeon;
@@ -10,10 +13,20 @@ import poplib.swerve.swerve_modules.SwerveModuleTalon;
 import poplib.swerve.swerve_templates.VisionBaseSwerve;
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class Swerve extends VisionBaseSwerve{
-    
+    private PIDController y_pid; 
+    private PIDController alignRot_pid;
+    private Camera climbCam;
+    private Optional<Transform3d> cameraOutputBuffer;
+    private int climbTagToUse;
+
     private static Swerve instance;
 
     public static Swerve getInstance() {
@@ -56,11 +69,63 @@ public class Swerve extends VisionBaseSwerve{
             this
         );
 
+        climbCam = new Camera(Constants.AutoAlign.alignConfig);
+        y_pid = new PIDController(3, 0, 0);
+        alignRot_pid = new PIDController(0.1, 0, 0);
+        cameraOutputBuffer = Optional.empty();
+        climbTagToUse = 15; // default red side
     }
 
+
+    public Command autoAlign(CLIMB_MOVEMENT_SP sp) {
+        return 
+        runOnce(() -> climbTagToUse = sp.getTag()).andThen(      
+
+
+        (run(() -> driveRobotOriented(new Translation2d(0,0), -getRotAlignPID(sp))).            
+        until(() -> boolCheckForRot(sp)).
+
+        andThen(run(() -> driveRobotOriented(new Translation2d(0, getYAlignPID(sp)), 0)).
+        until(() -> boolCheckForY(sp)))).
+        
+
+        raceWith(new WaitCommand(10)));
+    }
+    
+    public double getRotAlignPID(CLIMB_MOVEMENT_SP SP) {
+        double rotation = field.getRobotPose().getRotation().getDegrees();
+        return alignRot_pid.calculate(rotation, SP.getRot());
+    }
+
+    public Boolean boolCheckForRot(CLIMB_MOVEMENT_SP SP) {
+        double rotation = field.getRobotPose().getRotation().getDegrees();
+        if (Math.abs(rotation - SP.getRot()) < 3) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public double getYAlignPID(CLIMB_MOVEMENT_SP SP) {
+        double y = cameraOutputBuffer.get().getY();
+        return -y_pid.calculate(y, SP.getY());
+    }
+
+    public Boolean boolCheckForY(CLIMB_MOVEMENT_SP SP) {
+        double y = cameraOutputBuffer.get().getY();
+        if (Math.abs(y - SP.getY()) < 0.005) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     @Override
     public void periodic() {
         super.periodic();
+        var rawCameraOutput = climbCam.getCameraDiffs(climbTagToUse);
+        if (rawCameraOutput.isPresent()) {
+            cameraOutputBuffer = rawCameraOutput;
+        }
     }
 }
