@@ -133,11 +133,7 @@ public final class Constants {
             return config;
         } 
     }
-
-    public static class AutoAim {
-        public static final CameraConfig turretConfig = new CameraConfig("turretCamera", new Transform3d(), 0, 0, StdDevStrategy.AMBIGUITY, AprilTagFields.k2026RebuiltWelded);
-    }
-
+    
     public static class AutoAlign {
         public static final CameraConfig alignConfig = new CameraConfig("climbCamera", new Transform3d(), 0, 0, StdDevStrategy.AMBIGUITY, AprilTagFields.k2026RebuiltWelded);
         

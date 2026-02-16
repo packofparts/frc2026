@@ -107,6 +107,12 @@ public abstract class VisionBaseSwerve extends BaseSwerve {
         this.driveRobotOriented(states); 
     }
 
+    @Override
+    public void driveRobotOriented(Translation2d vector, double rot) {
+        SwerveModuleState[] states = this.kinematics.toSwerveModuleStates(new ChassisSpeeds(vector.getX(), vector.getY(), rot));
+        this.driveRobotOriented(states);
+    }
+
     public void setOdomPose(Pose2d pose) {
         this.odom.resetPosition(pose.getRotation(), this.getPose(), pose);
         this.setGyro(pose);

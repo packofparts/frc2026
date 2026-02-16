@@ -1,14 +1,10 @@
 package frc.robot.subsystems;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.concurrent.locks.Condition;
 
 import frc.robot.Constants;
 import frc.robot.Constants.AutoAlign.CLIMB_MOVEMENT_SP;
-import frc.robot.utils.StateMachine;
-import frc.robot.utils.TurretState;
 import poplib.sensors.camera.Camera;
 import poplib.sensors.camera.CameraConfig;
 import poplib.sensors.camera.LimelightConfig;
@@ -18,32 +14,20 @@ import poplib.swerve.swerve_templates.VisionBaseSwerve;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class Swerve extends VisionBaseSwerve{
-    
-    private double hub_x = 4.02 + 0.5969;
-    private double hub_Y = 4.03;
     private PIDController y_pid; 
     private PIDController alignRot_pid;
     private Camera climbCam;
+    private Optional<Transform3d> cameraOutputBuffer;
+    private int climbTagToUse;
 
     private static Swerve instance;
-    private Camera turretCam;
-    private Field2d tester;
-    private PIDController rot_pid;
-    private Optional<Transform3d> save;
-    private int climbTagToUse;
 
     public static Swerve getInstance() {
         if (instance == null) {
@@ -85,28 +69,31 @@ public class Swerve extends VisionBaseSwerve{
             this
         );
 
-        turretCam = new Camera(Constants.AutoAim.turretConfig);
         climbCam = new Camera(Constants.AutoAlign.alignConfig);
-        tester = new Field2d();
-        rot_pid = new PIDController(0.15, 0, 0);
         y_pid = new PIDController(3, 0, 0);
         alignRot_pid = new PIDController(0.1, 0, 0);
-        save = Optional.empty();
-        climbTagToUse = 15;
+        cameraOutputBuffer = Optional.empty();
+        climbTagToUse = 15; // default red side
     }
 
 
     public Command autoAlign(CLIMB_MOVEMENT_SP sp) {
-        return runOnce(() -> climbTagToUse = sp.getTag()).andThen(
-        (run(() -> driveRobotOriented(new Translation2d(0,0), -getRotAlignPID(sp))).
+        return 
+        runOnce(() -> climbTagToUse = sp.getTag()).andThen(      
+
+
+        (run(() -> driveRobotOriented(new Translation2d(0,0), -getRotAlignPID(sp))).            
         until(() -> boolCheckForRot(sp)).
+
         andThen(run(() -> driveRobotOriented(new Translation2d(0, getYAlignPID(sp)), 0)).
-        until(() -> boolCheckForY(sp)))).raceWith(new WaitCommand(10)));
+        until(() -> boolCheckForY(sp)))).
+        
+
+        raceWith(new WaitCommand(10)));
     }
     
     public double getRotAlignPID(CLIMB_MOVEMENT_SP SP) {
         double rotation = field.getRobotPose().getRotation().getDegrees();
-        System.out.println("goog news");
         return alignRot_pid.calculate(rotation, SP.getRot());
     }
 
@@ -120,15 +107,12 @@ public class Swerve extends VisionBaseSwerve{
     }
 
     public double getYAlignPID(CLIMB_MOVEMENT_SP SP) {
-        double y = save.get().getY();
-        System.out.println("more goog news");
-        double adj = -y_pid.calculate(y, SP.getY());
-        SmartDashboard.putNumber("the goog news", adj);
-        return adj;
+        double y = cameraOutputBuffer.get().getY();
+        return -y_pid.calculate(y, SP.getY());
     }
 
     public Boolean boolCheckForY(CLIMB_MOVEMENT_SP SP) {
-        double y = save.get().getY();
+        double y = cameraOutputBuffer.get().getY();
         if (Math.abs(y - SP.getY()) < 0.005) {
             return true;
         } else {
@@ -137,48 +121,11 @@ public class Swerve extends VisionBaseSwerve{
     }
 
     @Override
-    public void driveRobotOriented(Translation2d vector, double rot) {
-        // var multiTagPose = turretCam.getMultiTagCamPos();
-        // if (multiTagPose.isPresent()) {
-        //     double x = multiTagPose.get().getX();
-        //     double y = multiTagPose.get().getY();
-        //     double rotation = field.getRobotPose().getRotation().getDegrees();
-        //     tester.setRobotPose(x, y, multiTagPose.get().getRotation().toRotation2d());
-        //     double x_diff = hub_x - x;
-        //     double y_diff = hub_Y - y;
-        //     double theta = Math.toDegrees(Math.atan(y_diff/x_diff));
-        //     SmartDashboard.putNumber("theta wanted", theta);
-        //     if (StateMachine.getInstance().turret == TurretState.HUB) {
-        //         rot = -rot_pid.calculate(rotation, theta);
-        //     }
-        // }
-        SwerveModuleState[] states = super.kinematics.toSwerveModuleStates(new ChassisSpeeds(vector.getX(), vector.getY(), rot));
-        this.driveRobotOriented(states);
-    }
-
-    @Override
     public void periodic() {
         super.periodic();
-        // var thingy = turretCam.getCameraDiffs();
-        // if (thingy.isPresent()) {
-        //     SmartDashboard.putNumber("cam x", thingy.get().getX());
-        //     SmartDashboard.putNumber("cam x", thingy.get().getY());
-        // }
-
-        
-
-        SmartDashboard.putData("test field", tester);
-        var hi = climbCam.getCameraDiffs(climbTagToUse);
-        if (hi.isPresent()) {
-            save = hi;
+        var rawCameraOutput = climbCam.getCameraDiffs(climbTagToUse);
+        if (rawCameraOutput.isPresent()) {
+            cameraOutputBuffer = rawCameraOutput;
         }
-        if (save.isPresent()) {
-            tester.setRobotPose(save.get().getX(), save.get().getY(), field.getRobotPose().getRotation());
-        }
-
-        // var thingy = turretCam.getCameraRotOffset();
-        // if (thingy.isPresent()) {
-        //     SmartDashboard.putNumber("cam yaw", thingy.get().doubleValue());
-        // }
     }
 }

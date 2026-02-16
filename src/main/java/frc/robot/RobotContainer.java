@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-import java.util.Optional;
-
-import com.fasterxml.jackson.databind.introspect.AnnotationCollector.OneAnnotation;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -18,7 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.AutoAlign.CLIMB_MOVEMENT_SP;
 import frc.robot.Constants.Climb.CLIMB_SETPOINT;
 import frc.robot.subsystems.Climb;
@@ -30,9 +26,7 @@ import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Turret;
 import frc.robot.utils.ClimbState;
 import frc.robot.utils.StateMachine;
-import frc.robot.utils.TurretState;
 import poplib.controllers.io.XboxIO;
-import poplib.subsystems.flywheel.SysIdFlywheel;
 import poplib.swerve.commands.TeleopSwerveDrive;
 
 
@@ -42,28 +36,27 @@ public class RobotContainer {
 
     Flywheel flywheel = Flywheel.getInstance();
     Swerve swerve = Swerve.getInstance();
-    SysIdFlywheel sys = new SysIdFlywheel(flywheel);
-    //Indexer indexer = Indexer.getInstance();
-    //Turret turret = Turret.getInstance();
-    // Pivot pivot = Pivot.getInstance();
-    //Climb climb = Climb.getInstance();
-    //Intake intake = Intake.getInstance();
-    //private final SendableChooser<Command> autoChooser;
+    Indexer indexer = Indexer.getInstance();
+    Turret turret = Turret.getInstance();
+    Pivot pivot = Pivot.getInstance();
+    Climb climb = Climb.getInstance();
+    Intake intake = Intake.getInstance();
+    private final SendableChooser<Command> autoChooser;
 
 
 
     public RobotContainer() {
-        //autoChooser = AutoBuilder.buildAutoChooser();    
+        autoChooser = AutoBuilder.buildAutoChooser();    
 
         swerve.setDefaultCommand(new TeleopSwerveDrive(swerve, controller));
-        // NamedCommands.registerCommand("Extend To L1", extendToL1());
-        // NamedCommands.registerCommand("Retract To Idle", extendToIdle());
-        // NamedCommands.registerCommand("Shoot Fuel", shootFuel());
-        // NamedCommands.registerCommand("Collect Fuel", collectFuel());
-        // NamedCommands.registerCommand("Zero Pivot", pivot.reZero());
-        // NamedCommands.registerCommand("Zero Turret", turret.reZero());
+        NamedCommands.registerCommand("Extend To L1", extendToL1());
+        NamedCommands.registerCommand("Retract To Idle", extendToIdle());
+        NamedCommands.registerCommand("Shoot Fuel", shootFuel());
+        NamedCommands.registerCommand("Collect Fuel", collectFuel());
+        NamedCommands.registerCommand("Zero Pivot", pivot.reZero());
+        NamedCommands.registerCommand("Zero Turret", turret.reZero());
 
-        // SmartDashboard.putData("Auto Chooser", autoChooser);
+        SmartDashboard.putData("Auto Chooser", autoChooser);
 
         configureBindings();
     }
@@ -72,18 +65,15 @@ public class RobotContainer {
         controller.getOperatorTrigger(XboxController.Axis.kRightTrigger.value).onTrue(flywheel.updateSetpointCommand(1000)).onFalse(flywheel.updateSetpointCommand(0));
         controller.getOperatorTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(flywheel.updateSetpointCommand(-1000)).onFalse(flywheel.updateSetpointCommand(0));
 
-        // controller.getOperatorTrigger(XboxController.Axis.kLeftX.value).onTrue(pivot.moveWristBy(-controller.getRawAxis(XboxController.Axis.kLeftX.value, controller.getOperatorController()), 0.1));
-        // controller.getOperatorTrigger(XboxController.Axis.kRightY.value).onTrue(turret.turnTurretBy(controller.getRawAxis(XboxController.Axis.kRightY.value, controller.getOperatorController()), 0.1));
+        controller.getOperatorTrigger(XboxController.Axis.kLeftX.value).onTrue(pivot.moveWristBy(-controller.getRawAxis(XboxController.Axis.kLeftX.value, controller.getOperatorController()), 0.1));
+        controller.getOperatorTrigger(XboxController.Axis.kRightY.value).onTrue(turret.turnTurretBy(controller.getRawAxis(XboxController.Axis.kRightY.value, controller.getOperatorController()), 0.1));
 
-        // controller.getOperatorButton(XboxController.Button.kX.value).onTrue(indexer.runSpindexer()).onFalse(indexer.stopSpindexer());
-        // controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseSpindexer()).onFalse  (indexer.stopSpindexer());    
+        controller.getOperatorButton(XboxController.Button.kX.value).onTrue(indexer.runSpindexer()).onFalse(indexer.stopSpindexer());
+        controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseSpindexer()).onFalse  (indexer.stopSpindexer());    
 
-        // controller.getOperatorButton(XboxController.Button.kRightBumper.value).onTrue(intake.runIntake()).onFalse(intake.stopIntake());
-        // controller.getOperatorButton(XboxController.Button.kLeftBumper.value).onTrue(intake.reverseIntake()).onFalse(intake.stopIntake());    
-        // controller.getDriverButton(XboxController.Button.kY.value).onTrue(toggleToL1());
-
-        // controller.getDriverButton(XboxController.Button.kX.value).onTrue(enableHubAutoAim());
-        // controller.getDriverButton(XboxController.Button.kY.value).onTrue(disableAutoAim());
+        controller.getOperatorButton(XboxController.Button.kRightBumper.value).onTrue(intake.runIntake()).onFalse(intake.stopIntake());
+        controller.getOperatorButton(XboxController.Button.kLeftBumper.value).onTrue(intake.reverseIntake()).onFalse(intake.stopIntake());    
+        controller.getDriverButton(XboxController.Button.kY.value).onTrue(toggleToL1());
         controller.getDriverButton(XboxController.Button.kStart.value).onTrue(swerve.resetGyroCommand());
 
         controller.getDriverController().povLeft().onTrue(alignClimbLeft());
@@ -96,9 +86,7 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        // An example command will be run in autonomous
-        // return autoChooser.getSelected();
-        return null;
+        return autoChooser.getSelected();
     }
 
     public Command shootFuel() {
@@ -115,23 +103,13 @@ public class RobotContainer {
     }
 
     public Command extendToL1() {
-        // return climb.climbTo(CLIMB_SETPOINT.L1)
-        // .andThen(() -> {StateMachine.getInstance().climb = ClimbState.EXTENDED_TO_L1;});
-        return null;
+        return climb.climbTo(CLIMB_SETPOINT.L1)
+        .andThen(() -> {StateMachine.getInstance().climb = ClimbState.EXTENDED_TO_L1;});
     }
 
     public Command extendToIdle() {
-        // return climb.climbTo(CLIMB_SETPOINT.L1)
-        // .andThen(() -> {StateMachine.getInstance().climb = ClimbState.EXTENDED_TO_L1;});
-        return null;
-    }    
-    
-    public Command enableHubAutoAim() {
-        return new InstantCommand(() -> {StateMachine.getInstance().turret = TurretState.HUB;}, swerve);
-    }
-
-    public Command disableAutoAim() {
-        return new InstantCommand(() -> {StateMachine.getInstance().turret = TurretState.NONE;}, swerve);
+        return climb.climbTo(CLIMB_SETPOINT.L1)
+        .andThen(() -> {StateMachine.getInstance().climb = ClimbState.EXTENDED_TO_L1;});
     }
 
     public Command alignClimbLeft() {
@@ -142,19 +120,21 @@ public class RobotContainer {
                 return swerve.autoAlign(CLIMB_MOVEMENT_SP.RED_LEFT);
             }
         } else {
-            return swerve.autoAlign(CLIMB_MOVEMENT_SP.RED_LEFT);
+            return new WaitCommand(1).
+            andThen(() -> DriverStation.reportWarning("CANNOT GET THE ALLIANCE, AUTOALIGN WILL NOT WORK", false));        
         }
     }
 
     public Command alignClimbRight() {
         if (DriverStation.getAlliance().isPresent()) {
             if (DriverStation.getAlliance().get() == Alliance.Blue) {
-                return swerve.autoAlign(CLIMB_MOVEMENT_SP.BLUE_LEFT);
+                return swerve.autoAlign(CLIMB_MOVEMENT_SP.BLUE_RIGHT);
             } else {
-                return swerve.autoAlign(CLIMB_MOVEMENT_SP.RED_LEFT);
+                return swerve.autoAlign(CLIMB_MOVEMENT_SP.RED_RIGHT);
             }
         } else {
-            return new WaitCommand(1);
+            return new WaitCommand(1).
+            andThen(() -> DriverStation.reportWarning("CANNOT GET THE ALLIANCE, AUTOALIGN WILL NOT WORK", false));
         }
     }
 }
