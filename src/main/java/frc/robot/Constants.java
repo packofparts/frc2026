@@ -71,9 +71,9 @@ public final class Constants {
 
     public static class Indexer {
         public static final MotorConfig MOTOR_CONFIG = new MotorConfig(30, manipulatorLoop, 25, false, Mode.COAST);
-        public static final MotorConfig SPINDEXER_CONFIG = new MotorConfig(31, manipulatorLoop, 25, false, Mode.BRAKE);
-        public static final int BEAMBREAK_ID = 3;
-        public static final double SPEED = 0.65; // adjust as necessary
+        public static final MotorConfig SPINDEXER_CONFIG = new MotorConfig(31, "hi", 25, false, Mode.BRAKE);
+        public static final int BEAMBREAK_ID = 0;
+        public static final double SPEED = 1.0; // adjust as necessary
     }
 
     public static class Turret {

@@ -28,7 +28,7 @@ public class Indexer extends SubsystemBase {
 
     private Indexer() {
         spindexerMotor = Constants.Indexer.MOTOR_CONFIG.createTalon();
-        handoffMotor = Constants.Indexer.MOTOR_CONFIG.createTalon();
+        handoffMotor = Constants.Indexer.SPINDEXER_CONFIG.createTalon();
         beamBreak = new DigitalInput(Constants.Indexer.BEAMBREAK_ID);
     }
 
