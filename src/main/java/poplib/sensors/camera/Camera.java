@@ -8,6 +8,7 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.MultiTargetPNPResult;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -36,8 +37,74 @@ public class Camera {
         this.config = config;
         camera = new PhotonCamera(config.cameraName);
         layout = AprilTagFieldLayout.loadField(config.aprilTagField);
-        poseEstimator = new PhotonPoseEstimator(layout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, config.cameraToRobot);
+        poseEstimator = new PhotonPoseEstimator(layout, config.cameraToRobot);
         poseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
+    }
+
+    public Optional<Double> getCameraRotOffset() {
+        if (!camera.isConnected()) {
+            DriverStation.reportError("Camera named: " + config.cameraName + " is not connected!!!!!!!!", false);
+            // the above code should save to the log file that you can view in the DS Log Viewer
+            return Optional.empty();
+        }
+        Optional<PhotonTrackedTarget> target = Optional.empty();
+        for (PhotonPipelineResult result : camera.getAllUnreadResults()) {
+            PhotonTrackedTarget curr_target = result.getBestTarget();
+            if (target.isEmpty()) {
+                target = Optional.of(curr_target);
+            } else if (curr_target.getPoseAmbiguity() < target.get().getPoseAmbiguity()) {
+                target = Optional.of(curr_target); //yes ik this is repeated code idc tho
+            }
+        }
+        if (target.isPresent()) {
+            return Optional.of(target.get().getYaw());
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<Transform3d> getCameraDiffs(int targetID) {
+        if (!camera.isConnected()) {
+            DriverStation.reportError("Camera named: " + config.cameraName + " is not connected!!!!!!!!", false);
+            // the above code should save to the log file that you can view in the DS Log Viewer
+            return Optional.empty();
+        }
+        Optional<PhotonTrackedTarget> target = Optional.empty();
+        for (PhotonPipelineResult result : camera.getAllUnreadResults()) {
+            if (result.hasTargets()) {
+                PhotonTrackedTarget curr_target = result.getBestTarget();
+                if (target.isEmpty()) {
+                    target = Optional.of(curr_target);
+                } else if (curr_target.getPoseAmbiguity() < target.get().getPoseAmbiguity()) {
+                    target = Optional.of(curr_target); //yes ik this is repeated code idc tho
+                }
+            }
+        }
+        if (target.isPresent() && target.get().fiducialId == targetID) {
+            return Optional.of(target.get().getBestCameraToTarget());
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<Transform3d> getMultiTagCamPos() {
+        if (!camera.isConnected()) {
+            DriverStation.reportError("Camera named: " + config.cameraName + " is not connected!!!!!!!!", false);
+            // the above code should save to the log file that you can view in the DS Log Viewer
+            return Optional.empty();
+        }
+        Optional<MultiTargetPNPResult> target = Optional.empty();
+        for (PhotonPipelineResult result : camera.getAllUnreadResults()) {
+            var curr_target = result.getMultiTagResult();
+            if (curr_target.isPresent()) {
+                target = curr_target;
+            }
+        }
+        if (target.isPresent()) {
+            return Optional.of(target.get().estimatedPose.best);
+        } else {
+            return Optional.empty();
+        }
     }
 
     public Optional<Pose2d> relativeDistanceFromCameraToAprilTag() {

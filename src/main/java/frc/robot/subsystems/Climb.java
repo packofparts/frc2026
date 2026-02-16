@@ -16,7 +16,6 @@ public class Climb extends SubsystemBase {
   private TalonFX climbMotor;
   private static Climb instance;
   private TunableNumber setpoint;
-  private double error;
   private final PositionDutyCycle position;
 
    public static Climb getInstance() {
@@ -35,7 +34,7 @@ public class Climb extends SubsystemBase {
   }
 
   public Command setSetpoint(CLIMB_SETPOINT climbSetpointGiven) {
-    return runOnce(() -> {this.setpoint.setDefault(climbSetpointGiven.getHi());});
+    return runOnce(() -> {this.setpoint.setDefault(climbSetpointGiven.getSetpoint());});
   }
 
   public boolean centerAtSetpoint() {
