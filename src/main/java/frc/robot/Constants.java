@@ -96,7 +96,7 @@ public final class Constants {
 
     public static class Flywheel {
         public static final boolean TUNING_MODE = true;
-        public static final MotorConfig leadConfig = new MotorConfig(42, "rio", 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
+        public static final MotorConfig leadConfig = new MotorConfig(42, manipulatorLoop, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
     }
 
     public static class Climb {
@@ -133,7 +133,7 @@ public final class Constants {
             return config;
         } 
     }
-    
+
     public static class AutoAlign {
         public static final CameraConfig alignConfig = new CameraConfig("climbCamera", new Transform3d(), 0, 0, StdDevStrategy.AMBIGUITY, AprilTagFields.k2026RebuiltWelded);
         

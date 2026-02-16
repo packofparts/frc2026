@@ -37,14 +37,13 @@ public class Camera {
         this.config = config;
         camera = new PhotonCamera(config.cameraName);
         layout = AprilTagFieldLayout.loadField(config.aprilTagField);
-        poseEstimator = new PhotonPoseEstimator(layout, config.cameraToRobot);
+        poseEstimator = new PhotonPoseEstimator(layout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, config.cameraToRobot);
         poseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
     }
 
     public Optional<Double> getCameraRotOffset() {
         if (!camera.isConnected()) {
             DriverStation.reportError("Camera named: " + config.cameraName + " is not connected!!!!!!!!", false);
-            // the above code should save to the log file that you can view in the DS Log Viewer
             return Optional.empty();
         }
         Optional<PhotonTrackedTarget> target = Optional.empty();
@@ -53,7 +52,7 @@ public class Camera {
             if (target.isEmpty()) {
                 target = Optional.of(curr_target);
             } else if (curr_target.getPoseAmbiguity() < target.get().getPoseAmbiguity()) {
-                target = Optional.of(curr_target); //yes ik this is repeated code idc tho
+                target = Optional.of(curr_target);
             }
         }
         if (target.isPresent()) {
@@ -66,7 +65,6 @@ public class Camera {
     public Optional<Transform3d> getCameraDiffs(int targetID) {
         if (!camera.isConnected()) {
             DriverStation.reportError("Camera named: " + config.cameraName + " is not connected!!!!!!!!", false);
-            // the above code should save to the log file that you can view in the DS Log Viewer
             return Optional.empty();
         }
         Optional<PhotonTrackedTarget> target = Optional.empty();
@@ -76,7 +74,7 @@ public class Camera {
                 if (target.isEmpty()) {
                     target = Optional.of(curr_target);
                 } else if (curr_target.getPoseAmbiguity() < target.get().getPoseAmbiguity()) {
-                    target = Optional.of(curr_target); //yes ik this is repeated code idc tho
+                    target = Optional.of(curr_target);
                 }
             }
         }
@@ -90,7 +88,6 @@ public class Camera {
     public Optional<Transform3d> getMultiTagCamPos() {
         if (!camera.isConnected()) {
             DriverStation.reportError("Camera named: " + config.cameraName + " is not connected!!!!!!!!", false);
-            // the above code should save to the log file that you can view in the DS Log Viewer
             return Optional.empty();
         }
         Optional<MultiTargetPNPResult> target = Optional.empty();
@@ -110,7 +107,6 @@ public class Camera {
     public Optional<Pose2d> relativeDistanceFromCameraToAprilTag() {
         if (!camera.isConnected()) {
             DriverStation.reportError("Camera named: " + config.cameraName + " is not connected!!!!!!!!", false);
-            // the above code should save to the log file that you can view in the DS Log Viewer
             return Optional.empty();
         }
         ArrayList<PhotonTrackedTarget> poses = new ArrayList<>();
