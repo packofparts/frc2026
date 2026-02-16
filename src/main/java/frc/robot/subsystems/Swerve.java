@@ -43,6 +43,7 @@ public class Swerve extends VisionBaseSwerve{
     private Field2d tester;
     private PIDController rot_pid;
     private Optional<Transform3d> save;
+    private int climbTagToUse;
 
     public static Swerve getInstance() {
         if (instance == null) {
@@ -88,17 +89,19 @@ public class Swerve extends VisionBaseSwerve{
         climbCam = new Camera(Constants.AutoAlign.alignConfig);
         tester = new Field2d();
         rot_pid = new PIDController(0.15, 0, 0);
-        y_pid = new PIDController(0.15, 0, 0);
-        alignRot_pid = new PIDController(0.15, 0, 0);
+        y_pid = new PIDController(3, 0, 0);
+        alignRot_pid = new PIDController(0.1, 0, 0);
         save = Optional.empty();
+        climbTagToUse = 15;
     }
 
+
     public Command autoAlign(CLIMB_MOVEMENT_SP sp) {
-        return 
-        run(() -> driveRobotOriented(new Translation2d(0,0), -getRotAlignPID(sp))).
+        return runOnce(() -> climbTagToUse = sp.getTag()).andThen(
+        (run(() -> driveRobotOriented(new Translation2d(0,0), -getRotAlignPID(sp))).
         until(() -> boolCheckForRot(sp)).
         andThen(run(() -> driveRobotOriented(new Translation2d(0, getYAlignPID(sp)), 0)).
-        until(() -> boolCheckForY(sp)));
+        until(() -> boolCheckForY(sp)))).raceWith(new WaitCommand(10)));
     }
     
     public double getRotAlignPID(CLIMB_MOVEMENT_SP SP) {
@@ -119,7 +122,9 @@ public class Swerve extends VisionBaseSwerve{
     public double getYAlignPID(CLIMB_MOVEMENT_SP SP) {
         double y = save.get().getY();
         System.out.println("more goog news");
-        return y_pid.calculate(y, SP.getY());
+        double adj = -y_pid.calculate(y, SP.getY());
+        SmartDashboard.putNumber("the goog news", adj);
+        return adj;
     }
 
     public Boolean boolCheckForY(CLIMB_MOVEMENT_SP SP) {
@@ -163,7 +168,7 @@ public class Swerve extends VisionBaseSwerve{
         
 
         SmartDashboard.putData("test field", tester);
-        var hi = climbCam.getCameraDiffs(15);
+        var hi = climbCam.getCameraDiffs(climbTagToUse);
         if (hi.isPresent()) {
             save = hi;
         }

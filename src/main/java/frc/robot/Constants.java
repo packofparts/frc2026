@@ -142,22 +142,25 @@ public final class Constants {
         public static final CameraConfig alignConfig = new CameraConfig("climbCamera", new Transform3d(), 0, 0, StdDevStrategy.AMBIGUITY, AprilTagFields.k2026RebuiltWelded);
         
         public enum CLIMB_MOVEMENT_SP {
-            BLUE_LEFT(0,0),
-            BLUE_RIGHT(0,0),
-            RED_LEFT(0.321,-90),
-            RED_RIGHT(0,0);
+            BLUE_LEFT(0.321, 31),
+            BLUE_RIGHT(-.321, 31),
+            RED_LEFT(0.321, 15),
+            RED_RIGHT(-0.321, 15);
             private double y;
-            private double rot;
+            private int tag;
 
-            private CLIMB_MOVEMENT_SP(double y, double rot) {
+            private CLIMB_MOVEMENT_SP(double y, int tag) {
             this.y = y;
-            this.rot = rot;
+            this.tag = tag;
             }
             public double getY() {
                 return y;
             }
             public double getRot() {
-                return rot;
+                return -90;
+            }
+            public int getTag() {
+                return tag;
             }
         }
     }
