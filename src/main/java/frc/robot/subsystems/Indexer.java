@@ -28,7 +28,7 @@ public class Indexer extends SubsystemBase {
 
     private Indexer() {
         spindexerMotor = Constants.Indexer.MOTOR_CONFIG.createTalon();
-        handoffMotor = Constants.Indexer.SPINDEXER_CONFIG.createTalon();
+        handoffMotor = Constants.Indexer.HANDOFF_CONFIG.createTalon();
         beamBreak = new DigitalInput(Constants.Indexer.BEAMBREAK_ID);
     }
 
@@ -59,7 +59,8 @@ public class Indexer extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Spindexer Speed", spindexerMotor.get());
-        SmartDashboard.putNumber("Handoff Speed", spindexerMotor.get());
+        SmartDashboard.putNumber("Handoff Speed", handoffMotor.get());
+        SmartDashboard.putNumber("Handoff Voltage", handoffMotor.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putBoolean("Ball in Handoff", !beamBreak.get());
     }
 }
