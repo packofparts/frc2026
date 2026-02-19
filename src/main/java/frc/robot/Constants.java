@@ -29,7 +29,7 @@ import poplib.swerve.swerve_constants.SwerveModuleConstants;
 public final class Constants {
 
     public static final String swerveLoop = "cantBUS";
-    public static final String manipulatorLoop = "cantNotBus"; 
+    public static final String manipulatorLoop = "rio"; 
 
     public static class Swerve {
         static final SDSModules MODULE_TYPE = SDSModules.MK4iL3;
