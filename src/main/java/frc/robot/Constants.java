@@ -28,11 +28,11 @@ import poplib.swerve.swerve_constants.SwerveModuleConstants;
 
 public final class Constants {
 
-    public static final String swerveLoop = "cantBUS";
+    public static final String swerveLoop = "hi";
     public static final String manipulatorLoop = "rio"; 
 
     public static class Swerve {
-        static final SDSModules MODULE_TYPE = SDSModules.MK4iL3;
+        static final SDSModules MODULE_TYPE = SDSModules.MK4nL2;
         static final boolean TUNING_MODE = false;
         static final int SWERVE_CAN_ID_OFFSET = 5;      
 
@@ -41,10 +41,10 @@ public final class Constants {
         
         public static final SwerveModuleConstants[] SWERVE_MODULE_CONSTANTS = SwerveModuleConstants.generateConstants(
             new Rotation2d[] {
-                Rotation2d.fromDegrees(134.2),              // set offsets
-                Rotation2d.fromDegrees(32.4),           // set offsets
-                Rotation2d.fromDegrees(226.4),             // set offsets
-                Rotation2d.fromDegrees(348.8)              //  set offsets
+                Rotation2d.fromDegrees(7.29),              // set offsets
+                Rotation2d.fromDegrees(96.70),           // set offsets
+                Rotation2d.fromDegrees(245.12),             // set offsets
+                Rotation2d.fromDegrees(288.54)              //  set offsets
             },
             MODULE_TYPE, 
             TUNING_MODE, 
@@ -56,8 +56,8 @@ public final class Constants {
         public static final int PIGEON_ID = 19;
         public static final boolean GYRO_INVERSION = false;      // change if needed - gyro should be ccw+ and cw-
 
-        public static final double WHEEL_BASE =  edu.wpi.first.math.util.Units.inchesToMeters(23);
-        public static final double TRACK_WIDTH = edu.wpi.first.math.util.Units.inchesToMeters(23); 
+        public static final double WHEEL_BASE =  edu.wpi.first.math.util.Units.inchesToMeters(22);
+        public static final double TRACK_WIDTH = edu.wpi.first.math.util.Units.inchesToMeters(22); 
         public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
             new Translation2d(WHEEL_BASE / 2.0, TRACK_WIDTH / 2.0),
             new Translation2d(WHEEL_BASE / 2.0, -TRACK_WIDTH / 2.0),

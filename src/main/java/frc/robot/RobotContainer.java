@@ -62,6 +62,14 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+        controller.getDriverButton(XboxController.Button.kLeftBumper.value).onTrue(intake.runIntake()).onFalse(intake.stopIntake());
+        controller.getDriverButton(XboxController.Button.kRightBumper.value).onTrue(intake.reverseIntake()).onFalse(intake.stopIntake());
+        controller.getDriverButton(XboxController.Button.kStart.value).onTrue(swerve.resetGyroCommand());
+        controller.getDriverController().povUp().onTrue(extendToL1());
+        controller.getDriverController().povDown().onTrue(extendToIdle());
+        controller.getDriverController().povLeft().onTrue(alignClimbLeft());
+        controller.getDriverController().povRight().onTrue(alignClimbRight());
+
         controller.getOperatorTrigger(XboxController.Axis.kRightTrigger.value).onTrue(flywheel.updateSetpointCommand(1000)).onFalse(flywheel.updateSetpointCommand(0));
         controller.getOperatorTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(flywheel.updateSetpointCommand(-1000)).onFalse(flywheel.updateSetpointCommand(0));
 
@@ -74,11 +82,7 @@ public class RobotContainer {
         controller.getOperatorButton(XboxController.Button.kRightBumper.value).onTrue(intake.runIntake()).onFalse(intake.stopIntake());
         controller.getOperatorButton(XboxController.Button.kLeftBumper.value).onTrue(intake.reverseIntake()).onFalse(intake.stopIntake()); 
            
-        controller.getDriverController().povUp().onTrue(toggleToL1());
-        controller.getDriverButton(XboxController.Button.kStart.value).onTrue(swerve.resetGyroCommand());
 
-        controller.getDriverController().povLeft().onTrue(alignClimbLeft());
-        controller.getDriverController().povRight().onTrue(alignClimbRight());
     }
 
     /**
