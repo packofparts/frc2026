@@ -93,7 +93,7 @@ public class TeleopSwerveDrive extends Command {
         leftRight = ControllerMath.applyDeadband(leftRight, stickDeadBand);
 
         Translation2d translation = new Translation2d(forwardBack, leftRight);
-        if (XboxIO.getInstance().getDriverButton(XboxController.Button.kB.value).getAsBoolean()) robotOrientedToggle = !robotOrientedToggle;
+        // if (XboxIO.getInstance().getDriverButton(XboxController.Button.kB.value).getAsBoolean()) robotOrientedToggle = !robotOrientedToggle;
         if (robotOrientedToggle) {
             translation = new Translation2d(-forwardBack, -leftRight);
             swerve.driveRobotOriented(translation, 5*ControllerMath.cube(rot));

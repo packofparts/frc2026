@@ -34,7 +34,7 @@ public class Intake extends SubsystemBase {
      * @return the Command that runs the indexer
      */
     public Command runIntake() {
-        return run(() -> leadMotor.set(Constants.Intake.SPEED));
+        return runOnce(() -> leadMotor.set(Constants.Intake.SPEED));
     }
 
     /**
@@ -42,7 +42,7 @@ public class Intake extends SubsystemBase {
      * @return the Command that stops the indexer
      */
     public Command stopIntake() {
-        return run(() -> leadMotor.set(0.0));
+        return runOnce(() -> leadMotor.set(0.0));
     }
 
     /**
@@ -50,7 +50,7 @@ public class Intake extends SubsystemBase {
      * @return the Command that runs the indexer on reverse
      */
     public Command reverseIntake() {
-        return run(() -> leadMotor.set(-Constants.Intake.SPEED));
+        return runOnce(() -> leadMotor.set(-Constants.Intake.SPEED));
     }
 
     @Override

@@ -62,6 +62,8 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+        controller.getDriverTrigger(XboxController.Axis.kRightTrigger.value).onTrue(indexer.runSpindexer().andThen(indexer.runHandoff()).andThen(intake.runIntake())).onFalse(indexer.stopHandoff().andThen(indexer.stopSpindexer()).andThen(intake.stopIntake()));
+        controller.getDriverTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(indexer.reverseSpindexer().andThen(indexer.reverseHandoff()).andThen(intake.reverseIntake())).onFalse(indexer.stopHandoff().andThen(indexer.stopSpindexer()).andThen(intake.stopIntake()));
         controller.getDriverButton(XboxController.Button.kLeftBumper.value).onTrue(intake.runIntake()).onFalse(intake.stopIntake());
         controller.getDriverButton(XboxController.Button.kRightBumper.value).onTrue(intake.reverseIntake()).onFalse(intake.stopIntake());
         controller.getDriverButton(XboxController.Button.kStart.value).onTrue(swerve.resetGyroCommand());
@@ -80,7 +82,6 @@ public class RobotContainer {
         controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseHandoff()).onFalse(indexer.stopHandoff());    
         controller.getOperatorButton(XboxController.Button.kA.value).onTrue(indexer.runSpindexer()).onFalse(indexer.stopSpindexer());
         controller.getOperatorButton(XboxController.Button.kY.value).onTrue(indexer.reverseSpindexer()).onFalse(indexer.stopSpindexer());    
-
 
         controller.getOperatorButton(XboxController.Button.kRightBumper.value).onTrue(intake.runIntake()).onFalse(intake.stopIntake());
         controller.getOperatorButton(XboxController.Button.kLeftBumper.value).onTrue(intake.reverseIntake()).onFalse(intake.stopIntake()); 
