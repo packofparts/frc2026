@@ -62,10 +62,12 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        controller.getDriverTrigger(XboxController.Axis.kRightTrigger.value).onTrue(indexer.runSpindexer().andThen(indexer.runHandoff()).andThen(intake.runIntake())).onFalse(indexer.stopHandoff().andThen(indexer.stopSpindexer()).andThen(intake.stopIntake()));
-        controller.getDriverTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(indexer.reverseSpindexer().andThen(indexer.reverseHandoff()).andThen(intake.reverseIntake())).onFalse(indexer.stopHandoff().andThen(indexer.stopSpindexer()).andThen(intake.stopIntake()));
-        controller.getDriverButton(XboxController.Button.kLeftBumper.value).onTrue(intake.runIntake()).onFalse(intake.stopIntake());
-        controller.getDriverButton(XboxController.Button.kRightBumper.value).onTrue(intake.reverseIntake()).onFalse(intake.stopIntake());
+        controller.getDriverTrigger(XboxController.Axis.kRightTrigger.value).onTrue(enableAutoAim()).onFalse(disableAutoAim().andThen(stopFlushing()));
+        controller.getDriverTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(flushRobot()).onFalse(stopFlushing());
+
+        controller.getDriverButton(XboxController.Button.kRightBumper.value).onTrue(enableIntake()).onFalse(disableIntake().andThen(stopFlushing()));
+        controller.getDriverButton(XboxController.Button.kLeftBumper.value).onTrue(flushRobot()).onFalse(stopFlushing());
+
         controller.getDriverButton(XboxController.Button.kStart.value).onTrue(swerve.resetGyroCommand());
         controller.getDriverController().povUp().onTrue(extendToL1());
         controller.getDriverController().povDown().onTrue(extendToIdle());
@@ -109,6 +111,35 @@ public class RobotContainer {
 
     public Command toggleToL1() {
         return StateMachine.getInstance().climb == ClimbState.IDLE ? extendToL1() : extendToIdle();
+    }
+
+    public Command enableAutoAim() {
+        return new InstantCommand(() -> StateMachine.getInstance().enableAutoAim = true);
+    }
+
+    public Command disableAutoAim() {
+        return new InstantCommand(() -> StateMachine.getInstance().enableAutoAim = false);
+    }
+
+    public Command enableIntake() {
+        return new InstantCommand(() -> StateMachine.getInstance().intakeOnly = true);
+    }
+
+    public Command disableIntake() {
+        return new InstantCommand(() -> StateMachine.getInstance().intakeOnly = false);
+    }
+
+    public Command flushRobot() {
+        return indexer.reverseHandoff().
+        andThen(indexer.reverseSpindexer()).
+        andThen(() -> {System.out.println("hHIHIHIHIH");}).
+        andThen(intake.reverseIntake());
+    }
+
+    public Command stopFlushing() {
+        return indexer.stopHandoff().
+        andThen(indexer.stopSpindexer()).
+        andThen(intake.stopIntake());
     }
 
     public Command extendToL1() {

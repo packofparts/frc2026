@@ -69,7 +69,7 @@ public final class Constants {
     public static class Intake {
         public static final MotorConfig MOTOR_CONFIG = new MotorConfig(20, manipulatorLoop, 25, true, Mode.COAST);
         public static final FollowerConfig FOLLOWER_CONFIG = new FollowerConfig(MOTOR_CONFIG, true, 21);
-        public static final double SPEED = 0.5; 
+        public static final double SPEED = 0.75; 
     }
 
     public static class Indexer {

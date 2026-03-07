@@ -56,6 +56,10 @@ public class Indexer extends SubsystemBase {
         return runOnce(() -> handoffMotor.set(-Constants.Indexer.SPEED));
     }
 
+    public boolean ballInHandoff() {
+        return !beamBreak.get();
+    }
+
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Spindexer Speed", spindexerMotor.get());

@@ -5,13 +5,16 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.utils.HubTracker;
+import frc.robot.utils.StateMachine;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
+    private double timer;
 
     private final RobotContainer m_robotContainer;
 
@@ -55,6 +58,22 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         SmartDashboard.putBoolean("Hub Active:", HubTracker.isAllianceHubActive());
+        SmartDashboard.putBoolean("Intake Only", StateMachine.getInstance().intakeOnly);
+        SmartDashboard.putBoolean("AA", StateMachine.getInstance().enableAutoAim);
+        if (StateMachine.getInstance().intakeOnly) {
+            m_robotContainer.intake.runIntake().schedule();
+            //m_robotContainer.indexer.runSpindexer().schedule();
+        }
+        else if (StateMachine.getInstance().enableAutoAim) {
+            m_robotContainer.intake.runIntake().schedule();
+            if (m_robotContainer.controller.getDriverButton(XboxController.Button.kX.value).getAsBoolean()) { // sub as turretReady()
+                m_robotContainer.indexer.runSpindexer().schedule();
+                m_robotContainer.indexer.runHandoff().schedule();
+            } else {
+                m_robotContainer.indexer.stopSpindexer().schedule();
+                m_robotContainer.indexer.stopHandoff().schedule();
+            }
+        }
     }
 
     @Override
