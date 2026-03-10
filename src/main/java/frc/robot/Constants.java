@@ -28,7 +28,7 @@ import poplib.swerve.swerve_constants.SwerveModuleConstants;
 
 public final class Constants {
 
-    public static final String swerveLoop = "hi";
+    public static final String swerveLoop = "cantBUS";
     public static final String manipulatorLoop = "rio"; 
 
     public static class Swerve {
@@ -67,13 +67,13 @@ public final class Constants {
     }
 
     public static class Intake {
-        public static final MotorConfig MOTOR_CONFIG = new MotorConfig(20, manipulatorLoop, 25, true, Mode.COAST);
+        public static final MotorConfig MOTOR_CONFIG = new MotorConfig(20, swerveLoop, 25, true, Mode.COAST);
         public static final FollowerConfig FOLLOWER_CONFIG = new FollowerConfig(MOTOR_CONFIG, true, 21);
         public static final double SPEED = 0.75; 
     }
 
     public static class Indexer {
-        public static final MotorConfig MOTOR_CONFIG = new MotorConfig(30, manipulatorLoop, 25, true, Mode.COAST);
+        public static final MotorConfig MOTOR_CONFIG = new MotorConfig(30, swerveLoop, 25, true, Mode.COAST);
         public static final MotorConfig HANDOFF_CONFIG = new MotorConfig(31, manipulatorLoop, 25, true, Mode.COAST);
         public static final int BEAMBREAK_ID = 0;
         public static final double SPEED = 1.0; // adjust as necessary
@@ -97,13 +97,14 @@ public final class Constants {
     public static class Flywheel {
         public static final boolean TUNING_MODE = true;
         public static final MotorConfig leadConfig = new MotorConfig(42, manipulatorLoop, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
+        public static final FollowerConfig followConfig = new FollowerConfig(leadConfig, true, 43);
     }
 
     public static class Climb {
         public static final boolean TUNING_MODE = false;
         public enum CLIMB_SETPOINT {
             IDLE(0),
-            L1(20);
+            L1(37*360);
 
             private double climb;
 
@@ -114,7 +115,7 @@ public final class Constants {
                 return climb;
             }
         }
-        public static final MotorConfig MOTOR_CONFIG = new MotorConfig(50, manipulatorLoop, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE);
+        public static final MotorConfig MOTOR_CONFIG = new MotorConfig(50, swerveLoop, 40, true, new PIDConfig(0.1, 0, 0), Mode.BRAKE);
     }
 
 

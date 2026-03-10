@@ -82,12 +82,11 @@ public class TalonPivot extends Pivot {
 
     @Override
     public void periodic() {
+        log();
         if (usePID) {
+            System.out.println("hi");
             pid.updatePID(leadMotor);
-            leadMotor.setControl(position.withPosition(super.setpoint.get()).withFeedForward(super.ff.calculate(
-            Math.toRadians(leadMotor.getPosition().getValueAsDouble()),
-            0.0
-        )));
+            leadMotor.setControl(position.withPosition(super.setpoint.get()));
         }
     }
 

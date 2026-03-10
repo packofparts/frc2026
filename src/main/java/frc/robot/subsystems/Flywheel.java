@@ -16,6 +16,7 @@ public class Flywheel extends TalonFlywheel {
     public Flywheel() {
         super( 
             Constants.Flywheel.leadConfig, 
+            Constants.Flywheel.followConfig,
             "Flywheel", 
             Constants.Flywheel.TUNING_MODE,
             1.0);

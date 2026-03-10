@@ -143,13 +143,13 @@ public class RobotContainer {
     }
 
     public Command extendToL1() {
-        return climb.climbTo(CLIMB_SETPOINT.L1)
+        return climb.extendClimb()
         .andThen(() -> {StateMachine.getInstance().climb = ClimbState.EXTENDED_TO_L1;});
     }
 
     public Command extendToIdle() {
-        return climb.climbTo(CLIMB_SETPOINT.L1)
-        .andThen(() -> {StateMachine.getInstance().climb = ClimbState.EXTENDED_TO_L1;});
+        return climb.unextendClimb()
+        .andThen(() -> {StateMachine.getInstance().climb = ClimbState.IDLE;});
     }
 
     public Command alignClimbLeft() {
