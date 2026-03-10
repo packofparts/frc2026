@@ -4,16 +4,10 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.controls.PositionDutyCycle;
-import com.ctre.phoenix6.hardware.TalonFX;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Climb.CLIMB_SETPOINT;
 import poplib.control.FFConfig;
-import poplib.smart_dashboard.TunableNumber;
 import poplib.subsystems.pivot.TalonPivot;
 
 public class Climb extends TalonPivot {
