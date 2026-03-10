@@ -104,7 +104,7 @@ public final class Constants {
         public static final boolean TUNING_MODE = false;
         public enum CLIMB_SETPOINT {
             IDLE(0),
-            L1(370*360);
+            L1(74*360);
 
             private double climb;
 
