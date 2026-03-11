@@ -36,6 +36,14 @@ public class Indexer extends SubsystemBase {
         return runOnce(() -> spindexerMotor.set(Constants.Indexer.SPEED));
     }
 
+    public void runSpindexerNC() {
+        spindexerMotor.set(Constants.Indexer.SPEED);
+    }
+
+    public void stopSpindexerNC() {
+        spindexerMotor.set(0.0);
+    }
+
     public Command stopSpindexer() {
         return runOnce(() -> spindexerMotor.set(0.0));
     }
@@ -46,6 +54,14 @@ public class Indexer extends SubsystemBase {
 
     public Command runHandoff() {
         return runOnce(() -> handoffMotor.set(Constants.Indexer.SPEED));
+    }
+
+    public void runHandoffNC() {
+        handoffMotor.set(Constants.Indexer.SPEED);
+    }
+
+    public void stopHandoffNC() {
+        handoffMotor.set(0.0);
     }
 
     public Command stopHandoff() {

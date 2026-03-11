@@ -82,16 +82,18 @@ public final class Constants {
     public static class Turret {
         public static final MotorConfig ROT_CONFIG = new MotorConfig(40, manipulatorLoop, 25, false, PIDConfig.getPid(0.1, 0, 0, 0), Mode.BRAKE);
         public static final int LIMIT_SWITCH_ID = 4;
-        public static final int GEAR_RATIO = 1; //check
+        public static final int GEAR_RATIO = 100; //check
         public static final FFConfig FF_CONFIG = new FFConfig(0, 0, 0);
     }
 
     public static class Pivot {
         public static final boolean TUNING_MODE = false;
         public static final MotorConfig PIVOT_MOTOR = new MotorConfig(41, manipulatorLoop, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
-        public static final int LIMIT_SWITCH_ID = 5;
-        public static final double GEAR_RATIO = 1.0; // TODO: update with real gear ratio
-        public static final FFConfig FF = new FFConfig(0);  // TODO: tune feedforward values
+        public static final int LIMIT_SWITCH_ID = 1;
+        public static final double GEAR_RATIO = 17572.0 / 336.0;
+        public static final FFConfig FF = new FFConfig(0);
+        public static final double MIN_ANGLE = 55.55; 
+        public static final double MAX_ANGLE = 78.55;
     }
 
     public static class Flywheel {

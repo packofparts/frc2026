@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.MathUtil;
 import frc.robot.Constants;
 import poplib.subsystems.pivot.TalonPivot;
 
@@ -24,11 +25,17 @@ public class Pivot extends TalonPivot {
             "Pivot"
         );
     }
-    
 
     @Override
     public void periodic() {
         super.periodic();
+    }
+
+    public void setLaunchAngle(double angle) {
+        angle = MathUtil.clamp(angle, Constants.Pivot.MIN_ANGLE, Constants.Pivot.MAX_ANGLE);
+        double actualAngle = angle - Constants.Pivot.MIN_ANGLE; 
+        moveWrist(actualAngle, 0.1);
+
     }
 }
 
