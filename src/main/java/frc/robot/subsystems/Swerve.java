@@ -69,7 +69,7 @@ public class Swerve extends VisionBaseSwerve{
             this
         );
 
-        climbCam = new Camera(Constants.AutoAlign.alignConfig);
+        // climbCam = new Camera(Constants.AutoAlign.alignConfig);
         y_pid = new PIDController(3, 0, 0);
         alignRot_pid = new PIDController(0.1, 0, 0);
         cameraOutputBuffer = Optional.empty();
@@ -77,14 +77,17 @@ public class Swerve extends VisionBaseSwerve{
     }
 
 
+    public Command autoSwerve(double y) {
+        return run(() -> {driveRobotOriented(new Translation2d(0, y), 0);System.out.println("haha");}).
+        raceWith(new WaitCommand(1.25)).  //1.2 good place to stop
+        andThen(runOnce(() -> {driveRobotOriented(new Translation2d(0, 0), 0);System.out.println("hihihi");}));
+    }
+
     public Command autoAlign(CLIMB_MOVEMENT_SP sp) {
         return 
-        runOnce(() -> climbTagToUse = sp.getTag()).andThen(      
-
-
+        runOnce(() -> climbTagToUse = sp.getTag()).andThen(
         (run(() -> driveRobotOriented(new Translation2d(0,0), -getRotAlignPID(sp))).            
         until(() -> boolCheckForRot(sp)).
-
         andThen(run(() -> driveRobotOriented(new Translation2d(0, getYAlignPID(sp)), 0)).
         until(() -> boolCheckForY(sp)))).
         
@@ -123,9 +126,9 @@ public class Swerve extends VisionBaseSwerve{
     @Override
     public void periodic() {
         super.periodic();
-        var rawCameraOutput = climbCam.getCameraDiffs(climbTagToUse);
-        if (rawCameraOutput.isPresent()) {
-            cameraOutputBuffer = rawCameraOutput;
-        }
+        // var rawCameraOutput = climbCam.getCameraDiffs(climbTagToUse);
+        // if (rawCameraOutput.isPresent()) {
+        //     cameraOutputBuffer = rawCameraOutput;
+        // }
     }
 }

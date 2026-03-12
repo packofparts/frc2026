@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Constants.Climb.CLIMB_SETPOINT;
 import poplib.control.FFConfig;
@@ -28,6 +29,8 @@ public class Climb extends TalonPivot {
     new FFConfig(0), 
     Constants.Climb.TUNING_MODE, 
     "Climb");
+    leadMotor.setPosition(0);
+    super.usePID = false;
   }
 
   public Command setSetpoint(CLIMB_SETPOINT climbSetpointGiven) {
@@ -36,11 +39,13 @@ public class Climb extends TalonPivot {
 
 
   public Command extendClimb() {
-    return moveWrist(Constants.Climb.CLIMB_SETPOINT.L1.getSetpoint(), 0.1);
+    return runOnce(() -> {super.usePID = true;}).andThen(moveWrist(Constants.Climb.CLIMB_SETPOINT.L1.getSetpoint(), 0.1));
   }
 
   public Command unextendClimb() {
-    return moveWrist(Constants.Climb.CLIMB_SETPOINT.IDLE.getSetpoint(), 0.1);
+    return runOnce(() -> {super.usePID = true;}).andThen(moveWrist(Constants.Climb.CLIMB_SETPOINT.L15.getSetpoint(), 0.5)).
+    andThen(new WaitCommand(0.5)).
+    andThen(moveWrist(Constants.Climb.CLIMB_SETPOINT.IDLE.getSetpoint(), 0.1));
   }
 
   @Override

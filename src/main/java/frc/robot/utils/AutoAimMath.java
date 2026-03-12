@@ -2,6 +2,10 @@ package frc.robot.utils;
 
 import java.util.Optional;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants;
 
 public class AutoAimMath {
@@ -9,6 +13,9 @@ public class AutoAimMath {
     private static final double HOOP_HEIGHT = 2.5; 
     private static final double MIN_ANGLE = Constants.Pivot.MIN_ANGLE; 
     private static final double MAX_ANGLE = Constants.Pivot.MAX_ANGLE;
+    private static final double HUB_Y = 4.03;
+    private static final double RED_X = 12.52 - 0.5969;
+    private static final double BLUE_X = 4.02 - 0.5969;
     private static final double GRAVITY = 9.81; 
     private static final double[][] VELOS = {  // https://www.desmos.com/calculator/iblfijmk0u
         {
@@ -32,6 +39,28 @@ public class AutoAimMath {
             50
         }
     };
+
+    public static double getTurretSPAngle(Alliance ally, Pose2d turretPose, double robotAngle) {
+        double yDiff = HUB_Y - turretPose.getY();
+        double xDiff = 0;
+        if (ally == Alliance.Blue) {
+            xDiff = BLUE_X - turretPose.getX();
+        } else {
+            xDiff = RED_X - turretPose.getX();
+        }
+        return (Math.toDegrees(Math.atan(yDiff/xDiff)) - robotAngle) % 360;
+    }
+
+// passing 181 in
+
+    public static double getDistance(Alliance ally, Pose2d turretPose) {
+        double yPart = Math.pow(turretPose.getY() - HUB_Y, 2);
+        if (ally == Alliance.Blue) {
+            return Math.sqrt(Math.pow((turretPose.getX() - BLUE_X),2) + yPart);
+        } else {
+            return Math.sqrt(Math.pow((turretPose.getX() - RED_X),2) + yPart);
+        }
+    }
 
     public static double[] calculateLaunchAngle(double distance/* , Translation2d robotVel*/) {
         for (int i = 0; i < VELOS.length; i++) {

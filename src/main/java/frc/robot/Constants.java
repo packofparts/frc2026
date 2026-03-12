@@ -81,7 +81,7 @@ public final class Constants {
 
     public static class Turret {
         public static final MotorConfig ROT_CONFIG = new MotorConfig(40, manipulatorLoop, 25, false, PIDConfig.getPid(0.1, 0, 0, 0), Mode.BRAKE);
-        public static final int LIMIT_SWITCH_ID = 4;
+        public static final int LIMIT_SWITCH_ID = 2;
         public static final int GEAR_RATIO = 100; //check
         public static final FFConfig FF_CONFIG = new FFConfig(0, 0, 0);
     }
@@ -90,6 +90,7 @@ public final class Constants {
         public static final boolean TUNING_MODE = false;
         public static final MotorConfig PIVOT_MOTOR = new MotorConfig(41, manipulatorLoop, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
         public static final int LIMIT_SWITCH_ID = 1;
+        public static final int CANDI_ID = 44;
         public static final double GEAR_RATIO = 17572.0 / 336.0;
         public static final FFConfig FF = new FFConfig(0);
         public static final double MIN_ANGLE = 55.55; 
@@ -105,7 +106,8 @@ public final class Constants {
     public static class Climb {
         public static final boolean TUNING_MODE = false;
         public enum CLIMB_SETPOINT {
-            IDLE(0),
+            IDLE(2*360),
+            L15(32*360),
             L1(74*360);
 
             private double climb;
@@ -138,7 +140,7 @@ public final class Constants {
     }
 
     public static class AutoAlign {
-        public static final CameraConfig alignConfig = new CameraConfig("climbCamera", new Transform3d(), 0, 0, StdDevStrategy.AMBIGUITY, AprilTagFields.k2026RebuiltWelded);
+        // public static final CameraConfig alignConfig = new CameraConfig("climbCamera", new Transform3d(), 0, 0, StdDevStrategy.AMBIGUITY, AprilTagFields.k2026RebuiltWelded);
         
         public enum CLIMB_MOVEMENT_SP {
             BLUE_LEFT(0.321, 31),
