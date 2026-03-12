@@ -1,11 +1,13 @@
 package frc.robot.subsystems;
+import com.ctre.phoenix6.CANBus;
+import com.ctre.phoenix6.hardware.CANdi;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import poplib.subsystems.pivot.TalonPivot;
 
 public class Turret extends TalonPivot{
     public static Turret instance;
-
     public static Turret getInstance() {
         if (instance == null) {
             instance = new Turret();

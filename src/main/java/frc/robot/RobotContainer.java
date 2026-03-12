@@ -65,7 +65,7 @@ public class RobotContainer {
     private void configureBindings() {
         controller.getDriverTrigger(XboxController.Axis.kRightTrigger.value).onTrue(enableAutoAim()).onFalse(disableAutoAim().andThen(stopFlushing()));
         controller.getDriverTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(flushRobot()).onFalse(stopFlushing());
-
+    
         controller.getDriverButton(XboxController.Button.kRightBumper.value).onTrue(enableIntake()).onFalse(disableIntake().andThen(stopFlushing()));
         controller.getDriverButton(XboxController.Button.kLeftBumper.value).onTrue(flushRobot()).onFalse(stopFlushing());
 
@@ -117,7 +117,7 @@ public class RobotContainer {
     }
 
     public Command enableAutoAim() {
-        return new InstantCommand(() -> StateMachine.getInstance().enableAutoAim = true);
+        return indexer.runHandoff().andThen(new WaitCommand(0.5)).andThen(indexer.runSpindexer());
     }
 
     public Command disableAutoAim() {

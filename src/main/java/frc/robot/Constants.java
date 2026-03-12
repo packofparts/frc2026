@@ -73,8 +73,8 @@ public final class Constants {
     }
 
     public static class Indexer {
-        public static final MotorConfig MOTOR_CONFIG = new MotorConfig(30, swerveLoop, 25, true, Mode.COAST);
-        public static final MotorConfig HANDOFF_CONFIG = new MotorConfig(31, manipulatorLoop, 25, true, Mode.COAST);
+        public static final MotorConfig MOTOR_CONFIG = new MotorConfig(30, swerveLoop, 50, true, Mode.COAST);
+        public static final MotorConfig HANDOFF_CONFIG = new MotorConfig(31, manipulatorLoop, 60, true, Mode.COAST);
         public static final int BEAMBREAK_ID = 0;
         public static final double SPEED = 1.0; // adjust as necessary
     }
@@ -87,9 +87,9 @@ public final class Constants {
     }
 
     public static class Pivot {
-        public static final boolean TUNING_MODE = false;
-        public static final MotorConfig PIVOT_MOTOR = new MotorConfig(41, manipulatorLoop, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
-        public static final int LIMIT_SWITCH_ID = 1;
+        public static final boolean TUNING_MODE = true;
+        public static final MotorConfig PIVOT_MOTOR = new MotorConfig(41, manipulatorLoop, 40, false, new PIDConfig(0.6, 0, 0), Mode.BRAKE, new ConversionConfig());
+        public static final int LIMIT_SWITCH_ID = 1;  // 0 hub, 3 pass
         public static final int CANDI_ID = 44;
         public static final double GEAR_RATIO = 17572.0 / 336.0;
         public static final FFConfig FF = new FFConfig(0);
@@ -98,9 +98,22 @@ public final class Constants {
     }
 
     public static class Flywheel {
-        public static final boolean TUNING_MODE = true;
-        public static final MotorConfig leadConfig = new MotorConfig(42, manipulatorLoop, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
+        public static final boolean TUNING_MODE = true;   // 52 hub, 95 pass
+        public static final MotorConfig leadConfig = new MotorConfig(42, manipulatorLoop, 40, true, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
         public static final FollowerConfig followConfig = new FollowerConfig(leadConfig, true, 43);
+    }
+
+    public static enum ScoringSetpoints {
+        PASS(3, 95),
+        HUB(0, 55);
+
+        public double pivot;
+        public double flywheel;
+
+        private ScoringSetpoints(double pivot, double flywheel) {
+            this.flywheel = flywheel;
+            this.pivot = pivot;
+        }
     }
 
     public static class Climb {

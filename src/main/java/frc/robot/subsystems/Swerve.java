@@ -90,8 +90,6 @@ public class Swerve extends VisionBaseSwerve{
         until(() -> boolCheckForRot(sp)).
         andThen(run(() -> driveRobotOriented(new Translation2d(0, getYAlignPID(sp)), 0)).
         until(() -> boolCheckForY(sp)))).
-        
-
         raceWith(new WaitCommand(10)));
     }
     

@@ -64,16 +64,15 @@ public class Robot extends TimedRobot {
             m_robotContainer.intake.runIntake().schedule();
             //m_robotContainer.indexer.runSpindexer().schedule();
         }
-        else if (StateMachine.getInstance().enableAutoAim) {
-            // m_robotContainer.intake.runIntake().schedule();
-            if (m_robotContainer.controller.getDriverButton(XboxController.Button.kX.value).getAsBoolean()) { // sub as turretReady()
-                m_robotContainer.indexer.runSpindexerNC();
-                m_robotContainer.indexer.runHandoffNC();
-            } else {
-                m_robotContainer.indexer.stopSpindexerNC();
-                m_robotContainer.indexer.stopHandoffNC();
-            }
-        }
+        // else if (StateMachine.getInstance().enableAutoAim) {
+        //     // m_robotContainer.intake.runIntake().schedule();
+        //     if (m_robotContainer.controller.getDriverButton(XboxController.Button.kX.value).getAsBoolean()) { // sub as turretReady()
+        //         m_robotContainer.indexer.runSpindexerNC();
+        //     } else {
+        //         m_robotContainer.indexer.stopSpindexerNC();
+        //         m_robotContainer.indexer.stopHandoffNC();
+        //     }
+        // }
     }
 
     @Override
