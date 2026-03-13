@@ -73,6 +73,7 @@ public final class Constants {
         public static final boolean TUNING_MODE = false;
         public static final MotorConfig PIVOT_CONFIG = new MotorConfig(22, swerveLoop, 25, true, new PIDConfig(0.1, 0, 0), Mode.BRAKE);
         public static final FollowerConfig INTAKE_GUIDE_MOTOR = new FollowerConfig(MOTOR_CONFIG, false, 23);
+        public static final double DOWN = 10*360;
     }
 
     public static class Indexer {
