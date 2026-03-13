@@ -43,6 +43,6 @@ public abstract class Pivot extends SubsystemBase {
     public abstract boolean atSetpoint(double error, double setpoint);
 
     public void log() {
-        SmartDashboard.putNumber("Desired SP of " + getName(), setpoint.get()); 
+        SmartDashboard.putNumber(getName() + " SP", setpoint.get()); 
     }
 }

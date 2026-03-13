@@ -60,10 +60,10 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Hub Active:", HubTracker.isAllianceHubActive());
         SmartDashboard.putBoolean("Intake Only", StateMachine.getInstance().intakeOnly);
         SmartDashboard.putBoolean("AA", StateMachine.getInstance().enableAutoAim);
-        if (StateMachine.getInstance().intakeOnly) {
-            m_robotContainer.intake.runIntake().schedule();
-            //m_robotContainer.indexer.runSpindexer().schedule();
-        }
+        // if (StateMachine.getInstance().intakeOnly) {
+        //     m_robotContainer.intake.runIntake().schedule();
+        //     //m_robotContainer.indexer.runSpindexer().schedule();
+        // }
         // else if (StateMachine.getInstance().enableAutoAim) {
         //     // m_robotContainer.intake.runIntake().schedule();
         //     if (m_robotContainer.controller.getDriverButton(XboxController.Button.kX.value).getAsBoolean()) { // sub as turretReady()

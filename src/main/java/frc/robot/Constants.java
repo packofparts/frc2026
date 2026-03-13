@@ -70,6 +70,9 @@ public final class Constants {
         public static final MotorConfig MOTOR_CONFIG = new MotorConfig(20, swerveLoop, 25, true, Mode.COAST);
         public static final FollowerConfig FOLLOWER_CONFIG = new FollowerConfig(MOTOR_CONFIG, true, 21);
         public static final double SPEED = 0.75; 
+        public static final boolean TUNING_MODE = false;
+        public static final MotorConfig PIVOT_CONFIG = new MotorConfig(22, swerveLoop, 25, true, new PIDConfig(0.1, 0, 0), Mode.BRAKE);
+        public static final FollowerConfig INTAKE_GUIDE_MOTOR = new FollowerConfig(MOTOR_CONFIG, false, 23);
     }
 
     public static class Indexer {
@@ -104,7 +107,7 @@ public final class Constants {
     }
 
     public static enum ScoringSetpoints {
-        PASS(3, 95),
+        PASS(3*360, 95),
         HUB(0, 55);
 
         public double pivot;

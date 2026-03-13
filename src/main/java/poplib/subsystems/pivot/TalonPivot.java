@@ -82,9 +82,9 @@ public class TalonPivot extends Pivot {
     @Override
     public void log() {
         super.log();
-        SmartDashboard.putNumber("Position of " + getName(), leadMotor.getPosition().getValueAsDouble());
-        SmartDashboard.putNumber("Speed of " + getName(), leadMotor.get());
-        SmartDashboard.putNumber("Voltage of " + getName(), leadMotor.getMotorVoltage().getValueAsDouble());
+        SmartDashboard.putNumber(getName() + " Position", leadMotor.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber(getName() + " Speed", leadMotor.get());
+        SmartDashboard.putNumber(getName() + " Voltage", leadMotor.getMotorVoltage().getValueAsDouble());
     }
 
     @Override

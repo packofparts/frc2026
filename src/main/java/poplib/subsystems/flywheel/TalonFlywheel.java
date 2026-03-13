@@ -44,7 +44,10 @@ public class TalonFlywheel extends Flywheel {
     }
 
     public void log() {
-        SmartDashboard.putNumber(getName() + " velocity ", leadMotor.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber(getName() + " Velocity", leadMotor.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber(getName() + " SP", setpoint.get());
+        SmartDashboard.putNumber(getName() + " Speed", leadMotor.get());
+        SmartDashboard.putNumber(getName() + " Voltage", leadMotor.getMotorVoltage().getValueAsDouble());
     }
 
     public double getVelocity() {

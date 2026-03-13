@@ -10,12 +10,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import poplib.subsystems.pivot.TalonPivot;
 
-public class Intake extends SubsystemBase {
+public class Intake extends TalonPivot {
     private static Intake instance;
     private final TalonFX leadMotor;
     @SuppressWarnings("unused")
     private final TalonFX followerMotor;
+    @SuppressWarnings("unused")
+    private final TalonFX intakeGuideFollower;
     public static Intake getInstance() {
         if (instance == null) {
             instance = new Intake();
@@ -25,8 +28,17 @@ public class Intake extends SubsystemBase {
     }
 
     private Intake() {
+        super(
+            Constants.Intake.PIVOT_CONFIG, 
+            7, 
+            1, 
+            Constants.Pivot.FF, 
+            Constants.Intake.TUNING_MODE, 
+            "Intake"
+        );
         leadMotor = Constants.Intake.MOTOR_CONFIG.createTalon();
         followerMotor = Constants.Intake.FOLLOWER_CONFIG.createTalon();
+        intakeGuideFollower = Constants.Intake.INTAKE_GUIDE_MOTOR.createTalon();
     }
 
     /**
@@ -56,6 +68,6 @@ public class Intake extends SubsystemBase {
     @Override
     public void periodic() {
         super.periodic();
-        SmartDashboard.putNumber("Motor Speed", leadMotor.get());
+        SmartDashboard.putNumber("Intake Motor Speed", leadMotor.get());
     }
 }
