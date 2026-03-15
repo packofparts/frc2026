@@ -33,7 +33,7 @@ public final class Constants {
 
     public static class Swerve {
         static final SDSModules MODULE_TYPE = SDSModules.MK4nL2;
-        static final boolean TUNING_MODE = false;
+        static final boolean TUNING_MODE = true;
         static final int SWERVE_CAN_ID_OFFSET = 5;      
 
         static final MotorConfig DRIVE_CONFIG = new MotorConfig(swerveLoop, 60, false, PIDConfig.getPid(0.01, 0.2), Mode.BRAKE);
@@ -41,10 +41,10 @@ public final class Constants {
         
         public static final SwerveModuleConstants[] SWERVE_MODULE_CONSTANTS = SwerveModuleConstants.generateConstants(
             new Rotation2d[] {
-                Rotation2d.fromDegrees(7.29),              // set offsets
-                Rotation2d.fromDegrees(96.70),           // set offsets
-                Rotation2d.fromDegrees(245.12),             // set offsets
-                Rotation2d.fromDegrees(288.54)              //  set offsets
+                Rotation2d.fromDegrees(7.119141),              // set offsets
+                Rotation2d.fromDegrees(99.755859),           // set offsets
+                Rotation2d.fromDegrees(245.742188),             // set offsets
+                Rotation2d.fromDegrees(289.248047)              //  set offsets
             },
             MODULE_TYPE, 
             TUNING_MODE, 
