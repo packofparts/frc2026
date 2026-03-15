@@ -39,12 +39,13 @@ public class RobotContainer {
     Flywheel flywheel = Flywheel.getInstance();
     Swerve swerve = Swerve.getInstance();
     Indexer indexer = Indexer.getInstance();
-    Turret turret = Turret.getInstance();
+    // Turret turret = Turret.getInstance();
     Pivot pivot = Pivot.getInstance();
     Climb climb = Climb.getInstance();
     Intake intake = Intake.getInstance();
     private final SendableChooser<Command> autoChooser;
-    ScoringSetpoints ssp;
+    public static double f = ScoringSetpoints.HUB.getFlywheel();
+    public static double p = ScoringSetpoints.HUB.getPivot();
 
 
 
@@ -62,7 +63,6 @@ public class RobotContainer {
         // NamedCommands.registerCommand("Collect Fuel", collectFuel());
         // NamedCommands.registerCommand("Zero Pivot", pivot.reZero());
         // NamedCommands.registerCommand("Zero Turret", turret.reZero());
-        ssp = ScoringSetpoints.HUB;
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
         configureBindings();
@@ -70,9 +70,9 @@ public class RobotContainer {
 
     private void configureBindings() {
         controller.getDriverTrigger(XboxController.Axis.kRightTrigger.value).onTrue(shoot()).onFalse(stopShooting());
-        controller.getDriverTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(flushRobot()).onFalse(stopFlushing());
-        controller.getDriverButton(XboxController.Button.kA.value).onTrue(new InstantCommand(() -> {ssp = ScoringSetpoints.PASS;}));
-        controller.getDriverButton(XboxController.Button.kY.value).onTrue(new InstantCommand(() -> {ssp = ScoringSetpoints.HUB;}));
+        controller.getDriverTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(shootO()).onFalse(stopShooting());
+        controller.getDriverButton(XboxController.Button.kA.value).onTrue(new InstantCommand(() -> {StateMachine.getInstance().score = ScoringSetpoints.PASS;RobotContainer.f = ScoringSetpoints.PASS.getFlywheel(); RobotContainer.p = ScoringSetpoints.PASS.getPivot();}));
+        controller.getDriverButton(XboxController.Button.kY.value).onTrue(new InstantCommand(() -> {StateMachine.getInstance().score = ScoringSetpoints.HUB;RobotContainer.f = ScoringSetpoints.HUB.getFlywheel(); RobotContainer.p = ScoringSetpoints.HUB.getPivot();}));
 
         controller.getDriverButton(XboxController.Button.kRightBumper.value).onTrue(intake()).onFalse(stopIntaking());
         controller.getDriverButton(XboxController.Button.kLeftBumper.value).onTrue(flushRobot()).onFalse(stopFlushing());
@@ -87,7 +87,7 @@ public class RobotContainer {
         controller.getOperatorTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(flywheel.updateSetpointCommand(-100)).onFalse(flywheel.updateSetpointCommand(0));
 
         controller.getOperatorTrigger(XboxController.Axis.kLeftX.value).onTrue(pivot.moveWristBy(-controller.getRawAxis(XboxController.Axis.kLeftX.value, controller.getOperatorController()), 0.1));
-        controller.getOperatorTrigger(XboxController.Axis.kRightY.value).onTrue(turret.turnTurretBy(controller.getRawAxis(XboxController.Axis.kRightY.value, controller.getOperatorController()), 0.1));
+        // controller.getOperatorTrigger(XboxController.Axis.kRightY.value).onTrue(turret.turnTurretBy(controller.getRawAxis(XboxController.Axis.kRightY.value, controller.getOperatorController()), 0.1));
 
         controller.getOperatorButton(XboxController.Button.kX.value).onTrue(indexer.runHandoff()).onFalse(indexer.stopHandoff());
         controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseHandoff()).onFalse(indexer.stopHandoff());    
@@ -108,20 +108,28 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return swerve.autoSwerve(2);
+        return null;
     }
 
     public Command shoot() {
         // An example command will be run in autonomous
-        return pivot.moveWrist(ssp.pivot, 0.1).
-        alongWith(flywheel.updateSetpointCommand(ssp.flywheel, 1)).
+        return pivot.moveWrist(StateMachine.getInstance().score.getPivot(), 0.5).
+        alongWith(flywheel.updateSetpointCommand(StateMachine.getInstance().score.getFlywheel(), 1)).
+        alongWith(indexer.runHandoff()).
+        andThen(new WaitCommand(0.5)).
+        andThen(indexer.runSpindexer());
+    }
+
+    public Command shootO() {
+        return pivot.moveWrist(3*360, 0.5).
+        alongWith(flywheel.updateSetpointCommand(95, 1)).
         alongWith(indexer.runHandoff()).
         andThen(new WaitCommand(0.5)).
         andThen(indexer.runSpindexer());
     }
 
     public Command stopShooting() {
-        return pivot.moveWrist(0, 0.1).
+        return pivot.moveWrist(0, 0.5).
         alongWith(flywheel.updateSetpointCommand(0, 1)).
         alongWith(indexer.stopHandoff()).andThen(indexer.stopSpindexer());
     }

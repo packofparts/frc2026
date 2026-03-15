@@ -92,7 +92,7 @@ public class TalonPivot extends Pivot {
         log();
         if (usePID) {
             pid.updatePID(leadMotor);
-            leadMotor.setControl(position.withPosition(setpoint.get()));
+            leadMotor.setControl(position.withPosition(setpoint.get()).withFeedForward((ff.getKg() > 0 && setpoint.get() >= 2) ? ff.calculate(Math.toRadians(0), 0) : 0));
         }
     }
 

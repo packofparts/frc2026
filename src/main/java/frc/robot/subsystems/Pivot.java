@@ -29,6 +29,7 @@ public class Pivot extends TalonPivot {
             "Pivot"
         );
         limitSwitchFR = new CANdi(Constants.Pivot.CANDI_ID, new CANBus("rio"));
+        super.leadMotor.setPosition(0);
     }
 
     @Override

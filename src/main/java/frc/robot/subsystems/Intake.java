@@ -14,7 +14,7 @@ import poplib.subsystems.pivot.TalonPivot;
 
 public class Intake extends TalonPivot {
     private static Intake instance;
-    private final TalonFX leadMotor;
+    private final TalonFX leadSpinMotor;
     @SuppressWarnings("unused")
     private final TalonFX followerMotor;
     @SuppressWarnings("unused")
@@ -32,13 +32,14 @@ public class Intake extends TalonPivot {
             Constants.Intake.PIVOT_CONFIG, 
             7, 
             1, 
-            Constants.Pivot.FF, 
+            Constants.Intake.FF, 
             Constants.Intake.TUNING_MODE, 
             "Intake"
         );
-        leadMotor = Constants.Intake.MOTOR_CONFIG.createTalon();
+        leadSpinMotor = Constants.Intake.MOTOR_CONFIG.createTalon();
         followerMotor = Constants.Intake.FOLLOWER_CONFIG.createTalon();
         intakeGuideFollower = Constants.Intake.INTAKE_GUIDE_MOTOR.createTalon();
+        super.leadMotor.setPosition(0);
     }
 
     /**
@@ -46,7 +47,7 @@ public class Intake extends TalonPivot {
      * @return the Command that runs the indexer
      */
     public Command runIntake() {
-        return moveWrist(Constants.Intake.DOWN, 0.1).andThen(runOnce(() -> leadMotor.set(Constants.Intake.SPEED)));
+        return runOnce(() -> leadSpinMotor.set(Constants.Intake.SPEED)).andThen(() -> intakeGuideFollower.set(Constants.Intake.SPEED)).andThen(moveWrist(Constants.Intake.DOWN, 0.5));
     }
 
     /**
@@ -54,7 +55,7 @@ public class Intake extends TalonPivot {
      * @return the Command that stops the indexer
      */
     public Command stopIntake() {
-        return moveWrist(0, 0.1).andThen(runOnce(() -> leadMotor.set(0.0)));
+        return runOnce(() -> leadSpinMotor.set(0)).andThen(() -> intakeGuideFollower.set(0)).andThen(moveWrist(0, 0.5));
     }
 
     /**
@@ -62,12 +63,12 @@ public class Intake extends TalonPivot {
      * @return the Command that runs the indexer on reverse
      */
     public Command reverseIntake() {
-        return moveWrist(Constants.Intake.DOWN,0.1).alongWith(runOnce(() -> leadMotor.set(-Constants.Intake.SPEED)));
+        return runOnce(() -> leadSpinMotor.set(-Constants.Intake.SPEED)).andThen(() -> intakeGuideFollower.set(-Constants.Intake.SPEED)).andThen(moveWrist(Constants.Intake.DOWN, 0.5));
     }
 
     @Override
     public void periodic() {
         super.periodic();
-        SmartDashboard.putNumber("Intake Motor Speed", leadMotor.get());
+        SmartDashboard.putNumber("Intake Motor Speed", leadSpinMotor.get());
     }
 }

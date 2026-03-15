@@ -36,7 +36,7 @@ public final class Constants {
         static final boolean TUNING_MODE = false;
         static final int SWERVE_CAN_ID_OFFSET = 5;      
 
-        static final MotorConfig DRIVE_CONFIG = new MotorConfig(swerveLoop, 80, false, PIDConfig.getPid(0.01, 0.2), Mode.BRAKE);
+        static final MotorConfig DRIVE_CONFIG = new MotorConfig(swerveLoop, 60, false, PIDConfig.getPid(0.01, 0.2), Mode.BRAKE);
         static final MotorConfig ANGLE_CONFIG = new MotorConfig(swerveLoop, 25, false, PIDConfig.getPid(5.0), Mode.BRAKE);
         
         public static final SwerveModuleConstants[] SWERVE_MODULE_CONSTANTS = SwerveModuleConstants.generateConstants(
@@ -48,7 +48,7 @@ public final class Constants {
             },
             MODULE_TYPE, 
             TUNING_MODE, 
-            DRIVE_CONFIG, 
+            DRIVE_CONFIG,
             ANGLE_CONFIG,
             SWERVE_CAN_ID_OFFSET
         );
@@ -69,11 +69,12 @@ public final class Constants {
     public static class Intake {
         public static final MotorConfig MOTOR_CONFIG = new MotorConfig(20, swerveLoop, 25, true, Mode.COAST);
         public static final FollowerConfig FOLLOWER_CONFIG = new FollowerConfig(MOTOR_CONFIG, true, 21);
-        public static final double SPEED = 0.75; 
+        public static final double SPEED = 0.75;
         public static final boolean TUNING_MODE = false;
-        public static final MotorConfig PIVOT_CONFIG = new MotorConfig(22, swerveLoop, 25, true, new PIDConfig(0.1, 0, 0), Mode.BRAKE);
-        public static final FollowerConfig INTAKE_GUIDE_MOTOR = new FollowerConfig(MOTOR_CONFIG, false, 23);
-        public static final double DOWN = 10*360;
+        public static final MotorConfig PIVOT_CONFIG = new MotorConfig(22, "hi", 60, false, new PIDConfig(1, 0.0, 0.3), Mode.BRAKE);
+        public static final MotorConfig INTAKE_GUIDE_MOTOR = new MotorConfig(23, "hi", 25, false, Mode.COAST);
+        public static final double DOWN = 2*360;
+        public static final FFConfig FF = new FFConfig(0.7);
     }
 
     public static class Indexer {
@@ -91,8 +92,8 @@ public final class Constants {
     }
 
     public static class Pivot {
-        public static final boolean TUNING_MODE = true;
-        public static final MotorConfig PIVOT_MOTOR = new MotorConfig(41, manipulatorLoop, 40, false, new PIDConfig(0.6, 0, 0), Mode.BRAKE, new ConversionConfig());
+        public static final boolean TUNING_MODE = false;
+        public static final MotorConfig PIVOT_MOTOR = new MotorConfig(41, manipulatorLoop, 25, false, new PIDConfig(0.2, 0, 0), Mode.BRAKE, new ConversionConfig());
         public static final int LIMIT_SWITCH_ID = 1;  // 0 hub, 3 pass
         public static final int CANDI_ID = 44;
         public static final double GEAR_RATIO = 17572.0 / 336.0;
@@ -102,8 +103,8 @@ public final class Constants {
     }
 
     public static class Flywheel {
-        public static final boolean TUNING_MODE = true;   // 52 hub, 95 pass
-        public static final MotorConfig leadConfig = new MotorConfig(42, manipulatorLoop, 40, true, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
+        public static final boolean TUNING_MODE = false;   // 52 hub, 95 pass
+        public static final MotorConfig leadConfig = new MotorConfig(42, manipulatorLoop, 40, true, new PIDConfig(0.1, 0, 0.01), Mode.BRAKE, new ConversionConfig());
         public static final FollowerConfig followConfig = new FollowerConfig(leadConfig, true, 43);
     }
 
@@ -111,12 +112,20 @@ public final class Constants {
         PASS(3*360, 95),
         HUB(0, 55);
 
-        public double pivot;
-        public double flywheel;
+        private double pivot;
+        private double flywheel;
 
         private ScoringSetpoints(double pivot, double flywheel) {
-            this.flywheel = flywheel;
             this.pivot = pivot;
+            this.flywheel = flywheel;
+        }
+
+        public double getPivot() {
+            return this.pivot;
+        }
+
+        public double getFlywheel() {
+            return this.flywheel;
         }
     }
 
