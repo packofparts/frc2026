@@ -33,11 +33,11 @@ public final class Constants {
 
     public static class Swerve {
         static final SDSModules MODULE_TYPE = SDSModules.MK4nL2;
-        static final boolean TUNING_MODE = true;
+        static final boolean TUNING_MODE = false;
         static final int SWERVE_CAN_ID_OFFSET = 5;      
 
         static final MotorConfig DRIVE_CONFIG = new MotorConfig(swerveLoop, 60, false, PIDConfig.getPid(0.01, 0.2), Mode.BRAKE);
-        static final MotorConfig ANGLE_CONFIG = new MotorConfig(swerveLoop, 25, false, PIDConfig.getPid(5.0), Mode.BRAKE);
+        static final MotorConfig ANGLE_CONFIG = new MotorConfig(swerveLoop, 40, false, PIDConfig.getPid(5.0), Mode.BRAKE);
         
         public static final SwerveModuleConstants[] SWERVE_MODULE_CONSTANTS = SwerveModuleConstants.generateConstants(
             new Rotation2d[] {

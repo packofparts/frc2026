@@ -47,7 +47,7 @@ public class Intake extends TalonPivot {
      * @return the Command that runs the indexer
      */
     public Command runIntake() {
-        return runOnce(() -> leadSpinMotor.set(Constants.Intake.SPEED)).andThen(() -> intakeGuideFollower.set(Constants.Intake.SPEED)).andThen(moveWrist(Constants.Intake.DOWN, 0.5));
+        return runOnce(() -> leadSpinMotor.set(Constants.Intake.SPEED)).andThen(() -> intakeGuideFollower.set(0)).andThen(moveWrist(0, 0.5));
     }
 
     /**
@@ -63,7 +63,7 @@ public class Intake extends TalonPivot {
      * @return the Command that runs the indexer on reverse
      */
     public Command reverseIntake() {
-        return runOnce(() -> leadSpinMotor.set(-Constants.Intake.SPEED)).andThen(() -> intakeGuideFollower.set(-Constants.Intake.SPEED)).andThen(moveWrist(Constants.Intake.DOWN, 0.5));
+        return runOnce(() -> leadSpinMotor.set(-Constants.Intake.SPEED)).andThen(() -> intakeGuideFollower.set(0)).andThen(moveWrist(0, 0.5));
     }
 
     @Override

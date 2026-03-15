@@ -108,7 +108,14 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return null;
+        return flywheel.updateSetpointCommand(58).
+        alongWith(indexer.runHandoff()).
+        andThen(new WaitCommand(0.5)).
+        andThen(indexer.runSpindexer()).
+        andThen(intake.runIntake()).
+        andThen(new WaitCommand(12)).
+        andThen(intake.stopIntake()).
+        andThen(stopShooting());
     }
 
     public Command shoot() {
@@ -135,11 +142,11 @@ public class RobotContainer {
     }
 
     public Command intake() {
-        return intake.runIntake();
+        return intake.runIntake().andThen(indexer.reverseSpindexer());
     }
 
     public Command stopIntaking() {
-        return intake.stopIntake();
+        return intake.stopIntake().andThen(indexer.stopSpindexer());
     }
 
     public Command flushRobot() {
