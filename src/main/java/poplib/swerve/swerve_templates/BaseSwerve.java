@@ -71,8 +71,9 @@ abstract public class BaseSwerve extends SubsystemBase {
 
         SmartDashboard.putData("Field", field);
 
-        limiterX = new SlewRateLimiter(5);
-        limiterY = new SlewRateLimiter(5);
+        limiterX = new SlewRateLimiter(15);
+        limiterY = new SlewRateLimiter(15);
+        //dampening
         limiterRot = new SlewRateLimiter(4.5);
 
     }

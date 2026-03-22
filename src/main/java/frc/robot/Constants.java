@@ -33,17 +33,17 @@ public final class Constants {
 
     public static class Swerve {
         static final SDSModules MODULE_TYPE = SDSModules.MK4nL2;
-        static final boolean TUNING_MODE = false;
+        static final boolean TUNING_MODE = true;
         static final int SWERVE_CAN_ID_OFFSET = 5;      
 
-        static final MotorConfig DRIVE_CONFIG = new MotorConfig(swerveLoop, 60, false, PIDConfig.getPid(0.01, 0.2), Mode.BRAKE);
+        static final MotorConfig DRIVE_CONFIG = new MotorConfig(swerveLoop, 60, false, PIDConfig.getPid(0.01, 0.25), Mode.BRAKE);
         static final MotorConfig ANGLE_CONFIG = new MotorConfig(swerveLoop, 40, false, PIDConfig.getPid(5.0), Mode.BRAKE);
         
         public static final SwerveModuleConstants[] SWERVE_MODULE_CONSTANTS = SwerveModuleConstants.generateConstants(
             new Rotation2d[] {
                 Rotation2d.fromDegrees(7.119141),              // set offsets
                 Rotation2d.fromDegrees(99.755859),           // set offsets
-                Rotation2d.fromDegrees(245.742188),             // set offsets
+                Rotation2d.fromDegrees(142.734375),             // set offsets
                 Rotation2d.fromDegrees(289.248047)              //  set offsets
             },
             MODULE_TYPE, 
@@ -71,9 +71,9 @@ public final class Constants {
         public static final FollowerConfig FOLLOWER_CONFIG = new FollowerConfig(MOTOR_CONFIG, true, 21);
         public static final double SPEED = 0.75;
         public static final boolean TUNING_MODE = false;
-        public static final MotorConfig PIVOT_CONFIG = new MotorConfig(22, "hi", 60, false, new PIDConfig(1, 0.0, 0.3), Mode.BRAKE);
+        public static final MotorConfig PIVOT_CONFIG = new MotorConfig(22, "hi", 60, false, new PIDConfig(0.1, 0.0, 0.3), Mode.BRAKE);
         public static final MotorConfig INTAKE_GUIDE_MOTOR = new MotorConfig(23, "hi", 25, false, Mode.COAST);
-        public static final double DOWN = 2*360;
+        public static final double DOWN = 1.9*360.0;
         public static final FFConfig FF = new FFConfig(0.7);
     }
 
@@ -110,7 +110,7 @@ public final class Constants {
 
     public static enum ScoringSetpoints {
         PASS(3*360, 95),
-        HUB(0, 55);
+        HUB(0, 58);
 
         private double pivot;
         private double flywheel;

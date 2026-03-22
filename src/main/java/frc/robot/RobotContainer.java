@@ -41,7 +41,7 @@ public class RobotContainer {
     Indexer indexer = Indexer.getInstance();
     // Turret turret = Turret.getInstance();
     Pivot pivot = Pivot.getInstance();
-    Climb climb = Climb.getInstance();
+    // Climb climb = Climb.getInstance();
     Intake intake = Intake.getInstance();
     private final SendableChooser<Command> autoChooser;
     public static double f = ScoringSetpoints.HUB.getFlywheel();
@@ -51,10 +51,34 @@ public class RobotContainer {
 
     public RobotContainer() {
         autoChooser = new SendableChooser<>();
-        autoChooser.addOption("Left Shoot", getAutonomousCommand()); 
-        autoChooser.addOption("Right Shoot", getAutonomousCommand());
-        autoChooser.addOption("Middle Shoot and Climb", getAutonomousCommand());
-        autoChooser.addOption("Middle Shoot", getAutonomousCommand());
+        autoChooser.addOption("Shoot", 
+        // swerve.autoSwerve(-1).
+        // raceWith(new WaitCommand(0.6)).
+        flywheel.updateSetpointCommand(58).
+        alongWith(indexer.runHandoff()).
+        andThen(new WaitCommand(0.5)).
+        andThen(indexer.runSpindexer()).
+        // andThen(intake.runIntakeAuto()).
+        andThen(new WaitCommand(12)).
+        // andThen(intake.stopIntake()).
+        andThen(stopShooting())); 
+
+        autoChooser.addOption("GOOOOOOOO", swerve.GOOOOOOOOOOOOOO());
+        autoChooser.addOption("Shoot And Move", 
+        //new WaitCommand(0.5).
+        swerve.autoSwerve(-2).
+        raceWith(new WaitCommand(0.6)).
+        andThen(new WaitCommand(1)).
+        andThen(flywheel.updateSetpointCommand(58)).
+        alongWith(indexer.runHandoff()).
+        andThen(new WaitCommand(0.5)).
+        andThen(indexer.runSpindexer()).
+        // andThen(intake.runIntakeAuto()).
+        andThen(new WaitCommand(10)).
+        // andThen(intake.stopIntake()).
+        andThen(stopShooting())); 
+
+        autoChooser.addOption("Dont Shoot", null);
 
         swerve.setDefaultCommand(new TeleopSwerveDrive(swerve, controller));
         // NamedCommands.registerCommand("Extend To L1", extendToL1());
@@ -74,12 +98,12 @@ public class RobotContainer {
         controller.getDriverButton(XboxController.Button.kA.value).onTrue(new InstantCommand(() -> {StateMachine.getInstance().score = ScoringSetpoints.PASS;RobotContainer.f = ScoringSetpoints.PASS.getFlywheel(); RobotContainer.p = ScoringSetpoints.PASS.getPivot();}));
         controller.getDriverButton(XboxController.Button.kY.value).onTrue(new InstantCommand(() -> {StateMachine.getInstance().score = ScoringSetpoints.HUB;RobotContainer.f = ScoringSetpoints.HUB.getFlywheel(); RobotContainer.p = ScoringSetpoints.HUB.getPivot();}));
 
-        controller.getDriverButton(XboxController.Button.kRightBumper.value).onTrue(intake()).onFalse(stopIntaking());
+        controller.getDriverButton(XboxController.Button.kRightBumper.value).onTrue(intake.dropDozer()).onFalse(intake.upDozer());
         controller.getDriverButton(XboxController.Button.kLeftBumper.value).onTrue(flushRobot()).onFalse(stopFlushing());
 
         controller.getDriverButton(XboxController.Button.kStart.value).onTrue(swerve.resetGyroCommand());
-        controller.getDriverController().povUp().onTrue(extendToL1());
-        controller.getDriverController().povDown().onTrue(extendToIdle());
+        // controller.getDriverController().povUp().onTrue(extendToL1());
+        // controller.getDriverController().povDown().onTrue(extendToIdle());
         // controller.getDriverController().povLeft().onTrue(alignClimbLeft());
         // controller.getDriverController().povRight().onTrue(alignClimbRight());
 
@@ -94,8 +118,8 @@ public class RobotContainer {
         controller.getOperatorButton(XboxController.Button.kA.value).onTrue(indexer.runSpindexer()).onFalse(indexer.stopSpindexer());
         controller.getOperatorButton(XboxController.Button.kY.value).onTrue(indexer.reverseSpindexer()).onFalse(indexer.stopSpindexer());    
 
-        controller.getOperatorButton(XboxController.Button.kRightBumper.value).onTrue(intake.runIntake()).onFalse(intake.stopIntake());
-        controller.getOperatorButton(XboxController.Button.kLeftBumper.value).onTrue(intake.reverseIntake()).onFalse(intake.stopIntake()); 
+        // controller.getOperatorButton(XboxController.Button.kRightBumper.value).onTrue(intake.runIntake()).onFalse(intake.stopIntake());
+        // controller.getOperatorButton(XboxController.Button.kLeftBumper.value).onTrue(intake.reverseIntake()).onFalse(intake.stopIntake()); 
 
         // controller.getOperatorButton(XboxController.Button.kStart.value).onTrue(pivot.reZero().alongWith(turret.reZero()));
            
@@ -108,14 +132,7 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return flywheel.updateSetpointCommand(58).
-        alongWith(indexer.runHandoff()).
-        andThen(new WaitCommand(0.5)).
-        andThen(indexer.runSpindexer()).
-        andThen(intake.runIntake()).
-        andThen(new WaitCommand(12)).
-        andThen(intake.stopIntake()).
-        andThen(stopShooting());
+        return autoChooser.getSelected();
     }
 
     public Command shoot() {
@@ -141,37 +158,37 @@ public class RobotContainer {
         alongWith(indexer.stopHandoff()).andThen(indexer.stopSpindexer());
     }
 
-    public Command intake() {
-        return intake.runIntake().andThen(indexer.reverseSpindexer());
-    }
+    // public Command intake() {
+    //     return intake.runIntake().andThen(indexer.reverseSpindexer());
+    // }
 
-    public Command stopIntaking() {
-        return intake.stopIntake().andThen(indexer.stopSpindexer());
-    }
+    // public Command stopIntaking() {
+    //     return intake.stopIntake().andThen(indexer.stopSpindexer());
+    // }
 
     public Command flushRobot() {
         return indexer.reverseHandoff().
         andThen(indexer.reverseSpindexer()).
-        andThen(flywheel.updateSetpointCommand(-50)).
-        andThen(intake.reverseIntake());
+        andThen(flywheel.updateSetpointCommand(-50));
+        // andThen(intake.reverseIntake());
     }
 
     public Command stopFlushing() {
         return indexer.stopHandoff().
         andThen(indexer.stopSpindexer()).
-        andThen(flywheel.updateSetpointCommand(0)).
-        andThen(intake.stopIntake());
+        andThen(flywheel.updateSetpointCommand(0));
+        // andThen(intake.stopIntake());
     }
 
-    public Command extendToL1() {
-        return climb.extendClimb()
-        .andThen(() -> {StateMachine.getInstance().climb = ClimbState.EXTENDED_TO_L1;});
-    }
+    // public Command extendToL1() {
+    //     return climb.extendClimb()
+    //     .andThen(() -> {StateMachine.getInstance().climb = ClimbState.EXTENDED_TO_L1;});
+    // }
 
-    public Command extendToIdle() {
-        return climb.unextendClimb()
-        .andThen(() -> {StateMachine.getInstance().climb = ClimbState.IDLE;});
-    }
+    // public Command extendToIdle() {
+    //     return climb.unextendClimb()
+    //     .andThen(() -> {StateMachine.getInstance().climb = ClimbState.IDLE;});
+    // }
 
     public Command alignClimbLeft() {
         if (DriverStation.getAlliance().isPresent()) {

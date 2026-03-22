@@ -88,6 +88,10 @@ public class Swerve extends VisionBaseSwerve{
     }
 
 
+    public Command GOOOOOOOOOOOOOO() {
+        return run(() -> {driveRobotOriented(new Translation2d(-2,0), 0);});
+    }
+
     public Command moveSwerveUsingPID(double x, double y, double rot) {
         return runOnce(() -> {x_pid.setSetpoint(field.getRobotPose().getX()+x); y_pid.setSetpoint(field.getRobotPose().getY()+y); alignRot_pid.setSetpoint(field.getRobotPose().getRotation().getDegrees() + rot);}).
         andThen(run(() -> {driveRobotOriented(new Translation2d(x_pid.calculate(field.getRobotPose().getX()), 
@@ -98,9 +102,9 @@ public class Swerve extends VisionBaseSwerve{
     }
 
     public Command autoSwerve(double y) {
-        return run(() -> {driveRobotOriented(new Translation2d(0, y), 0);System.out.println("haha");}).
-        raceWith(new WaitCommand(1.25)).  //1.2 good place to stop
-        andThen(runOnce(() -> {driveRobotOriented(new Translation2d(0, 0), 0);System.out.println("hihihi");}));
+        return run(() -> {driveRobotOriented(new Translation2d(0, y), 0);System.out.println("move u lil shi");}).
+        raceWith(new WaitCommand(0.4)).  //1.2 good place to stop
+        andThen(run(() -> {driveRobotOriented(new Translation2d(0, 0), 0);}));
     }
 
     public Command autoAlign(CLIMB_MOVEMENT_SP sp) {
