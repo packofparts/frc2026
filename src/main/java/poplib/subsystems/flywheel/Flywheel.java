@@ -37,7 +37,7 @@ public abstract class Flywheel extends SubsystemBase {
 
     public Command updateSetpointCommand(double setpoint, double maxError) {
         return run(() -> { 
-            this.setpoint.setDefault(convertWithRatio(maxError));
+            this.setpoint.setDefault(convertWithRatio(setpoint));
         }).until(() -> getError(convertWithRatio(setpoint)) < maxError);
     }
 }

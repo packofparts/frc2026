@@ -32,9 +32,6 @@ public class TalonElevator extends Elevator {
 
         position = new PositionDutyCycle(0.0).
         withSlot(leadMotor.getClosedLoopSlot().getValue());
-
-        // kG = new TunableNumber(subsystemName + " kG", ffConfig.G, tuningMode);
-        // ff = ffConfig.getElevatorFeedforward();
         usePID = true;
     }
 

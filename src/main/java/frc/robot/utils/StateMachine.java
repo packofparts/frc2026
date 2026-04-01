@@ -1,9 +1,14 @@
 package frc.robot.utils;
 
+import frc.robot.Constants.ScoringSetpoints;
+
 public class StateMachine {
     private static StateMachine instance;
     public TurretState turret;
     public ClimbState climb;
+    public boolean enableAutoAim;    
+    public boolean intakeOnly;
+    public ScoringSetpoints score;
 
     public static StateMachine getInstance() {
         if (instance == null) {
@@ -15,5 +20,8 @@ public class StateMachine {
     private StateMachine() {
         turret = TurretState.NONE;
         climb = ClimbState.IDLE;
+        enableAutoAim = false;
+        intakeOnly = false;
+        score = ScoringSetpoints.HUB;
     }
 }

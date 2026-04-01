@@ -32,23 +32,23 @@ public final class Constants {
     public static final String manipulatorLoop = "rio"; 
 
     public static class Swerve {
-        static final SDSModules MODULE_TYPE = SDSModules.MK4iL3;
-        static final boolean TUNING_MODE = false;
+        static final SDSModules MODULE_TYPE = SDSModules.MK4nL2;
+        static final boolean TUNING_MODE = true;
         static final int SWERVE_CAN_ID_OFFSET = 5;      
 
-        static final MotorConfig DRIVE_CONFIG = new MotorConfig(swerveLoop, 80, false, PIDConfig.getPid(0.01, 0.2), Mode.BRAKE);
-        static final MotorConfig ANGLE_CONFIG = new MotorConfig(swerveLoop, 25, false, PIDConfig.getPid(5.0), Mode.BRAKE);
+        static final MotorConfig DRIVE_CONFIG = new MotorConfig(swerveLoop, 60, false, PIDConfig.getPid(0.01, 0.25), Mode.BRAKE);
+        static final MotorConfig ANGLE_CONFIG = new MotorConfig(swerveLoop, 40, false, PIDConfig.getPid(5.0), Mode.BRAKE);
         
         public static final SwerveModuleConstants[] SWERVE_MODULE_CONSTANTS = SwerveModuleConstants.generateConstants(
             new Rotation2d[] {
-                Rotation2d.fromDegrees(134.2),              // set offsets
-                Rotation2d.fromDegrees(32.4),           // set offsets
-                Rotation2d.fromDegrees(226.4),             // set offsets
-                Rotation2d.fromDegrees(348.8)              //  set offsets
+                Rotation2d.fromDegrees(7.119141),              // set offsets
+                Rotation2d.fromDegrees(99.755859),           // set offsets
+                Rotation2d.fromDegrees(142.734375),             // set offsets
+                Rotation2d.fromDegrees(289.248047)              //  set offsets
             },
             MODULE_TYPE, 
             TUNING_MODE, 
-            DRIVE_CONFIG, 
+            DRIVE_CONFIG,
             ANGLE_CONFIG,
             SWERVE_CAN_ID_OFFSET
         );
@@ -56,8 +56,8 @@ public final class Constants {
         public static final int PIGEON_ID = 19;
         public static final boolean GYRO_INVERSION = false;      // change if needed - gyro should be ccw+ and cw-
 
-        public static final double WHEEL_BASE =  edu.wpi.first.math.util.Units.inchesToMeters(23);
-        public static final double TRACK_WIDTH = edu.wpi.first.math.util.Units.inchesToMeters(23); 
+        public static final double WHEEL_BASE =  edu.wpi.first.math.util.Units.inchesToMeters(22);
+        public static final double TRACK_WIDTH = edu.wpi.first.math.util.Units.inchesToMeters(22); 
         public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
             new Translation2d(WHEEL_BASE / 2.0, TRACK_WIDTH / 2.0),
             new Translation2d(WHEEL_BASE / 2.0, -TRACK_WIDTH / 2.0),
@@ -67,43 +67,74 @@ public final class Constants {
     }
 
     public static class Intake {
-        public static final MotorConfig MOTOR_CONFIG = new MotorConfig(20, manipulatorLoop, 25, true, Mode.COAST);
+        public static final MotorConfig MOTOR_CONFIG = new MotorConfig(20, swerveLoop, 25, true, Mode.COAST);
         public static final FollowerConfig FOLLOWER_CONFIG = new FollowerConfig(MOTOR_CONFIG, true, 21);
-        public static final double SPEED = 1.0; 
+        public static final double SPEED = 0.75;
+        public static final boolean TUNING_MODE = false;
+        public static final MotorConfig PIVOT_CONFIG = new MotorConfig(22, "hi", 60, false, new PIDConfig(0.1, 0.0, 0.3), Mode.BRAKE);
+        public static final MotorConfig INTAKE_GUIDE_MOTOR = new MotorConfig(23, "hi", 25, false, Mode.COAST);
+        public static final double DOWN = 1.9*360.0;
+        public static final FFConfig FF = new FFConfig(0.7);
     }
 
     public static class Indexer {
-        public static final MotorConfig MOTOR_CONFIG = new MotorConfig(30, manipulatorLoop, 25, false, Mode.COAST);
-        public static final MotorConfig HANDOFF_CONFIG = new MotorConfig(31, manipulatorLoop, 25, true, Mode.BRAKE);
+        public static final MotorConfig MOTOR_CONFIG = new MotorConfig(30, swerveLoop, 50, true, Mode.COAST);
+        public static final MotorConfig HANDOFF_CONFIG = new MotorConfig(31, manipulatorLoop, 60, true, Mode.COAST);
         public static final int BEAMBREAK_ID = 0;
         public static final double SPEED = 1.0; // adjust as necessary
     }
 
     public static class Turret {
         public static final MotorConfig ROT_CONFIG = new MotorConfig(40, manipulatorLoop, 25, false, PIDConfig.getPid(0.1, 0, 0, 0), Mode.BRAKE);
-        public static final int LIMIT_SWITCH_ID = 4;
-        public static final int GEAR_RATIO = 1; //check
+        public static final int LIMIT_SWITCH_ID = 2;
+        public static final int GEAR_RATIO = 100; //check
         public static final FFConfig FF_CONFIG = new FFConfig(0, 0, 0);
     }
 
     public static class Pivot {
         public static final boolean TUNING_MODE = false;
-        public static final MotorConfig PIVOT_MOTOR = new MotorConfig(41, manipulatorLoop, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
-        public static final int LIMIT_SWITCH_ID = 5;
-        public static final double GEAR_RATIO = 1.0; // TODO: update with real gear ratio
-        public static final FFConfig FF = new FFConfig(0);  // TODO: tune feedforward values
+        public static final MotorConfig PIVOT_MOTOR = new MotorConfig(41, manipulatorLoop, 25, false, new PIDConfig(0.2, 0, 0), Mode.BRAKE, new ConversionConfig());
+        public static final int LIMIT_SWITCH_ID = 1;  // 0 hub, 3 pass
+        public static final int CANDI_ID = 44;
+        public static final double GEAR_RATIO = 17572.0 / 336.0;
+        public static final FFConfig FF = new FFConfig(0);
+        public static final double MIN_ANGLE = 55.55; 
+        public static final double MAX_ANGLE = 78.55;
     }
 
     public static class Flywheel {
-        public static final boolean TUNING_MODE = true;
-        public static final MotorConfig leadConfig = new MotorConfig(42, manipulatorLoop, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE, new ConversionConfig());
+        public static final boolean TUNING_MODE = false;   // 52 hub, 95 pass
+        public static final MotorConfig leadConfig = new MotorConfig(42, manipulatorLoop, 40, true, new PIDConfig(0.1, 0, 0.01), Mode.BRAKE, new ConversionConfig());
+        public static final FollowerConfig followConfig = new FollowerConfig(leadConfig, true, 43);
+    }
+
+    public static enum ScoringSetpoints {
+        PASS(3*360, 95),
+        HUB(0, 58);
+
+        private double pivot;
+        private double flywheel;
+
+        private ScoringSetpoints(double pivot, double flywheel) {
+            this.pivot = pivot;
+            this.flywheel = flywheel;
+        }
+
+        public double getPivot() {
+            return this.pivot;
+        }
+
+        public double getFlywheel() {
+            return this.flywheel;
+        }
     }
 
     public static class Climb {
         public static final boolean TUNING_MODE = false;
         public enum CLIMB_SETPOINT {
-            IDLE(0),
-            L1(20);
+            IDLE(2*360),
+            L15(32*360),
+            L1(74*360);
 
             private double climb;
 
@@ -114,7 +145,7 @@ public final class Constants {
                 return climb;
             }
         }
-        public static final MotorConfig MOTOR_CONFIG = new MotorConfig(50, manipulatorLoop, 40, false, new PIDConfig(0.1, 0, 0), Mode.BRAKE);
+        public static final MotorConfig MOTOR_CONFIG = new MotorConfig(50, swerveLoop, 40, true, new PIDConfig(0.1, 0, 0), Mode.BRAKE);
     }
 
 
@@ -135,7 +166,7 @@ public final class Constants {
     }
 
     public static class AutoAlign {
-        public static final CameraConfig alignConfig = new CameraConfig("climbCamera", new Transform3d(), 0, 0, StdDevStrategy.AMBIGUITY, AprilTagFields.k2026RebuiltWelded);
+        // public static final CameraConfig alignConfig = new CameraConfig("climbCamera", new Transform3d(), 0, 0, StdDevStrategy.AMBIGUITY, AprilTagFields.k2026RebuiltWelded);
         
         public enum CLIMB_MOVEMENT_SP {
             BLUE_LEFT(0.321, 31),

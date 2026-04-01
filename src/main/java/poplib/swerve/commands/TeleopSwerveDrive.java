@@ -2,9 +2,11 @@ package poplib.swerve.commands;
 
 import poplib.controllers.ControllerMath;
 import poplib.controllers.io.IO;
+import poplib.controllers.io.XboxIO;
 import poplib.swerve.swerve_templates.BaseSwerve;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import java.util.function.Supplier;
 
@@ -19,6 +21,7 @@ public class TeleopSwerveDrive extends Command {
     private final Supplier<Double> rotSupplier;
     private final Supplier<Double> speedMultiplier;
     private final double stickDeadBand;
+    private boolean robotOrientedToggle = false;
 
     /**
      * Pass in default speed multiplier of 1.0
@@ -90,11 +93,16 @@ public class TeleopSwerveDrive extends Command {
         leftRight = ControllerMath.applyDeadband(leftRight, stickDeadBand);
 
         Translation2d translation = new Translation2d(forwardBack, leftRight);
-
-        swerve.drive(
-            translation,
-            ControllerMath.cube(rot),
-            DriverStation.getAlliance().get()
-        );
+        if (XboxIO.getInstance().getDriverButton(XboxController.Button.kB.value).getAsBoolean()) robotOrientedToggle = !robotOrientedToggle;
+        if (robotOrientedToggle) {
+            translation = new Translation2d(-forwardBack*3, -leftRight*3);
+            swerve.driveRobotOriented(translation, -5*ControllerMath.cube(rot));
+        } else {
+            swerve.drive(
+                translation,
+                -ControllerMath.cube(rot),
+                DriverStation.getAlliance().get()
+            );
+        }
     }
 }

@@ -33,27 +33,47 @@ public class Indexer extends SubsystemBase {
     }
 
     public Command runSpindexer() {
-        return run(() -> spindexerMotor.set(Constants.Indexer.SPEED));
+        return runOnce(() -> spindexerMotor.set(Constants.Indexer.SPEED));
+    }
+
+    public void runSpindexerNC() {
+        spindexerMotor.set(Constants.Indexer.SPEED);
+    }
+
+    public void stopSpindexerNC() {
+        spindexerMotor.set(0.0);
     }
 
     public Command stopSpindexer() {
-        return run(() -> spindexerMotor.set(0.0));
+        return runOnce(() -> spindexerMotor.set(0.0));
     }
 
     public Command reverseSpindexer() {
-        return run(() -> spindexerMotor.set(-Constants.Indexer.SPEED));
+        return runOnce(() -> spindexerMotor.set(-Constants.Indexer.SPEED/4.0));
     }
 
     public Command runHandoff() {
-        return run(() -> handoffMotor.set(Constants.Indexer.SPEED));
+        return runOnce(() -> handoffMotor.set(Constants.Indexer.SPEED));
+    }
+
+    public void runHandoffNC() {
+        handoffMotor.set(Constants.Indexer.SPEED);
+    }
+
+    public void stopHandoffNC() {
+        handoffMotor.set(0.0);
     }
 
     public Command stopHandoff() {
-        return run(() -> handoffMotor.set(0.0));
+        return runOnce(() -> handoffMotor.set(0.0));
     }
 
     public Command reverseHandoff() {
-        return run(() -> handoffMotor.set(-Constants.Indexer.SPEED));
+        return runOnce(() -> handoffMotor.set(-Constants.Indexer.SPEED));
+    }
+
+    public boolean ballInHandoff() {
+        return !beamBreak.get();
     }
 
     @Override

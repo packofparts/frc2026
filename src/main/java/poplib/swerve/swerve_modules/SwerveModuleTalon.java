@@ -1,5 +1,7 @@
 package poplib.swerve.swerve_modules;
 
+import static edu.wpi.first.units.Units.Volts;
+
 import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
@@ -44,6 +46,13 @@ public class SwerveModuleTalon extends SwerveModule {
     }
 
     @Override
+    public void log() {
+        super.log();
+        super.putNumber("Drive Voltage", getDriveVoltage().in(Volts));
+        super.putNumber("Drive Amps", driveMotor.getTorqueCurrent().getValueAsDouble());
+    }
+
+    @Override
     public void resetToAbsolute() {
         angleMotor.setPosition(getCanCoder().getRotations());
         lastAngle = getCanCoder();
@@ -51,7 +60,7 @@ public class SwerveModuleTalon extends SwerveModule {
 
     @Override
     protected void applySwerveModuleState(double velocityMPS, Rotation2d angle) {
-        driveMotor.setControl(drivePID.withVelocity(velocityMPS)); 
+        driveMotor.setControl(drivePID.withVelocity(velocityMPS).withEnableFOC(true)); 
         angleMotor.setControl(anglePID.withPosition(angle.getRotations()));
     }
 

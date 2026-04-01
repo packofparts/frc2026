@@ -6,6 +6,7 @@ import poplib.sensors.gyro.Gyro;
 import poplib.smart_dashboard.PIDTuning;
 import poplib.swerve.swerve_modules.SwerveModule;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -25,6 +26,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 abstract public class BaseSwerve extends SubsystemBase {
     private final SwerveModule[] swerveMods;
     private final Gyro gyro;
+    private SlewRateLimiter limiterX;
+    private SlewRateLimiter limiterY;
+    private SlewRateLimiter limiterRot;
 
     protected final Field2d field;
 
@@ -66,6 +70,12 @@ abstract public class BaseSwerve extends SubsystemBase {
         driveTuning = new PIDTuning("Swerve Drive",  swerveMods[0].swerveModuleConstants.driveConfig.pid,  swerveMods[0].swerveModuleConstants.swerveTuningMode);
 
         SmartDashboard.putData("Field", field);
+
+        limiterX = new SlewRateLimiter(15);
+        limiterY = new SlewRateLimiter(15);
+        //dampening
+        limiterRot = new SlewRateLimiter(4.5);
+
     }
 
     public void driveChassis(ChassisSpeeds chassisSpeeds) {
@@ -134,6 +144,9 @@ abstract public class BaseSwerve extends SubsystemBase {
     public void drive(Translation2d vector, double rot, Alliance color) {
         vector = vector.times(maxSpeed);
         rot *= maxAngularVelocity;
+        vector = new Translation2d(limiterX.calculate(vector.getX()), limiterY.calculate(vector.getY()));
+        // rot = limiterRot.calculate(rot);
+
 
         vector = vector.rotateBy(new Rotation2d(
             Units.Degrees.of(color == Alliance.Red ? 180 : 0).minus(gyro.getLatencyCompensatedAngle())
