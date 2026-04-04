@@ -73,7 +73,7 @@ public final class Constants {
         public static final boolean TUNING_MODE = false;
         public static final MotorConfig PIVOT_CONFIG = new MotorConfig(22, "hi", 60, false, new PIDConfig(0.1, 0.0, 0.3), Mode.BRAKE);
         public static final MotorConfig INTAKE_GUIDE_MOTOR = new MotorConfig(23, "hi", 25, false, Mode.COAST);
-        public static final double DOWN = 11.5*360.0;
+        public static final double DOWN = 11.7*360.0;
         public static final FFConfig FF = new FFConfig(0.7);
     }
 
@@ -81,7 +81,7 @@ public final class Constants {
         public static final MotorConfig MOTOR_CONFIG = new MotorConfig(30, swerveLoop, 50, false, Mode.COAST);
         public static final MotorConfig HANDOFF_CONFIG = new MotorConfig(31, manipulatorLoop, 60, true, Mode.COAST);
         public static final int BEAMBREAK_ID = 0;
-        public static final double SPEED = 1.0; // adjust as necessary
+        public static final double SPEED = 1; // adjust as necessary
     }
 
     public static class Turret {

@@ -29,6 +29,7 @@ import frc.robot.subsystems.Turret;
 import frc.robot.utils.ClimbState;
 import frc.robot.utils.StateMachine;
 import poplib.controllers.io.XboxIO;
+import poplib.math.MathUtil;
 import poplib.swerve.commands.TeleopSwerveDrive;
 
 
@@ -52,31 +53,17 @@ public class RobotContainer {
     public RobotContainer() {
         autoChooser = new SendableChooser<>();
         autoChooser.addOption("Shoot", 
-        // swerve.autoSwerve(-1).
-        // raceWith(new WaitCommand(0.6)).
-        flywheel.updateSetpointCommand(58).
-        alongWith(indexer.runHandoff()).
-        andThen(new WaitCommand(0.5)).
-        andThen(indexer.runSpindexer()).
-        // andThen(intake.runIntakeAuto()).
-        andThen(new WaitCommand(12)).
-        // andThen(intake.stopIntake()).
-        andThen(stopShooting())); 
+
+        intake().andThen(shootRight()).alongWith(new WaitCommand(10)).andThen(stopShooting())); 
+        autoChooser.addOption("Shoot and Move", 
+        intake().andThen(shootRight()).alongWith(new WaitCommand(4)).andThen(stopShooting()).
+        andThen(swerve.moveSwerveUsingPID(0, 4.1, 0)).
+        andThen(new WaitCommand(3)).
+        andThen(swerve.moveSwerveUsingPID(-0.2, -4.1, 0)).
+        andThen(shootRight()).alongWith(new WaitCommand(4)).andThen(stopShooting()));   // 3.8608
 
         autoChooser.addOption("GOOOOOOOO", swerve.GOOOOOOOOOOOOOO());
-        autoChooser.addOption("Shoot And Move", 
-        //new WaitCommand(0.5).
-        swerve.autoSwerve(-2).
-        raceWith(new WaitCommand(0.6)).
-        andThen(new WaitCommand(1)).
-        andThen(flywheel.updateSetpointCommand(58)).
-        alongWith(indexer.runHandoff()).
-        andThen(new WaitCommand(0.5)).
-        andThen(indexer.runSpindexer()).
-        // andThen(intake.runIntakeAuto()).
-        andThen(new WaitCommand(10)).
-        // andThen(intake.stopIntake()).
-        andThen(stopShooting())); 
+
 
         autoChooser.addOption("Dont Shoot", null);
 
@@ -96,13 +83,12 @@ public class RobotContainer {
         controller.getDriverTrigger(XboxController.Axis.kRightTrigger.value).onTrue(shootCenter()).onFalse(stopShooting());
         controller.getDriverTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(shootPass()).onFalse(stopShooting());
         controller.getDriverButton(XboxController.Button.kX.value).onTrue(shootRight()).onFalse(stopShooting());
-        controller.getDriverButton(XboxController.Button.kY.value).onTrue(intake.revSpin()).onFalse(intake.runSpin());
-
+        controller.getDriverButton(XboxController.Button.kY.value).onTrue(intake.upIntake()).onFalse(intake.downIntake());
         controller.getDriverButton(XboxController.Button.kRightBumper.value).onTrue(intake());
         controller.getDriverButton(XboxController.Button.kLeftBumper.value).onTrue(stopIntaking());
 
         controller.getDriverButton(XboxController.Button.kStart.value).onTrue(swerve.resetGyroCommand());
-        controller.getDriverController().povUp().onTrue(intake.upIntake()).onFalse(intake.downIntake());
+        controller.getDriverController().povUp().onTrue(intake.revSpin()).onFalse(intake.runSpin());
         // controller.getDriverController().povLeft().onTrue(alignClimbLeft());
         // controller.getDriverController().povRight().onTrue(alignClimbRight());
 
@@ -136,8 +122,8 @@ public class RobotContainer {
 
     public Command shootCenter() {
         // An example command will be run in autonomous
-        return pivot.moveWrist(0, 0.5).
-        alongWith(flywheel.updateSetpointCommand(58, 1)).
+        return pivot.moveWrist(0.5*360, 0.5).
+        alongWith(flywheel.updateSetpointCommand(65, 1)).
         andThen(indexer.runHandoff()).
         andThen(new WaitCommand(0.5)).
         andThen(indexer.runSpindexer());
@@ -145,7 +131,7 @@ public class RobotContainer {
 
     public Command shootPass() {
         return pivot.moveWrist(3*360, 0.5).
-        alongWith(flywheel.updateSetpointCommand(105, 1)).
+        alongWith(flywheel.updateSetpointCommand(105, 15)).
         alongWith(indexer.runHandoff()).
         andThen(new WaitCommand(0.5)).
         andThen(indexer.runSpindexer());
@@ -154,7 +140,7 @@ public class RobotContainer {
     
     public Command shootRight() {
         return pivot.moveWrist(0.5*360, 0.5).
-        alongWith(flywheel.updateSetpointCommand(57, 1)).
+        alongWith(flywheel.updateSetpointCommand(62, 1)).
         alongWith(indexer.runHandoff()).
         andThen(new WaitCommand(0.5)).
         andThen(indexer.runSpindexer());

@@ -66,7 +66,7 @@ public class Intake extends TalonPivot {
     }
 
     public Command upIntake() {
-        return moveWrist(8*360, 10);
+        return moveWrist(7*360, 10);
     }
 
     public Command downIntake() {
