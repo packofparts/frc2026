@@ -93,17 +93,16 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        controller.getDriverTrigger(XboxController.Axis.kRightTrigger.value).onTrue(shoot()).onFalse(stopShooting());
-        controller.getDriverTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(shootO()).onFalse(stopShooting());
-        controller.getDriverButton(XboxController.Button.kA.value).onTrue(new InstantCommand(() -> {StateMachine.getInstance().score = ScoringSetpoints.PASS;RobotContainer.f = ScoringSetpoints.PASS.getFlywheel(); RobotContainer.p = ScoringSetpoints.PASS.getPivot();}));
-        controller.getDriverButton(XboxController.Button.kY.value).onTrue(new InstantCommand(() -> {StateMachine.getInstance().score = ScoringSetpoints.HUB;RobotContainer.f = ScoringSetpoints.HUB.getFlywheel(); RobotContainer.p = ScoringSetpoints.HUB.getPivot();}));
+        controller.getDriverTrigger(XboxController.Axis.kRightTrigger.value).onTrue(shootCenter()).onFalse(stopShooting());
+        controller.getDriverTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(shootPass()).onFalse(stopShooting());
+        controller.getDriverButton(XboxController.Button.kX.value).onTrue(shootRight()).onFalse(stopShooting());
+        controller.getDriverButton(XboxController.Button.kY.value).onTrue(intake.revSpin()).onFalse(intake.runSpin());
 
-        controller.getDriverButton(XboxController.Button.kRightBumper.value).onTrue(intake.dropDozer()).onFalse(intake.upDozer());
-        controller.getDriverButton(XboxController.Button.kLeftBumper.value).onTrue(flushRobot()).onFalse(stopFlushing());
+        controller.getDriverButton(XboxController.Button.kRightBumper.value).onTrue(intake());
+        controller.getDriverButton(XboxController.Button.kLeftBumper.value).onTrue(stopIntaking());
 
         controller.getDriverButton(XboxController.Button.kStart.value).onTrue(swerve.resetGyroCommand());
-        // controller.getDriverController().povUp().onTrue(extendToL1());
-        // controller.getDriverController().povDown().onTrue(extendToIdle());
+        controller.getDriverController().povUp().onTrue(intake.upIntake()).onFalse(intake.downIntake());
         // controller.getDriverController().povLeft().onTrue(alignClimbLeft());
         // controller.getDriverController().povRight().onTrue(alignClimbRight());
 
@@ -135,18 +134,27 @@ public class RobotContainer {
         return autoChooser.getSelected();
     }
 
-    public Command shoot() {
+    public Command shootCenter() {
         // An example command will be run in autonomous
-        return pivot.moveWrist(StateMachine.getInstance().score.getPivot(), 0.5).
-        alongWith(flywheel.updateSetpointCommand(StateMachine.getInstance().score.getFlywheel(), 1)).
+        return pivot.moveWrist(0, 0.5).
+        alongWith(flywheel.updateSetpointCommand(58, 1)).
+        andThen(indexer.runHandoff()).
+        andThen(new WaitCommand(0.5)).
+        andThen(indexer.runSpindexer());
+    }
+
+    public Command shootPass() {
+        return pivot.moveWrist(3*360, 0.5).
+        alongWith(flywheel.updateSetpointCommand(105, 1)).
         alongWith(indexer.runHandoff()).
         andThen(new WaitCommand(0.5)).
         andThen(indexer.runSpindexer());
     }
 
-    public Command shootO() {
-        return pivot.moveWrist(3*360, 0.5).
-        alongWith(flywheel.updateSetpointCommand(95, 1)).
+    
+    public Command shootRight() {
+        return pivot.moveWrist(0.5*360, 0.5).
+        alongWith(flywheel.updateSetpointCommand(57, 1)).
         alongWith(indexer.runHandoff()).
         andThen(new WaitCommand(0.5)).
         andThen(indexer.runSpindexer());
@@ -155,16 +163,16 @@ public class RobotContainer {
     public Command stopShooting() {
         return pivot.moveWrist(0, 0.5).
         alongWith(flywheel.updateSetpointCommand(0, 1)).
-        alongWith(indexer.stopHandoff()).andThen(indexer.stopSpindexer());
+        andThen(indexer.stopHandoff()).andThen(indexer.stopSpindexer());
     }
 
-    // public Command intake() {
-    //     return intake.runIntake().andThen(indexer.reverseSpindexer());
-    // }
+    public Command intake() {
+        return intake.runIntake();
+    }
 
-    // public Command stopIntaking() {
-    //     return intake.stopIntake().andThen(indexer.stopSpindexer());
-    // }
+    public Command stopIntaking() {
+        return intake.stopIntake();
+    }
 
     public Command flushRobot() {
         return indexer.reverseHandoff().

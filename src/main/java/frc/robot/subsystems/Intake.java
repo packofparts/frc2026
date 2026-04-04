@@ -14,11 +14,9 @@ import poplib.subsystems.pivot.TalonPivot;
 
 public class Intake extends TalonPivot {
     private static Intake instance;
-    // private final TalonFX leadSpinMotor;
-    // @SuppressWarnings("unused")
-    // private final TalonFX followerMotor;
-    // @SuppressWarnings("unused")
-    // private final TalonFX intakeGuideFollower;
+    private final TalonFX leadSpinMotor;
+    @SuppressWarnings("unused")
+    private final TalonFX followerMotor;
     public static Intake getInstance() {
         if (instance == null) {
             instance = new Intake();
@@ -36,9 +34,8 @@ public class Intake extends TalonPivot {
             Constants.Intake.TUNING_MODE, 
             "Intake"
         );
-        // leadSpinMotor = Constants.Intake.MOTOR_CONFIG.createTalon();
-        // followerMotor = Constants.Intake.FOLLOWER_CONFIG.createTalon();
-        // intakeGuideFollower = Constants.Intake.INTAKE_GUIDE_MOTOR.createTalon();
+        leadSpinMotor = Constants.Intake.MOTOR_CONFIG.createTalon();
+        followerMotor = Constants.Intake.FOLLOWER_CONFIG.createTalon();
         super.leadMotor.setPosition(0);
     }
 
@@ -51,37 +48,57 @@ public class Intake extends TalonPivot {
     }
 
 
-    // public Command runIntakeAuto() {
-    //     return runOnce(() -> leadSpinMotor.set(Constants.Intake.SPEED));
-    // }
+    public Command runIntakeAuto() {
+        return moveWrist(Constants.Intake.DOWN, 10).andThen(runOnce(() -> leadSpinMotor.set(Constants.Intake.SPEED)));
+    }
 
-    // /**
-    //  * Runs the indexer :shock:
-    //  * @return the Command that runs the indexer
-    //  */
-    // public Command runIntake() {
-    //     return runOnce(() -> leadSpinMotor.set(Constants.Intake.SPEED)).andThen(moveWrist(Constants.Intake.DOWN, 1)).andThen(() -> intakeGuideFollower.set(Constants.Intake.SPEED));
-    // }
+    // Do as i say, not as i do
+    public double getIntakeMotorState() {
+        return leadSpinMotor.get();
+    }
 
-    // /**
-    //  * Stops the indexer
-    //  * @return the Command that stops the indexer
-    //  */
-    // public Command stopIntake() {
-    //     return runOnce(() -> leadSpinMotor.set(0)).andThen(() -> intakeGuideFollower.set(0)).andThen(moveWrist(0, 5));
-    // }
+    /**
+     * Runs the intake :shock:
+     * @return the Command that runs the intake
+     */
+    public Command runIntake() {
+        return moveWrist(Constants.Intake.DOWN, 10).andThen(runOnce(() -> leadSpinMotor.set(Constants.Intake.SPEED)));
+    }
 
-    // /**
-    //  * Runs the indexer on reverse
-    //  * @return the Command that runs the indexer on reverse
-    //  */
-    // public Command reverseIntake() {
-    //     return runOnce(() -> leadSpinMotor.set(-Constants.Intake.SPEED)).andThen(() -> intakeGuideFollower.set(-Constants.Intake.SPEED)).andThen(moveWrist(Constants.Intake.DOWN, 5));
-    // }
+    public Command upIntake() {
+        return moveWrist(8*360, 10);
+    }
 
+    public Command downIntake() {
+        return moveWrist(Constants.Intake.DOWN, 10);
+    }
+
+    public Command runSpin() {
+        return runOnce(() -> leadSpinMotor.set(Constants.Intake.SPEED));
+    }
+
+    public Command revSpin() {
+        return runOnce(() -> leadSpinMotor.set(-Constants.Intake.SPEED));
+    }
+
+    /**
+     * Stops the indexer
+     * @return the Command that stops the indexer
+     */
+    public Command stopIntake() {
+        return moveWrist(0, 10).andThen(runOnce(() -> leadSpinMotor.set(0)));
+    }
+
+    /**
+     * Runs the indexer on reverse
+     * @return the Command that runs the indexer on reverse
+     */
+    public Command reverseIntake() {
+        return moveWrist(Constants.Intake.DOWN, 10).andThen(runOnce(() -> leadSpinMotor.set(-Constants.Intake.SPEED)));
+    }
     @Override
     public void periodic() {
         super.periodic();
-        // SmartDashboard.putNumber("Intake Motor Speed", leadSpinMotor.get());
+        SmartDashboard.putNumber("Intake Motor Speed", leadSpinMotor.get());
     }
 }

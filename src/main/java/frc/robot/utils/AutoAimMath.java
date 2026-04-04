@@ -16,7 +16,7 @@ public class AutoAimMath {
     private static final double HUB_Y = 4.03;
     private static final double RED_X = 12.52 - 0.5969;
     private static final double BLUE_X = 4.02 - 0.5969;
-    private static final double GRAVITY = 9.81; 
+    private static final double GRAVITY = 9.81;
     private static final double[][] VELOS = {  // https://www.desmos.com/calculator/iblfijmk0u
         {
             7.2,

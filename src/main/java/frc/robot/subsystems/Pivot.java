@@ -10,7 +10,6 @@ import poplib.subsystems.pivot.TalonPivot;
 
 
 public class Pivot extends TalonPivot {
-    public static CANdi limitSwitchFR;
     private static Pivot instance;
     public static Pivot getInstance() {
         if (instance == null) {
@@ -28,13 +27,7 @@ public class Pivot extends TalonPivot {
             Constants.Pivot.TUNING_MODE,
             "Pivot"
         );
-        limitSwitchFR = new CANdi(Constants.Pivot.CANDI_ID, new CANBus("rio"));
         super.leadMotor.setPosition(0);
-    }
-
-    @Override
-    public boolean isLimitSwitchPressed() {
-        return limitSwitchFR.getS1Closed().getValue() || limitSwitchFR.getS2Closed().getValue();
     }
 
     @Override
