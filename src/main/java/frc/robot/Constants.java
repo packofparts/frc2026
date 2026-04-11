@@ -71,10 +71,10 @@ public final class Constants {
         public static final FollowerConfig FOLLOWER_CONFIG = new FollowerConfig(MOTOR_CONFIG, true, 21);
         public static final double SPEED = 1;
         public static final boolean TUNING_MODE = false;
-        public static final MotorConfig PIVOT_CONFIG = new MotorConfig(22, "hi", 60, false, new PIDConfig(0.1, 0.0, 0.3), Mode.BRAKE);
-        public static final MotorConfig INTAKE_GUIDE_MOTOR = new MotorConfig(23, "hi", 25, false, Mode.COAST);
-        public static final double DOWN = 11.7*360.0;
-        public static final FFConfig FF = new FFConfig(0.7);
+        public static final MotorConfig PIVOT_CONFIG = new MotorConfig(22, "hi", 30, false, new PIDConfig(0.05, 0.0, 0.0), Mode.BRAKE);
+        // public static final MotorConfig INTAKE_GUIDE_MOTOR = new MotorConfig(23, "hi", 25, false, Mode.COAST);
+        public static final double DOWN = 11*360.0;
+        public static final FFConfig FF = new FFConfig(0.0);
     }
 
     public static class Indexer {
@@ -104,7 +104,7 @@ public final class Constants {
 
     public static class Flywheel {
         public static final boolean TUNING_MODE = false;   // 52 hub, 95 pass
-        public static final MotorConfig leadConfig = new MotorConfig(42, manipulatorLoop, 40, false, new PIDConfig(0.1, 0, 0.01), Mode.BRAKE, new ConversionConfig());
+        public static final MotorConfig leadConfig = new MotorConfig(42, manipulatorLoop, 60, false, new PIDConfig(0.1, 0, 0.01), Mode.BRAKE, new ConversionConfig());
         public static final FollowerConfig followConfig = new FollowerConfig(leadConfig, true, 43);
     }
 

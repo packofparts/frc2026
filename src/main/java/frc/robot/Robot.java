@@ -59,6 +59,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         SmartDashboard.putBoolean("Hub Active:", HubTracker.isAllianceHubActive());
+        SmartDashboard.putNumber("Countdown", HubTracker.getTimeUntilNextShift());
         SmartDashboard.putBoolean("Intake Only", StateMachine.getInstance().intakeOnly);
         SmartDashboard.putBoolean("AA", StateMachine.getInstance().enableAutoAim);
         // if (StateMachine.getInstance().intakeOnly) {

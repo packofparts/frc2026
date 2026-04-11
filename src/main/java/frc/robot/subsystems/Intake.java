@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.CANdi;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,6 +18,9 @@ public class Intake extends TalonPivot {
     private final TalonFX leadSpinMotor;
     @SuppressWarnings("unused")
     private final TalonFX followerMotor;
+    private final CANdi limitSwitchKinda;
+    private double timer;
+    private double DOWN;
     public static Intake getInstance() {
         if (instance == null) {
             instance = new Intake();
@@ -37,6 +41,9 @@ public class Intake extends TalonPivot {
         leadSpinMotor = Constants.Intake.MOTOR_CONFIG.createTalon();
         followerMotor = Constants.Intake.FOLLOWER_CONFIG.createTalon();
         super.leadMotor.setPosition(0);
+        limitSwitchKinda = new CANdi(23, "hi");
+        DOWN = Constants.Intake.DOWN/360.0;
+        timer = 75;
     }
 
     public Command dropDozer() {
@@ -62,19 +69,37 @@ public class Intake extends TalonPivot {
      * @return the Command that runs the intake
      */
     public Command runIntake() {
-        return moveWrist(Constants.Intake.DOWN, 10).andThen(runOnce(() -> leadSpinMotor.set(Constants.Intake.SPEED)));
+        return moveWrist(DOWN*360, 3).
+        andThen(runOnce(() -> timer = 75)).
+        andThen(dropALil());
+    }
+
+    public Command dropALil() {
+        return run(() -> {usePID = false; leadMotor.set(0.03); timer--;}).
+        onlyWhile(() -> {return !limitSwitchKinda.getS1Closed().getValue() && timer > 0;}).
+        andThen(runOnce(() -> {leadMotor.set(0); DOWN = leadMotor.getPosition().getValueAsDouble();})).
+        andThen(runOnce(() -> setpoint.setDefault(DOWN))).
+        andThen(runOnce(() -> {usePID = true;}));
     }
 
     public Command upIntake() {
-        return moveWrist(7*360, 10);
+        return runOnce(() -> {usePID = true; setpoint.setDefault(DOWN-7);});
     }
 
     public Command downIntake() {
-        return moveWrist(Constants.Intake.DOWN, 10);
+        return runOnce(() -> setpoint.setDefault(DOWN));
     }
 
     public Command runSpin() {
         return runOnce(() -> leadSpinMotor.set(Constants.Intake.SPEED));
+    }
+    
+    public Command stopSpin() {
+        return runOnce(() -> leadSpinMotor.set(0));
+    }
+
+    public Command uppies() {
+        return runOnce(() -> setpoint.setDefault(DOWN - 1));
     }
 
     public Command revSpin() {
@@ -86,7 +111,7 @@ public class Intake extends TalonPivot {
      * @return the Command that stops the indexer
      */
     public Command stopIntake() {
-        return moveWrist(0, 10).andThen(runOnce(() -> leadSpinMotor.set(0)));
+        return runOnce(() -> usePID = true).andThen(moveWrist(0, 10)).andThen(runOnce(() -> leadSpinMotor.set(0)));
     }
 
     /**
@@ -100,5 +125,8 @@ public class Intake extends TalonPivot {
     public void periodic() {
         super.periodic();
         SmartDashboard.putNumber("Intake Motor Speed", leadSpinMotor.get());
+        SmartDashboard.putBoolean("Intake Limit", limitSwitchKinda.getS1Closed().getValue());
+        SmartDashboard.putNumber("Theo Down", DOWN);
+        SmartDashboard.putNumber("Intake Timer", timer);
     }
 }

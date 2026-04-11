@@ -45,4 +45,25 @@ public class HubTracker {
             return initialAlliance;
         }
     }
+
+    public static double getTimeUntilNextShift() {
+        double currentTime = DriverStation.getMatchTime();
+        if (DriverStation.isAutonomous()) {
+            return currentTime;            // auto
+        }
+        if (currentTime >= 130) {
+            return currentTime - 130;      // transition
+        } else if (currentTime >= 105) {
+            return currentTime - 105;      // shift 1
+        } else if (currentTime >= 80) {
+            return currentTime - 80;       // shift 2
+        } else if (currentTime >= 55) {
+            return currentTime - 55;       // shift 3
+        } else if (currentTime >= 30) {
+            return currentTime - 30;       // shift 4
+        } else if (currentTime >= 0) {
+            return currentTime;            // endgame
+        }
+        return -1;
+    }
 }

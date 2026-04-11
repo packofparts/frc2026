@@ -52,15 +52,23 @@ public class RobotContainer {
 
     public RobotContainer() {
         autoChooser = new SendableChooser<>();
-        autoChooser.addOption("Shoot", 
+        autoChooser.addOption("Right Shoot", 
+        shootRight().alongWith(new WaitCommand(10)).andThen(stopShooting())); 
 
-        intake().andThen(shootRight()).alongWith(new WaitCommand(10)).andThen(stopShooting())); 
-        autoChooser.addOption("Shoot and Move", 
+        autoChooser.addOption("Right Shoot + Exit", 
+        shootRight().alongWith(new WaitCommand(10)).andThen(stopShooting()).andThen(swerve.moveSwerveUsingPID(0.0, -2, 0))); 
+        autoChooser.addOption("Right Shoot and Move", 
         intake().andThen(shootRight()).alongWith(new WaitCommand(4)).andThen(stopShooting()).
         andThen(swerve.moveSwerveUsingPID(0, 4.1, 0)).
         andThen(new WaitCommand(3)).
         andThen(swerve.moveSwerveUsingPID(-0.2, -4.1, 0)).
         andThen(shootRight()).alongWith(new WaitCommand(4)).andThen(stopShooting()));   // 3.8608
+
+        autoChooser.addOption("Center Shoot and Move", 
+        
+        swerve.moveSwerveUsingPID(-1, 0, 0).
+        andThen(shootCenterInAuto()).alongWith(new WaitCommand(6)).andThen(stopShooting()).
+        andThen(swerve.moveSwerveUsingPID(1, 0, 0)));
 
         autoChooser.addOption("GOOOOOOOO", swerve.GOOOOOOOOOOOOOO());
 
@@ -84,27 +92,29 @@ public class RobotContainer {
         controller.getDriverTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(shootPass()).onFalse(stopShooting());
         controller.getDriverButton(XboxController.Button.kX.value).onTrue(shootRight()).onFalse(stopShooting());
         controller.getDriverButton(XboxController.Button.kY.value).onTrue(intake.upIntake()).onFalse(intake.downIntake());
+        controller.getDriverButton(XboxController.Button.kB.value).onTrue(indexer.reverseHandoff().andThen(indexer.reverseSpindexer())).onFalse(indexer.stopHandoff().andThen(indexer.stopSpindexer()));
         controller.getDriverButton(XboxController.Button.kRightBumper.value).onTrue(intake());
         controller.getDriverButton(XboxController.Button.kLeftBumper.value).onTrue(stopIntaking());
 
+        // controller.getDriverButton(XboxController.Button.kB.value).onTrue(fakeShoot());
         controller.getDriverButton(XboxController.Button.kStart.value).onTrue(swerve.resetGyroCommand());
-        controller.getDriverController().povUp().onTrue(intake.revSpin()).onFalse(intake.runSpin());
-        // controller.getDriverController().povLeft().onTrue(alignClimbLeft());
-        // controller.getDriverController().povRight().onTrue(alignClimbRight());
+        controller.getDriverController().povUp().onTrue(intake.runSpin());
+        controller.getDriverController().povDown().onTrue(intake.stopSpin());
+        controller.getDriverController().povLeft().onTrue(intake.revSpin()).onFalse(intake.stopSpin());
+        controller.getDriverController().povRight().onTrue(intake.uppies());
+        // controller.getOperatorTrigger(XboxController.Axis.kRightTrigger.value).onTrue(flywheel.updateSetpointCommand(100)).onFalse(flywheel.updateSetpointCommand(0));
+        // controller.getOperatorTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(flywheel.updateSetpointCommand(-100)).onFalse(flywheel.updateSetpointCommand(0));
 
-        controller.getOperatorTrigger(XboxController.Axis.kRightTrigger.value).onTrue(flywheel.updateSetpointCommand(100)).onFalse(flywheel.updateSetpointCommand(0));
-        controller.getOperatorTrigger(XboxController.Axis.kLeftTrigger.value).onTrue(flywheel.updateSetpointCommand(-100)).onFalse(flywheel.updateSetpointCommand(0));
+        // controller.getOperatorTrigger(XboxController.Axis.kLeftX.value).onTrue(pivot.moveWristBy(-controller.getRawAxis(XboxController.Axis.kLeftX.value, controller.getOperatorController()), 0.1));
+        // // controller.getOperatorTrigger(XboxController.Axis.kRightY.value).onTrue(turret.turnTurretBy(controller.getRawAxis(XboxController.Axis.kRightY.value, controller.getOperatorController()), 0.1));
 
-        controller.getOperatorTrigger(XboxController.Axis.kLeftX.value).onTrue(pivot.moveWristBy(-controller.getRawAxis(XboxController.Axis.kLeftX.value, controller.getOperatorController()), 0.1));
-        // controller.getOperatorTrigger(XboxController.Axis.kRightY.value).onTrue(turret.turnTurretBy(controller.getRawAxis(XboxController.Axis.kRightY.value, controller.getOperatorController()), 0.1));
+        // controller.getOperatorButton(XboxController.Button.kX.value).onTrue(indexer.runHandoff()).onFalse(indexer.stopHandoff());
+        // controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseHandoff()).onFalse(indexer.stopHandoff());    
+        // controller.getOperatorButton(XboxController.Button.kA.value).onTrue(indexer.runSpindexer()).onFalse(indexer.stopSpindexer());
+        // controller.getOperatorButton(XboxController.Button.kY.value).onTrue(indexer.reverseSpindexer()).onFalse(indexer.stopSpindexer());    
 
-        controller.getOperatorButton(XboxController.Button.kX.value).onTrue(indexer.runHandoff()).onFalse(indexer.stopHandoff());
-        controller.getOperatorButton(XboxController.Button.kB.value).onTrue(indexer.reverseHandoff()).onFalse(indexer.stopHandoff());    
-        controller.getOperatorButton(XboxController.Button.kA.value).onTrue(indexer.runSpindexer()).onFalse(indexer.stopSpindexer());
-        controller.getOperatorButton(XboxController.Button.kY.value).onTrue(indexer.reverseSpindexer()).onFalse(indexer.stopSpindexer());    
-
-        // controller.getOperatorButton(XboxController.Button.kRightBumper.value).onTrue(intake.runIntake()).onFalse(intake.stopIntake());
-        // controller.getOperatorButton(XboxController.Button.kLeftBumper.value).onTrue(intake.reverseIntake()).onFalse(intake.stopIntake()); 
+        // // controller.getOperatorButton(XboxController.Button.kRightBumper.value).onTrue(intake.runIntake()).onFalse(intake.stopIntake());
+        // // controller.getOperatorButton(XboxController.Button.kLeftBumper.value).onTrue(intake.reverseIntake()).onFalse(intake.stopIntake()); 
 
         // controller.getOperatorButton(XboxController.Button.kStart.value).onTrue(pivot.reZero().alongWith(turret.reZero()));
            
@@ -137,12 +147,26 @@ public class RobotContainer {
         andThen(indexer.runSpindexer());
     }
 
+        
+    public Command fakeShoot() {
+        return indexer.runHandoff().
+        andThen(new WaitCommand(0.5)).
+        andThen(indexer.runSpindexer());
+    }
     
     public Command shootRight() {
         return pivot.moveWrist(0.5*360, 0.5).
-        alongWith(flywheel.updateSetpointCommand(62, 1)).
+        alongWith(flywheel.updateSetpointCommand(64, 1)).
         alongWith(indexer.runHandoff()).
         andThen(new WaitCommand(0.5)).
+        andThen(indexer.runSpindexer());
+    }
+
+    public Command shootCenterInAuto() {
+        return pivot.moveWrist(0.0*360, 0.5).
+        alongWith(flywheel.updateSetpointCommand(55, 1)).
+        alongWith(indexer.runHandoff()).
+        andThen(new WaitCommand(1)).
         andThen(indexer.runSpindexer());
     }
 

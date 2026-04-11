@@ -49,7 +49,7 @@ public class Indexer extends SubsystemBase {
     }
 
     public Command reverseSpindexer() {
-        return runOnce(() -> spindexerMotor.set(-Constants.Indexer.SPEED/4.0));
+        return runOnce(() -> spindexerMotor.set(-Constants.Indexer.SPEED));
     }
 
     public Command runHandoff() {
